@@ -1,0 +1,995 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 4]{PS6 Lecture 4}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{8/14/2013}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+library(ggplot2)
+options(width = 60)
+load('../../data/turnout.rdata') #preload data
+
+##
+t1972 = turnout$p1972
+t1972.South = subset(t1972, turnout$deepsouth == 1)
+t1972.Other = subset(t1972, turnout$deepsouth == 0)
+mu1 = round(mean(t1972), 2)
+sig1 = round(sd(t1972), 2)
+mu2 = round(mean(t1972.South), 2)
+sig2 = round(sd(t1972.South), 2)
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item Normal distribution, cont'd
+  \item CLT
+  \item Random variables, population and samples
+  \item Independence (intro)
+  \item t distribution
+  \item Test of difference in means
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+\section{Intro to CLT}
+
+\begin{frame}[fragile]
+\begin{columns}[t]
+  \column{0.5\textwidth}
+
+In lecture 3, saw that 1972 turnout in the South\ldots
+\begin{itemize}
+  \item does look normal using histogram
+  \item doesn't using empirical density
+  \end{itemize}
+\vspace{0.1in}
+  \column{0.5\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+\footnotesize
+<<pp3, fig=T, echo=F>>=
+Xs = 30:70
+mu1972.S = mean(t1972.South)
+sig1972.S = sd(t1972.South)
+Yt.S = dnorm(Xs, mu1972.S, sig1972.S)
+Pe.S = density(t1972.South)
+plot(Xs, Yt.S, type='l', ylim=c(0, 0.15), main='South')
+lines(Pe.S, col='red')
+mu1972.O = mean(t1972.Other)
+sig1972.O = sd(t1972.Other)
+Yt.O = dnorm(Xs, mu1972.O, sig1972.O)
+Pe.O = density(t1972.Other)
+plot(Xs, Yt.O, type='l', ylim=c(0, 0.1), main='Other')
+lines(Pe.O, col='red')
+@
+\normalsize
+  
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Easy enough to believe: part of the problem is small N
+\vspace{0.1in}
+
+Harder to believe: I asserted that these data are essentially normal, for
+reasons unspecified
+\vspace{0.2in}
+
+Two major questions:
+\vspace{0.1in}
+
+\begin{enumerate}
+  \item What is the basis of the assertion?
+  \item Why do we \textit{want} data to be normally distributed?
+  \end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Question 1}
+I argue that the turnout data are basically normal because many similar
+phenomena are also normally distributed
+\vspace{0.1in}
+
+Examples:
+\begin{itemize}
+  \item standardized test scores
+  \item height
+  \item number of heads flipping multiple coins
+  \item additive phenomena in general
+  \end{itemize}
+  
+\vspace{0.2in}
+Governed by the \textbf{central limit theorem}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The central limit theorem (CLT)}
+
+\textbf{Definition:} the mean of many \textit{independent and identically
+distributed} (iid) random variables (RVs) approaches normality as sample size
+increases.
+\vspace{0.2in}
+
+Several concepts we need to introduce to understand the CLT
+\begin{itemize}
+  \item random variable
+  \item independence
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+\section{RVs, Population \& Samples}
+\subsection{Random variable}
+\begin{frame}[fragile]
+\frametitle{Random Variables}
+A random variable (RV) is a variable that \textbf{\textit{can} take on all
+possible values} for some underlying data-generating process
+\vspace{0.1in}
+
+\begin{itemize}
+  \item e.g.: We believe there is a data-generating process that makes
+turnout in 1972 distribute normally around \Sexpr{mu1} with SD \Sexpr{sig1}
+  \item We would use a RV to represent ALL of the values that state turnout
+\texbf{could} have taken. 
+  \item We might say something like:
+$$X \sim N( \Sexpr{mu1}, \Sexpr{sig1} ) $$
+where $X$ is the RV representing turnout.
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Random Variables}
+
+The data that we have are \textbf{random} manifestations of a theoretical
+distribution of values that \textbf{could} have been obtained
+
+\begin{itemize}
+  \item e.g. the first value of `turnout' is \Sexpr{t1972[1]} but it could just as
+easily have been \Sexpr{t1972[1]+0.1}.
+  \item We use random variables to signify this element of chance.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Random Variables}
+
+\begin{itemize}
+\item An RV describes where some data come from (i.e. the underlying
+  distribution), but \textit{are not} the data themselves
+  \begin{itemize}
+    \item If it helps, think of data as a sample taken from a theoretical
+    population that is described by a RV.
+    \end{itemize}
+    \vspace{0.1in}
+  
+  \item RVs are written with capital letters, data with lower case
+  \item Can be \textbf{continuous} or \textbf{discrete}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Continuous vs. discrete RVs}
+
+\textbf{Continuous}
+\begin{itemize}
+  \item can take on any value within its range (i.e. infinite precision)
+  \item	represented by a probability density function (PDF)
+  \item e.g. percent turnout
+  \end{itemize}
+\vspace{0.1in}
+
+\textbf{Discrete}
+\begin{itemize}
+  \item can only take a finite number of values (e.g. integers)
+  \item represented by a probability mass function (PMF)
+  \item e.g number of bills proposed in House
+  \end{itemize}
+\vspace{0.2in}
+
+We're not going to worry too much about the distinction for now.
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Populations and Samples}
+
+\begin{frame}[fragile]
+\frametitle{Population and Sample}
+Random variables are closely related to 2 important concepts\vspace{0.2in}
+
+\begin{description}
+  \item[Population:] All possible values that a phenomenon (i.e. something we'd
+  represent with an RV) can take
+  \item[Sample:] A subset of a population. Data/observations are usually
+  samples.
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Population}
+Seems simple enough\ldots but there are a couple of ways to think about
+populations.\vspace{0.1in}
+
+\begin{description}
+  \item[naive:] population is all units we can take measurements for 
+  \begin{itemize}
+    \item e.g. since we have turnout values for all 50 states, we have
+    measured the entire population 
+    \item we don't have problems associated with samples
+    \end{itemize}
+    \vspace{0.1in}
+  \item[realistic:] population is all possible measurements that could have been made
+  \begin{itemize}
+    \item each measurement could have been made at an infinite number of other moments, by
+  other measurers, subject to small variation in the underlying phenomenon, etc.
+    \item sampling error always exists
+    \end{itemize}
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Samples}
+Ideally, we want a \textbf{representative} sample -- a sample that
+mirrors most important characteristics of the parent population\vspace{0.2in}
+  
+\begin{itemize}
+  \item \textbf{random measurement} is a widely used way of achieving a
+  representative sample.
+  \item there are situations where random measurement is not practical or
+  desirable (e.g. to sample small subpopulations) --  but this is a topic for a
+  more advanced class.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Samples}
+Even with perfectly executed randomized sampling, there can/will be differences
+between statistics of the sample, and true population values\vspace{0.2in}
+
+Luck of the draw\ldots
+\begin{itemize}
+  \item causes sample variance to be greater than pop. variance
+  \item leads to \textbf{sampling error} -- differences between population
+  values and sample values
+  \end{itemize}
+ \vspace{0.2in}
+
+Further, bad sampling can lead to biased (i.e. unrepresentative) samples.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Std. error versus std. deviation}
+Finally, this primer on population versus sample gives us a chance
+to tighten up vocab we use re: spread\vspace{0.1in}
+
+\begin{description}
+  \item[std. deviation:] spread in data
+  \item[std. error:] spread in statistics calculated from that data -- e.g.
+  means, medians, std. deviation, etc. Consequence of sampling.
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+
+\section{Back to CLT}
+
+\begin{frame}[fragile]
+\frametitle{Intro to Independence}
+\textbf{Definition:} $$Pr(A \cap B) = Pr(A)Pr(B)$$
+
+If 2 RVs/sets of data are independent, the value taken by 1 is not at all
+affected by the value of the other.
+\vspace{0.2in}
+
+e.g. flipping 2 coins -- Pr coin 1 is H is not affected by whether coin 2 is
+H or T.
+\vspace{0.2in}
+
+We'll come back to this when we examine bivariate relationships.
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{CLT from binomial draws}
+
+\begin{frame}[fragile]
+OK, back to the CLT.
+\vspace{0.1in}
+
+\begin{itemize}
+  \item Say we have 100 RVs ($X_1 - X_{100}$) representing 100 identical coins. We use
+coins because it's clear that they are independent.\vspace{0.1in}
+  \item We flip each 100 times, and take the mean for each coin, giving us $\bar{X_i}$
+for i from 1 to 100. The vector of $\bar{X_i}$s we'll call $Y$.
+\end{itemize}
+\vspace{0.2in}
+
+\textbf{CLT says that if you histogram or take the density of Y, it will
+look approximately normal, and that as more and more coins are added, the more
+normal it will look.}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We can try this in R using `rbinom'.
+\vspace{0.1in}
+
+`rbinom' is basically a coin-flipping function
+\begin{description}
+  \item[arg 1:] how many coins to flip
+  \item[arg 2:] how many times to flip each coin
+  \item[arg 3:] the probability of heads on each coin
+  \end{description}
+ \vspace{0.1in}
+ 
+Returns the number of heads for each coin that was flipped. 
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To demonstrate the CLT, we want to\ldots
+\begin{enumerate}
+  \item flip 100 fair (50\% heads) coins, 100 times
+  \item divide each number of heads by the total number of flips to get \% heads
+  \item look at the distribution
+  \end{enumerate}
+ \vspace{0.1in}
+
+<<cf, eval = F>>=
+numFlips = 100
+numHeads = rbinom(100, numFlips, 0.5)
+pctHeads = numHeads / numFlips
+hist(pctHeads)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.75\textwidth}
+
+\setkeys{Gin}{width=1\textwidth}
+<<fig = T, echo=F>>=
+<<cf>>
+@
+  \column{0.25\textwidth}
+
+Looks pretty normal!
+ \vspace{0.1in}
+ 
+ As you add more `coins', the more normal this will look.
+
+\end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%
+\subsection{Applying CLT to turnout data}
+
+\begin{frame}[fragile]
+How does this help us understand the turnout data?
+\vspace{0.2in}
+
+\begin{description}
+  \item[$X_i$:] coin : H/T :: person : vote/no-vote
+  \item[$\bar{X_i}$:] \% turnout by state, for states $i$
+  \item[$Y$] `turnout' data are basically draws from Y
+  \end{description}
+ \vspace{0.1in}
+ 
+ To the extent that all voters, regardless of state, are similar `coins', we
+ expect state-by-state `turnout' for the entire country to look fairly normal.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\begin{columns}[c] 
+  \column{0.75\textwidth}
+
+\setkeys{Gin}{width=1\textwidth}
+<<fig = T, echo=F>>=
+xlims = c(30, 70)
+Xs = 30:70
+mu1972 = mean(t1972)
+sig1972 = sd(t1972)
+Ys = dnorm(Xs, mu1972, sig1972)
+hist(t1972, xlim=xlims)
+par(new=T)
+plot(Xs, Ys, xlim=xlims, type='l', xaxt='n', yaxt='n', main='', xlab='', ylab='', lwd=2)
+@
+
+  \column{0.25\textwidth}
+
+OK -- so voters by state are maybe not all THAT similar.
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Why do I keep arguing that the South is separate from the rest?
+\vspace{0.2in}
+
+``Throughout the first half of the twentieth century\ldots turnout in
+nonsouthern states varied from 55 to 70 percent -- more than double the southern
+figures,' The disfranchisement of blacks in the South after Reconstruction
+obviously contributed to low southern turnout\ldots Low voting turnout was an
+important characteristic of the white electorate, too\ldots many citizens lost
+interest in politics and disfranchised themselves because of lack of party competition
+in the South'' (Cassel 1979, p.907)
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Thus, we have a qualitative reason to think that the Pr(vote)
+for Southern persons is lower than that for non-Southerners
+\vspace{0.1in}
+
+\begin{itemize}
+  \item In statistical terms, just Southern persons are closer to ``identically
+distributed'' then all Americans.
+  \vspace{0.1in}
+  
+  \item Resultantly, each subset on its own looks fairly normal, while all
+  Americans pooled together (regardless of region) are less so
+  \vspace{0.1in}
+  
+  \item The more similar the underlying persons, the less we should see 
+  divergence between the two groups of voters.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[t] 
+  \column{0.5\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+xlims = c(30, 70)
+Xs = 30:70
+ysS = dnorm(Xs, mean(t1972.South), sd(t1972.South))
+hist(t1972.South, main='South', xlim=xlims, breaks=seq(30, 70, 5))
+par(new=T)
+plot(Xs, ysS, xlim=xlims, type='l', xaxt='n', yaxt='n', main='', xlab='', ylab='', lwd=2)
+@
+
+\column{0.5\textwidth}
+
+  \setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+ysO = dnorm(Xs, mean(t1972.Other[t1972.Other > 40]), sd(t1972.Other[t1972.Other > 40]))
+hist(t1972.Other, main='Other', xlim=xlims, breaks=seq(30, 70, 5))
+par(new=T)
+plot(Xs, ysO, xlim=xlims, type='l', xaxt='n', yaxt='n', main='', xlab='', ylab='', lwd=2)
+@
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+\frametitle{An aside on the process of discovery}
+
+Our reasoning process so far: We\ldots
+\begin{itemize}
+  \item noticed a pattern in data
+  \item came up with a qualitative explanation (i.e. a theory)
+  \end{itemize}
+\vspace{0.1in}
+
+Now what? 
+\begin{itemize}
+  \item question or accept the qualitative exlanation based on how believeable
+  it is --  this is a subjective judgement
+  \item test the explanation. If it were true, what else would have to be true?
+  Do we observe these ``what else''s?
+  \end{itemize}
+\vspace{0.1in}
+
+This is the scientific method in a nutshell. Hence, we can call poli-sci and
+similar disciplines social \textit{sciences}.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Question 2}
+\textbf{Why do we like things that are normally distributed?}
+\vspace{0.1in}
+
+It's very well understood and easy to work with.
+\begin{itemize}
+  \item many phenomena are approx. normally distributed (see above)
+  \item easy and inutitive parameterization
+  \item 68--95--99.7 rule
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+\section{Normal Distribution III}
+\subsection{Fitting a normal distribution}
+\begin{frame}[fragile]
+\frametitle{Easy parameterization}
+We saw in lecture 3 that the normal dist. is parameterized by 
+mean $\mu$ and SD $\sigma$ -- easy values to think about and estimate.
+$$ X \sim N(\mu, \sigma) $$
+\vspace{0.05in}
+
+Another result of this parameterization is that it's easy to go from any normal
+distribution to the standard normal and vice versa:
+\vspace{0.1in}
+\begin{description}
+  \item[Non-standard to standard:] subtract $\mu$, then divide by $\sigma$
+  \item[Standard to non-standard:] multiply by $\sigma$, then add $\mu$
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[t] 
+  \column{0.5\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+  \scriptsize
+<<fig=T>>=
+mu30sig3 = rnorm(100, 30, 3)
+stdized = (mu30sig3 - 30)/3
+tt1 = 'standard from mu=30, sig=3'
+hist(stdized, main=tt1)
+@
+
+  \column{0.5\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+  \scriptsize
+<<fig=T>>=
+standard = rnorm(100, 0, 1)
+mu9sig8 = (standard*8)+9
+tt2 = 'mu=9, sig=8 from standard'
+hist(mu9sig8, main='tt2')
+@
+
+\end{columns}
+
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{68--95--99.7 rule}
+
+\begin{frame}[fragile]
+\frametitle{68--95--99.7 rule}
+For any data that are normally distributed\ldots
+\vspace{0.1in}
+
+\begin{itemize}
+  \item 68\% of observations lie within 1 SD of the mean.
+  \item 95\% of observations lie within 2 SD of the mean.
+  \item 99.7\% of observations lie within 3 SD of the mean.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\setkeys{Gin}{width=0.8\textwidth}
+<<fig=T, echo=F>>=
+x = seq(-4, 4, 0.1)
+y = dnorm(x, 0, 1)
+xs = -3:3
+
+plot(x, y, type='l', yaxs='i', xaxs='i', ylim=c(0, 0.42))
+
+x68 = x[x <= 1 & x >= -1]
+x95 = x[x <= 2 & x >= -2]
+x99 = x[x <= 3 & x >= -3]
+
+y68 = c( y[x <= 1 & x >= -1], 0, 0 )
+y95 = c( y[x <= 2 & x >= -2], 0, 0 )
+y99 = c( y[x <= 3 & x >= -3], 0, 0 )
+
+x68 = c(x68, x68[length(x68)], x68[1])
+x95 = c(x95, x95[length(x95)], x95[1])
+x99 = c(x99, x99[length(x99)], x99[1])
+
+polygon(x99, y99, col='blue')
+polygon(x95, y95, col='lightblue')
+polygon(x68, y68, col='aquamarine')
+
+lines(c(-3, -3), c(0, 0.37), col='red')
+lines(c( 3,  3), c(0, 0.37), col='red')
+lines(c(-3,  -0.6), c(0.35, 0.35), col='red')
+lines(c(0.6, 3), c(0.35, 0.35), col='red')
+
+lines(c(-2, -2), c(0, 0.3), col='red')
+lines(c( 2,  2), c(0, 0.3), col='red')
+lines(c(-2,  -0.5), c(0.28, 0.28), col='red')
+lines(c(0.5, 2), c(0.28, 0.28), col='red')
+
+text(0, 0.35, '99.7%', cex=1.5)
+text(0, 0.28, '95%', cex=1.5)
+text(0, 0.15, '68%', cex=1.5)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\textbf{Why is the 68--95--99.7 rule (and the underlying idea of the PDF/CDF) so
+useful?}
+\vspace{0.2in}
+
+Once we determine that something is more or less normal, we can make statements
+about likely values!
+\vspace{0.1in}
+
+\begin{itemize}
+  \item  If we believe Southern turnout to be normally distributed with mean
+  \Sexpr{mu2} \& SD \Sexpr{sig2}, we can say that 95\% of Southern states will
+  have turnouts in the range \Sexpr{mu2-2*sig2} to \Sexpr{mu2+2*sig2}.
+  \vspace{0.1in}
+
+  \item Shown a state with unknown region but turnout \Sexpr{mu2+4*sig2} 
+  (i.e. $+4\sigma$), we would say that it is unlikely to be Southern (though not
+  impossible).
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%% 
+
+\begin{frame}[fragile]
+\frametitle{A few other univariate distributions}
+
+\small
+\textbf{discrete}
+\begin{description}
+  \item[poisson:] count data parameterized by single mean/variance (e.g. \# of
+  emails per unit time)
+  \item[binomial:] number of successes in a sequence of N independent yes/no
+  experiments (e.g. coin flips)
+  \item[uniform:] equal probability of getting each of N values (e.g. roll of a 
+  fair die, single fair coin flip); can also be continuous
+  \end{description}
+
+\vspace{0.1in}
+\textbf{continuous}
+\begin{description}
+  \item[beta:] rate of success given past successes and failures (e.g. coin
+  that is unknown whether fair or not)
+  \item[student's T:] standard normal with heavier tails (e.g. black swan
+  theory)
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+\section{t-distribution}
+\subsection{Definition/description}
+\begin{frame}[fragile]
+\frametitle{The t-distribution}
+We're going to look a bit more closely at the t-distribution because it is used
+for a common statistical test that we will find useful.
+\vspace{0.1in}
+
+Characteristics:
+\begin{itemize}
+  \item single parameter: degrees of freedom (df)
+  \item looks normal, but has thicker tails
+  \item approaches normality as $df \rightarrow \infty$
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The following code lets us visually compare the PDFs of t distributions with
+varying df with that of the normal
+
+\footnotesize
+<<tdist, eval=F>>=
+xs = seq(-4, 4, 0.1)
+y1 = dnorm(x, 0, 1)
+y2 = dt(x, 1)
+y3 = dt(x, 2)
+y4 = dt(x, 5)
+
+cols=c('black', 'red', 'green', 'blue')
+plot(xs, y1, col=cols[1], type='l', 
+		lwd=2, main='t-dist with varying df')
+lines(xs, y2, col=cols[2], lwd=2)
+lines(xs, y3, col=cols[3], lwd=2)
+lines(xs, y4, col=cols[4], lwd=2)
+legend('topright', c('normal', 'df=1', 'df=2', 'df=5'), 
+		col=cols, lwd=rep(2, 5))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\setkeys{Gin}{width=0.8\textwidth}
+<<fig=T, echo=F>>=
+<<tdist>>
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The t-distribution lets us answer: is our sample of turnout in Southern states
+different from that of non-Southern states in a statistically significant way?
+\vspace{0.2in}
+
+More generally, given 2 normally distributed samples with\ldots
+\vspace{0.1in}
+
+\begin{itemize}
+  \item parameters $\mu_1, \mu_2, \sigma_1, \sigma_2$
+  \item sample sizes $N_1, N_2$
+  \end{itemize}
+\vspace{0.1in}
+
+are these samples from the same population?
+
+\end{frame}
+%%%%%%%%%%%%%
+\subsection{Test of difference in means}
+
+\begin{frame}[fragile]
+\frametitle{Test of difference in means}
+To answer the question, we will use a \textbf{2 tailed t-test} (AKA test of
+difference in means)
+\vspace{0.2in}
+
+\begin{enumerate}
+  \item[1.] define null and alternate hypotheses
+  \begin{description}
+    \item[null:] the samples are drawn from populations with the same mean
+    \item[alternate:] they are from different populations
+    \end{description}
+    \vspace{0.1in}
+\end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[fragile]
+\begin{enumerate}
+  \item[2.] calculate $t$, $df$, $P_{|t|, \nu}$ and the p-value for the test
+  \begin{itemize}
+    \item $P_{|t|, \nu}$ is the value of the CDF at $abs(t)$ for a t-dist. $df=\nu$
+    \item The \textbf{p-value} for the null hypothesis is $2(1-P_{|t|, \nu})$
+    \end{itemize}
+    \vspace{0.1in}
+    
+  \item[3.] If the calculated p-value is lower than $\alpha$, the significance
+  level of the test, (typically, 0.05), we ``reject the (null) hypothesis that the samples
+  are from a population with the same mean at the $\alpha$ level.'' Otherwise,
+  the data are insufficient to distinguish the population of one sample from the
+  other.
+  \end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To do the calculations\ldots  
+\vspace{0.1in}
+
+\begin{enumerate}
+\item calculate:
+  \begin{columns}
+    \column{0.1\textwidth}
+    
+    \column{0.35\textwidth}
+    $$t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{\sigma_1^2}{N_1} +
+    \frac{\sigma_2^2}{N_2}}}$$
+    
+    \column{0.35\textwidth}
+    $$\nu = \frac{(\sigma_1^2 + \sigma_2^2)^2 }{ \frac{\sigma_1^4}{N_1 - 1} +
+    \frac{\sigma_2^4}{N_2 - 1}}$$
+    
+  \end{columns}
+  \vspace{0.1in}
+   
+  \item calculate $P_{|t|, \nu}$. In R, `pt(abs(t), $\nu$)'
+  \item calculate p-value: $2(1-P_{|t|, \nu})$
+  \item If $\text{p-value} < \alpha$, reject null hypothesis
+  \end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+
+Suppose we have 2 samples with the following params:
+$$\mu_1 = 6, \sigma_1 = 1, N_1 = 20$$
+$$\mu_2 = 3, \sigma_2 = 2, N_2 = 30$$
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+mu1 = 6; sig1 = 1; n1 = 20
+mu2 = 3; sig2 = 2; n2 = 30
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\setkeys{Gin}{width=0.75\textwidth}
+<<echo=F, fig=T>>=
+x1 = rnorm(n1, mu1, sig1)
+x2 = rnorm(n2, mu2, sig2)
+sam = c(rep('sample 1', n1), rep('sample 2', n2))
+dats = data.frame(x=c(x1, x2), sample = sam)
+ggplot(dats) + geom_histogram(aes(x, fill=sample), position='stack', alpha=0.5, binwidth=1)
+@
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Can we reject the null hypothesis that these samples are drawn from populations
+with the same mean?
+\vspace{0.2in}
+
+Complete the test by running the following code:
+\footnotesize
+<<>>=
+T = (mu1 - mu2)/sqrt(sig1^2/n1 + sig2^2/n2)
+nu = (sig1^2 + sig2^2)^2/(sig1^4/(n1-1)+sig2^4/(n2-1))
+pval = 2*(1-pt(abs(T), nu))
+pval
+@
+\normalsize
+
+Since `pval' is less than 0.05, we can say that these two samples are not drawn
+from the same population.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{A note on phrasing}
+
+These are accurate and essentially equivalent statements.
+\begin{itemize}
+  \item ``if I were to redo this test over and over again with new samples, 
+  $1-\alpha$\% of those would show the effect to be non-zero.''
+  \item ``Because the p-value is below $\alpha$, I reject the null hypothesis at
+  the $\alpha$ level.''
+  \end{itemize}
+\vspace{0.1in}
+
+This statement is NOT the same, nor correct.
+\begin{itemize}
+  \item ``Because the p-value is below $\alpha$, the alternate hypothesis
+  is/must be true''
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{A note on phrasing}
+
+So what's the logic behind the phrasing?\vspace{0.1in}
+
+\begin{itemize}
+  \item These tests are set up to tell us what CANNOT be.
+  \item They do not directly tell us what MUST be.
+  \item We get to what is LIKELY to be true by eliminating as many possible alternate
+explanations as possible.
+  \end{itemize}
+\vspace{0.2in}
+
+This is not the way we are accustomed to thinking nor the easiest way to make
+arguments. However, given the tools we do have, you must understand these
+disctinctions.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Shortcomings of example 1}
+If you play around with example 1, what you'd eventually find is that it's not a
+terribly interesting test. 
+\vspace{0.1in}
+
+\begin{itemize}
+  \item the null hypothesis is that samples are from populations with the
+  \textit{exact same mean}
+  \item So even if the population means were different by a tiny amount, the
+  test \textit{could} give you a statistically significant result
+  \end{itemize}
+  \vspace{0.2in}
+  
+ More interesting would be to say 'sample 1 is from a population that is at
+ least X units different from that of sample 2.'
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We can modify the test slightly to test whether the means of the
+populations that the samples are drawn from differ by at least $\Delta$
+\vspace{0.2in}
+
+\textbf{null hypothesis:} the 2 samples are drawn from populations with
+means that are at least $\Delta$ apart.
+\vspace{0.2in}
+
+The only difference is in the numerator of T:
+    $$t = \frac{\bar{X_1} - \bar{X_2} - \Delta}{\sqrt{\frac{\sigma_1^2}{N_1} +
+    \frac{\sigma_2^2}{N_2}}}$$
+\vspace{0.05in}
+
+Everything else is the same.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 2}
+Let's see whether the two samples from example 1 are drawn from populations
+with a difference in means of at least 2.5:
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+delta = 2.5
+T = (mu1 - mu2 - delta)/sqrt(sig1^2/n1 + sig2^2/n2)
+nu = (sig1^2 + sig2^2)^2/(sig1^4/(n1-1)+sig2^4/(n2-1))
+pval = 2*(1-pt(abs(T), nu))
+pval
+@
+\normalsize
+
+Nope. Despite the fact that the samples means differ by 3 ($\mu_1=6, \mu_2=3$),
+the randomness of the data and the small sample sizes mean that we can't
+tell whether they are from populations with means even 2.5 apart.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We can answer many political science questions using this test.
+\vspace{0.1in}
+
+\begin{itemize}
+  \item How has the distribution of income changed?
+  \item Is group A of similar partisanship as group B?
+  \item What is the effect of policy X on characteristic Y?
+\end{itemize}
+\vspace{0.1in}
+
+Test of differences in means is not always the best way to answer such
+questions, but it certainly provides one way.
+\end{frame}
+%%%%%%%%%%%%%
+
+\end{document}

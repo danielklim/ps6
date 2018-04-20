@@ -1,0 +1,708 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings, multirow}
+\usetheme{Dresden}
+\title[Lecture 8]{PS6 Lecture 8}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{4/23/2014}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+options(width = 60)
+#load('../../data/gdp.rdata') #preload data
+#library(MASS)
+library(plotrix)
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item Causation\vspace{0.1in}
+  \begin{itemize}
+    \item Association versus causation\vspace{0.1in}
+    \item Conditions for causation\vspace{0.1in}
+    \end{itemize}
+  \item Statistical control\vspace{0.1in}
+  \begin{itemize}
+    \item In an experimental context\vspace{0.1in}
+    \item Limitations
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\section{Causation}
+
+\begin{frame}[fragile]
+\frametitle{Thinking about causation}
+We've been looking at the relationship between year (i.e. time) and
+GDP/cap.\vspace{0.1in}
+
+\begin{itemize}
+  \item does this mean that we think time \textbf{causes} changes in
+  GDP/cap?\vspace{0.1in}
+  \item if not, why is it that we observe a strong positive relationship between
+  time and GDP/cap\vspace{0.1in}
+  \item further, what does it mean for something to \textbf{cause} something?
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Some vocab}
+We think about relationships as occurring between an outcome
+variable and 1 or more explanatory variables.
+\vspace{0.1in}
+
+\begin{description}
+  \item[dependent variable:] aka DV, response variable. The
+  \textit{outcome} we are interested in.\vspace{0.1in}
+  \item[independent variable:] aka IV, explanatory variable. The thing causing
+  changes in our outcome of interest.
+\end{description}
+\vspace{0.1in}
+
+These ideas will be further elaborated on once we start learning about
+statistical regression.
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Association versus causation}
+
+\begin{frame}[fragile]
+\frametitle{Association v. causation}
+\begin{itemize}
+  \item Just because we observe correlation between 2 variables does not mean X
+  causes Y.\vspace{0.1in}
+  \item There are several potential explanations for why we observe some bivariate
+relationship.\vspace{0.1in}
+  \item Some are `causal' in the way we commonly think about it, while others only look
+the part.\vspace{0.1in}
+  \item The deciding factor is theory.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Explaining observed association}
+
+There are at least 4 possible explanations for observing association between 2
+(or more) variables:\vspace{0.1in}
+\begin{itemize}
+  \item causation
+  \item common response
+  \item confounding
+  \item chance
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Causation}
+
+<<fig=T, echo=F>>=
+plot(c(0,1), c(0,1), type='n', axes=F, xlab='', ylab='')
+draw.arc(0.2, 0.5, 0.1, deg1=0, deg2=360, lwd=3)
+draw.arc(0.8, 0.5, 0.1, deg1=0, deg2=360, lwd=3)
+arrows(0.35, 0.5, 0.65, 0.5, lwd=3)
+text(0.2, 0.5, 'X', cex=3)
+text(0.8, 0.5, 'Y', cex=3)
+@
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Causation}
+\textbf{Causation} is what we usually want.\vspace{0.1in}
+
+\begin{itemize}
+  \item In statistical analysis, we tend to think of causation as ``if X
+  occurs, the probability of Y occurring is increased.''\vspace{0.1in}
+  \item an alternative is to use the \textbf{counterfactual} framework: ``X
+  occured, and as a result, Y \textit{necessarily} occured. Further, if X hadn't
+  occurred, Y would also not have occured.''
+  \end{itemize}
+  
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example: causation}
+I eat a hamburger (X) which causes me to feel full (Y)\vspace{0.1in}
+
+\begin{description}
+  \item[X:] amount of food I eat\vspace{0.1in}
+  \item[Y:]	how hungry I am
+  \end{description}
+  \vspace{0.1in}
+  
+\textit{Seems} self-evident that X causes Y\ldots but in the real-world is it
+necessarily true? \vspace{0.1in}\pause
+
+\textbf{counterfactual:} If I hadn't eaten that burger, would/could I
+still feel full?
+
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Common response}
+
+<<fig=T, echo=F>>=
+plot(c(0,1), c(0,1), type='n', axes=F, xlab='', ylab='')
+draw.arc(0.2, 0.5, 0.1, deg1=0, deg2=360, lwd=3)
+draw.arc(0.8, 0.8, 0.1, deg1=0, deg2=360, lwd=3)
+draw.arc(0.8, 0.2, 0.1, deg1=0, deg2=360, lwd=3)
+arrows(0.35, 0.6, 0.65, 0.75, lwd=3)
+arrows(0.35, 0.4, 0.65, 0.25, lwd=3)
+text(0.2, 0.5, 'Z', cex=3)
+text(0.8, 0.8, 'X', cex=3)
+text(0.8, 0.2, 'Y', cex=3)
+@
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Common response}
+In the \textbf{common response} scenario, a \textbf{lurking variable}
+affects both our purported IV and DV.\vspace{0.1in}
+
+\begin{itemize}
+  \item \textbf{lurking variable:} a variable extraneous to the association 
+  we are focusing on (AKA unobserved/latent variable) \vspace{0.1in}
+  \item We observe a relationship between X and Y because Z (the lurking
+  variable) simultaneously affects both.\vspace{0.1in}
+  \item In effect, the real IV is Z, and both X and Y are DVs with respect to Z.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example: common response}
+
+\begin{itemize}
+  \item I observe that my hunger level (Y) is associated with the amount of money I
+have in my wallet (X)\vspace{0.1in}
+  \item Does this mean that X causes Y?\vspace{0.1in}\pause
+  \item Nope. We haven't accounted for Z: how much food I purchased and ate.
+  Z is a lurking variable that causes both X and Y
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Confounding}
+
+<<fig=T, echo=F>>=
+plot(c(0,1), c(0,1), type='n', axes=F, xlab='', ylab='')
+draw.arc(0.2, 0.5, 0.1, deg1=0, deg2=360, lwd=3)
+draw.arc(0.8, 0.8, 0.1, deg1=0, deg2=360, lwd=3)
+draw.arc(0.8, 0.2, 0.1, deg1=0, deg2=360, lwd=3)
+arrows(0.8, 0.65, 0.8, 0.35, lwd=3)
+arrows(0.35, 0.4, 0.65, 0.25, lwd=3)
+text(0.2, 0.5, 'Z', cex=3)
+text(0.8, 0.8, 'X', cex=3)
+text(0.8, 0.2, 'Y', cex=3)
+@
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Confounding}
+When 2 variables are \textbf{confounded}, it's not possible to distinguish
+whether it's X or Z that causes changes in Y.\vspace{0.1in}
+
+\begin{itemize}
+  \item the core issue is that X and Z share some kind of relationship that we
+  have not accounted for in our analysis\vspace{0.1in}
+  \item both X and Z may be affecting Y but it's not possible to assess the
+  \textit{extent} of each effect\vspace{0.1in}
+  \item confounding can occur between a purported IV and an unobserved variable,
+  or 2 (or more) IVs
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example: confounding}
+I often eat fast-food hamburgers (X) which causes me to gain weight (Y).
+However, my laziness, which motivates my dietary choices also keeps me from
+exercising as much as I should. My lack of exercise (Z) also increases my weight.
+\vspace{0.1in}
+\begin{description}
+  \item[X:] amount of food I eat\vspace{0.1in}
+  \item[Y:]	amount of weight gain\vspace{0.1in}
+  \item[Z:] how much I exercise
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example: confounding}
+\begin{itemize}
+  \item We cannot tell whether it's my lack of exercise or my dietary choices that leads
+to weight gain. \vspace{0.1in}
+  \item If we don't consider exercise, we could mistakenly
+attribute weight gain to diet when in fact, lack of exercise is also
+responsible. \vspace{0.1in}
+  \item \textit{Dietary choice is confounded by amount of
+  exercise}.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Some conditions for causation}
+
+\begin{frame}[fragile]
+We want causation. What conditions must typically be met to show that
+it's causation and not something else?\vspace{0.1in}
+
+\begin{itemize}
+  \item temporally appropriate
+  \item plausible argument
+  \item valid counterfactual
+  \item alternate explanations
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Temporally appropriate}
+\begin{itemize}
+  \item X must have occurred before Y (duh).\vspace{0.1in}
+  \item if there is some time dependent component to your explanation of the
+  cause, the appropriate pattern must be observed
+  \end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Example: theory that legalized abortion decreases crime. \vspace{0.1in}
+
+\begin{itemize}
+  \item Roe v. Wade (1973) decreased number of disadvantaged children
+  born.\vspace{0.1in}\pause
+  \item Criminal behavior most likely among disadvantaged males in late
+  teens.\vspace{0.1in}\pause
+  \item Cohort born immediate after RvW would have entered primo-criminal
+  age in early 1990's.\vspace{0.1in}\pause
+  \item Roe v. Wade shrank disadvantaged portion of this cohort, so we observe
+  decreasing crime rate in early 90's
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item RvW (X) does occur before $\downarrow$ crime rate (Y)\vspace{0.1in}
+  \item \ldots but the theorized causal relationship would still not be
+  supported if gap was not of appropriate size\vspace{0.1in}
+  \item \textbf{Timing is key.} 
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Plausible argument}
+There must be a \textit{plausible} argument that X causes Y\vspace{0.1in}
+
+\begin{itemize}
+  \item typically a matter of common-sense. \vspace{0.1in}
+  \item if there is some lengthy process leading X to cause Y (there usually
+  is), it must be broken down into small enough steps such that each step is
+ self-evident.
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Consider each piece of the RvW explanation.\vspace{0.1in}
+\begin{itemize}
+  \item legalized abortion $\to \Downarrow \#$disadvantaged children born --
+  \textbf{duh}\vspace{0.1in}\pause
+  \item Criminal behavior most likely among disadvantaged males in late teens --
+  \textbf{duh}\vspace{0.1in}\pause
+  \item Cohort born immediate after RvW would have entered primo-criminal
+  age in early 1990's -- \textbf{duh}\pause
+  \end{itemize}
+ \vspace{0.1in}
+
+On its own, each step is pretty ``duh.'' In combination, they lead to a
+surprising conclusion and explain why we believe X causes Y.
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Valid counterfactual}
+
+Assume we observe X occurs before Y, and there is a plausible explanation for
+how X causes Y. \vspace{0.1in}
+
+\begin{itemize}
+  \item Does this mean X actually causes Y? \textbf{Not
+  necessarily.}\vspace{0.1in}
+  \item What if increase in X is associated with increase in Y, but decrease in
+  X does NOT decrease Y?
+  \end{itemize}
+\vspace{0.1in}
+\pause
+
+For X to cause Y, we must see $\Uparrow X \to \Uparrow Y$ AND $\Downarrow X
+  \to \Downarrow Y$
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+E.g.: shortly after stimulus law, economic growth increases. Policymaker would
+have us believe law caused increase in growth\vspace{0.1in}
+
+\begin{itemize}
+  \item temporally appropriate? Yep
+  \item plausible enough? Sure
+  \end{itemize}
+\vspace{0.1in}
+
+If the law had NOT been passed, would economic growth
+NOT have increased? If the answer is no (i.e. growth would have increased
+regardless), stimulus was probably not the cause\footnote{\textit{How} we'd
+actually answer the question is a topic for a more advanced class.}.
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Alternate explanations}
+Are there other explanations that would explain observed pattern?\vspace{0.1in}
+
+\begin{itemize}
+  \item alternate explanations may eliminate yours\vspace{0.1in}
+  \item they may be valid in addition to your explanation\vspace{0.1in}
+  \item one of most common critiques of new theories in social science
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's continue our stimulus example. What else could explain increased econ.
+growth?\vspace{0.1in}
+
+\begin{itemize}
+  \item cyclicality
+  \item a different policy
+  \item socio-cultural change
+  \item etc. etc.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\begin{itemize}
+  \item List can grow ad nauseam. \vspace{0.1in}
+  \item Typically, it suffices to \textit{account} for most commonly accepted
+  alternate theories. \vspace{0.1in}
+  \item \textbf{So how do we account for alternate explanations in our data
+  analysis?}
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+%\begin{frame}[fragile]
+%\textbf{Bottom line:} statistical/data analysis is meaningless without theory!
+%Two major holes I did not address:
+%
+%Alternate explanations: how do we account for alternate explanations in our data
+%analysis?
+%Counterfactuals: how do we observe something that did not happen?
+%\end{frame}
+%%%%%%%%%%%%%
+
+\section{Control}
+
+\begin{frame}[fragile]
+\frametitle{Control}
+To account for alternate explanations, we \textbf{control} for
+them.\vspace{0.1in}
+
+\begin{itemize}
+  \item Process for \textit{holding constant} factors other than the one we are
+  interested in\vspace{0.1in}
+  \item Can be done at the time data are collected as well as when they are
+  analyzed\vspace{0.1in}
+\end{itemize}
+
+Another concept that is easier to understand through illustration -- we'll look
+first at control when data are collected
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Control in an experimental context}
+
+\begin{frame}[fragile]
+Suppose you wish to assess impact of a weight loss pill\vspace{0.1in}
+
+Attempt 1:
+\begin{itemize}
+  \item Give pill to 20 individuals\vspace{0.1in}
+  \item Observe that, on average, they all lose weight\vspace{0.1in}
+  \item Conclude the pill is effective
+\end{itemize}
+\vspace{0.2in}
+
+What's wrong here?
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Problems:\vspace{0.1in}
+\begin{itemize}
+  \item Would they have lost weight regardless whether they took pill or
+  not?\vspace{0.1in}\pause
+  \item Are all participants doing the same\ldots
+  \begin{itemize}
+    \item diet
+    \item exercise regimen
+    \item other medications, etc.
+  \end{itemize}\pause
+  \vspace{0.1in}
+  \item Are participants with different demographic backgrounds (e.g. sex, age,
+  ethnicity, etc.) being affected differently?\pause
+\end{itemize}
+\vspace{0.1in}
+
+In attempt 1, we cannot answer any of these questions because we have not
+\textit{controlled} for them.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Attempt 2:
+\begin{itemize}
+  \item Increase participant pool to 40.\vspace{0.1in}
+  \item Allow 20 participants to volunteer to take actual pill (i.e.
+  treatment).\vspace{0.1in}
+  \item Give placebo to remaining 20 (i.e. control).\vspace{0.1in}
+  \item Observe that, on average, group given actual pills lost more weight than
+  group given placebos.\vspace{0.1in}
+  \item Conclude the pill is effective
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Better, but still problematic.\vspace{0.1in}
+\begin{itemize}
+\item We've \textit{tried} to address concern 1 (viz. would loss have occurred
+regardless the pill) by comparing people who took pill against those who did
+not\vspace{0.1in}
+\item \ldots but what if some other factor were at play? \pause
+\end{itemize}
+\vspace{0.2in}
+
+e.g. the 20 who volunteered to take the pill are generally more serious
+about weight loss, so \textit{on average}, they exercise and diet more effectively
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Attempt 3:
+\begin{itemize}
+  \item Choose 20 participants \textit{at random} and give them actual pill.
+  \item Give placebo to remaining 20.
+  \item Everything else the same
+\end{itemize}
+\vspace{0.2in}
+
+Better.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Assigning participants at random ensures that the mix of people\ldots
+\begin{itemize}
+  	\item on different diets, 
+	\item of diff. sexes 
+	\item with diff. beginning weights 
+	\item etc.
+\end{itemize}
+\vspace{0.1in}
+
+\ldots is \textbf{the same on average} between the groups
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item After randomization, the only difference between control and treatment
+  groups \textit{on average} is the pill.\vspace{0.1in}
+  \item Because the pill is the only difference \textit{on average}, we can
+  attribute any changes in weight to the pill\vspace{0.1in}
+  \item \ldots so with this design, we address the first concern (viz.
+  weight loss would have occurred regardless the pill)
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Limitations of experimental control}
+\begin{frame}[fragile]
+What about \textit{other} alternative explanations?
+
+\begin{itemize}
+    \item diet
+    \item exercise regimen
+    \item other medications
+  \end{itemize}
+\vspace{0.1in}
+
+What would we need to do to control for these other factors?
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To control for diet, examine following groups\ldots
+
+\begin{table}
+    \begin{tabular}{c|c|c}
+          & control & treatment \\ \hline
+    diet  &       &  \\ \hline
+    no diet &       &  \\ \hline
+    \end{tabular}%
+\end{table}%
+\vspace{0.1in}
+
+\textcolor{white}{The diet group loses 12 more pounds with treatment, while the
+control group loses 9. We'd conclude that medicine is overall effective, but
+even more so with diet.}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We'd need compare each cell against others; e.g.:
+
+\begin{table}
+    \begin{tabular}{c|c|c|}
+          & control & treatment \\ \hline
+    diet  & -5 & -17 \\ \hline
+    no diet & +1 & -8 \\ \hline
+    \end{tabular}%
+\end{table}%
+\vspace{0.1in}
+
+\textcolor{black}{The diet group loses 12 more pounds with treatment, while the
+control group loses 9. We'd conclude that medicine is overall effective, but
+even more so with diet.}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To control for diet \& medication, examine following groups\ldots
+
+\begin{table}
+\centering
+  \begin{tabular}{c|c|c|c|c|}
+    \cline{2-5}
+    & \multicolumn{2}{|c|}{no meds} & \multicolumn{2}{|c|}{meds} \\ \cline{2-5}
+    & control & treatment & control & treatment \\ \hline
+    diet  &       &       &       &  \\ \hline
+    no diet &       &       &       &  \\ \hline
+    \end{tabular}%
+\end{table}%
+
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To control for diet, medication, \& exercise, examine following groups\ldots
+
+\begin{table}
+  \centering
+    \begin{tabular}{cc|c|c|c|c|}
+    \cline{3-6}
+    & & \multicolumn{2}{|c|}{no meds} & \multicolumn{2}{|c|}{meds} \\
+    \cline{3-6} & & control & treatment & control & treatment \\ \hline
+    
+    \multicolumn{1}{|c|}{\multirow{2}{*}{no exercise}} & diet  & & & &  \\
+    \cline{2-6} \multicolumn{1}{|c|}{} & no diet & & & &  \\ \hline
+    
+    \multicolumn{1}{|c|}{\multirow{2}[4]{*}{exercise}} & diet  & & & &  \\
+    \cline{2-6} \multicolumn{1}{|c|}{} & no diet & & & &  \\ \hline
+    \end{tabular}%
+\end{table}%
+
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item Each cell requires sufficient observations to keep std. error
+  manageable\vspace{0.1in}
+  \item We used limited number of categories for alt. explanations, but easy to
+  imagine more categories which would increase number of cells, each requiring observations\vspace{0.1in}
+  \item Observations cost resources\vspace{0.1in}
+  \item Easy enough to see trouble in the offing
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Takeways from this example\vspace{0.1in}
+\begin{itemize}
+  \item Control at time of collection is useful but limited\vspace{0.1in}
+  \item This was an experimental setting where we had complete control over our
+  observations but\ldots \vspace{0.1in}
+  \item \ldots in social science, we often do not have such control
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+For example, imagine that instead of a medication, we were talking about some
+policy, and observations were municipalities\vspace{0.1in}
+\begin{itemize}
+  \item Can we randomize assignment of the policy? If we can, is
+  it ethical to do so?\vspace{0.1in}\pause
+  \item Are there enough municipalities to control for all the things that might
+  matter?\vspace{0.1in}\pause
+  \item More to the point, do we have any control over how the data are
+  generated and measured, or are we mere observers, limited to the data that are
+  handed to us by a third party?\pause
+\end{itemize}
+\vspace{0.1in}
+If no to all (as is typical), where does that leave us??
+\end{frame}
+%%%%%%%%%%%%%
+
+\end{document}

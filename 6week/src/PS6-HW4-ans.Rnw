@@ -1,0 +1,157 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\linespread{1.3}
+\usepackage{amssymb, amsmath, dcolumn, parskip, Sweave, float, booktabs,
+graphicx, subfig, fancyhdr, lastpage, enumitem}
+\floatstyle{boxed} 
+\pagestyle{fancy}
+\restylefloat{figure}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+
+\begin{document}
+\cfoot{\thepage\ of \pageref{LastPage}}
+
+<<echo=F>>=
+options(width=60)
+wb = read.csv('../../data/wb2k.csv')
+@
+
+\lhead{PS6 HW4 answer key}
+
+\textbf{Exercise 1:} 
+\begin{description}
+  \item[(a)] Create 2 fake variables where (1) X is a sequence of numbers from
+  $-10$ to 15 in steps of 0.1, and (2) Y equals $x^3 - 10x^2$ plus a random
+  normal deviate with mean 0 and standard deviation 100. Show all of your R code
+  for this problem.
+  \item[(b)] Plot X versus Y in a scatterplot. Be sure to label your axes and
+  provide a plot title.
+  \end{description}
+
+\vspace{0.25in}
+\textbf{Answer:}
+<<>>=
+x = seq(-10, 15, 0.1)
+y = x^3 - 10*x^2 + rnorm(length(x), 0, 100)
+@
+
+<<fig=T>>=
+plot(x, y, main = 'x versus y')
+@
+
+\newpage
+
+\textbf{Exercise 2:}
+\begin{description}
+  \item[(a)] Calculate correlation for: $X < 0$,  $0 < X < 8$, $X > 8$, and the entire range of X. 
+  \item[(b)] Using about 250 words\ldots
+  \begin{itemize}
+    \item \ldots explain why the 4 correlation figures you calculated differ
+    from each other. Be sure to talk about the sign and magnitude of each number and relate them to those of each other.
+    \item \ldots describe major limitations of using correlation to describe the
+    relationship we see between X and Y (hint: what types of relationships does correlation (not)
+    work for? Do X and Y share that kind of relationship? How do you know?
+    \end{itemize}
+  \end{description}
+
+\vspace{0.25in}
+\textbf{Answer:}
+\small
+<<>>=
+cor(x[x<0], y[x<0])
+cor(x[x>0 & x<8], y[x>0 & x<8])
+cor(x[x>8], y[x>8])
+cor(x, y)
+@
+\normalsize
+
+The four numbers are different because the relationship between x and y is
+different depending on the domain of x. For example, between 0 and 8, the
+relationship is negative, while it is highly positive
+outside that domain. The correlation for the entire domain of x is lower
+in magnitude because x and y are non-linearly related.
+
+\newpage
+
+\textbf{Exercise 3:} 
+\begin{description}
+  \item[(a)] Use `read.csv' to load the WB dataset into the variable
+  `wb'. Then, use the command `na.omit' on `wb' to drop all observations with
+  NAs in them (hint: use `?na.omit' to research how to use the command. Pay 
+  particular attention to the examples section.). Save this new subset into the
+  variable `wb1' (hint: `wb1' should contain 191 observations). 
+  \item[(b)] Using `wb1', calculate
+  the correlation between (1) GDP and population, and (2) GDP and life expectancy 
+  WITHOUT using the correlation command (hint: use the formula for calculating correlation from 
+  covariance). Show all of your R code for this problem.
+  \end{description}
+
+\vspace{0.25in}
+\textbf{Answer:}
+<<>>=
+wb = read.csv('../../data/wb2k.csv')
+wb1 = na.omit(wb)
+cov(wb1$gdp, wb1$pop)/(sd(wb1$gdp)*sd(wb1$pop))
+cov(wb1$gdp, wb1$life)/(sd(wb1$gdp)*sd(wb1$life))
+@
+
+Student must show the above formulas/code in order to get credit.
+
+\newpage
+
+\textbf{Exercise 4:} 
+\begin{description}
+  \item[(a)] Run 2 linear regressions: GDP on population (i.e. GDP is
+the DV, population is the IV) and life expectancy on GDP. Show regression tables
+for both regressions. 
+  \item[(b)] In about 250 words, describe what these regression tables
+are telling us. At a minimum, you should talk about the meaning of the stars and
+what the estimated effects mean in real world terms. Keep this discussion
+purely to the numbers presented in the regression tables (i.e. don't talk about causes or bring in outside information).
+  \end{description}
+
+\vspace{0.25in}
+\textbf{Answer:}
+
+\small
+<<>>=
+summary(m1 <- lm(gdp ~ pop, data=wb1))
+summary(m2 <- lm(life ~ gdp, data=wb1))
+@
+\normalsize
+
+For part A, code is unnecessary. Both models must be shown, but regression
+tables can be shown in pretty format or raw R output. For part B, student must interpret the coefficients in
+substantive terms (e.g. coefficient $\beta$ means that for every unit change in
+X, there is a $\beta$ change in Y.). They must also talk in some capacity about
+statistical signifiance. They can use \textit{either} the p-value or signifiance
+stars to do this. Deduct points if they talk about causes or speculative stuff.
+
+\textbf{Exercise 5:} 
+\begin{description}
+  \item[(a)] Now, using about 250 words, speculate on some of the
+reasons why we see the results in the regression tables in problem 4. Why does
+does population have a positive effect on GDP? Likewise for GDP and life
+expectancy. In essence, come up with \textit{theories} to explain the data. 
+  \item[(b)] Further, using another 250 words (separate from the previous count),
+talk about whether you think GDP causes life expectancy. Is the answer to this
+question a strict yes-no? Are there other factors that might cause conflation or a common response situation?
+  \end{description}
+
+\vspace{0.25in}
+\textbf{Answer:}
+
+For part A, give full credit so long as both regressions are addressed and the
+explanations make a modicum of sense. For part B, give full credit if the
+explanation makes sense, and if they address the issue of conflation/common
+response. They do not have to give an example of how conflation/common response
+might occur but they do need to provide a rationale for their answer.
+
+\end{document}

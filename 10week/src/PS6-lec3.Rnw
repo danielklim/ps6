@@ -1,0 +1,769 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 3]{PS6 Lecture 3}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{4/7/2014}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+options(width = 60)
+load('../../data/turnout.rdata') #preload data
+t1972 = turnout$p1972
+t1972.South = subset(t1972, turnout$deepsouth == 1)
+t1972.Other = subset(t1972, turnout$deepsouth == 0)
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item Intro to the Normal distribution
+  \item Density
+  \item Density plots
+  \item Normal distribution redux
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+\section{Intro to the Normal Distribution}
+\subsection{Motivation}
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+\begin{columns}[t] 
+  \column{0.5\textwidth}
+
+Where did we stop in lecture 2?
+\vspace{0.1in}
+
+\begin{itemize}
+  \item The 1976 turnout data appeared to be bimodal
+  \item We suspected it's important whether a state is in the South
+  \item By subsetting, we saw that region separates 2 distinct groups of values
+  \end{itemize}
+
+\column{0.5\textwidth}
+\setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+boxplot(t1972.South, t1972.Other, names=c('South', 'Other'), lwd=2)
+@
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+These graphs are pretty satisfying, but why?
+
+\begin{columns}[c] 
+  \column{0.5\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+hist(t1972.South, main='South', xlim=c(30, 70), breaks=seq(30, 70, 5), ylim=c(0,7))
+abline(v = median(t1972.South), lwd=2, col='red')
+@
+
+\column{0.5\textwidth}
+
+  \setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+hist(t1972.Other, main='Other', xlim=c(30, 70), breaks=seq(30, 70, 5), ylim=c(0,18))
+abline(v = median(t1972.Other), lwd=2, col='red')
+@
+
+\end{columns}
+
+\textcolor{white}{\textbf{Because they appear to be normally distributed!}}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+These graphs are pretty satisfying, but why?
+
+\begin{columns}[c] 
+  \column{0.5\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<jk1, fig = T, echo=F>>=
+hist(t1972.South, main='South', xlim=c(30, 70), breaks=seq(30, 70, 5), ylim=c(0,7))
+abline(v = median(t1972.South), lwd=2, col='red')
+xs = 30:70
+ysS = dnorm(xs, mean(t1972.South), sd(t1972.South))
+lines(xs, ysS*50, lwd=3)
+@
+
+\column{0.5\textwidth}
+
+  \setkeys{Gin}{width=\textwidth}
+<<jk2, fig = T, echo=F>>=
+hist(t1972.Other, main='Other', xlim=c(30, 70), breaks=seq(30, 70, 5), ylim=c(0,18))
+abline(v = median(t1972.Other), lwd=2, col='red')
+ysO = dnorm(xs, mean(t1972.Other[t1972.Other > 40]), sd(t1972.Other[t1972.Other > 40]))
+lines(xs, ysO*250, lwd=3)
+@
+
+\end{columns}
+
+\textbf{Because they appear to be normally distributed!}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Definition}
+
+\begin{frame}[fragile]
+\frametitle{Description/Definition}
+The \textbf{normal distribution} (AKA bell curve, Gaussian distribution) is
+perhaps the most important distribution in statistics.
+\vspace{0.2in}
+
+It's important because it\ldots
+\begin{itemize}
+  \item describes a plethora of real-world phenomena (like turnout)
+  \item is central to many of advanced analytic techniques
+  \end{itemize}
+\vspace{0.2in}
+
+It also provides a great introduction to many important
+concepts including density and density plots, the idea of distributions, 
+random variables (RVs), and discrete vs. continuous RVs.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Description/Definition}
+
+We say that some data $X$ are \textbf{normally distributed} if its
+\textbf{density} can be described as follows:
+\vspace{0.1in}
+
+\textbf{The normal density function:}
+$$\frac{1}{\sigma \sqrt{2\pi}} exp\left(-\frac{ (x-\mu)^2 }{2 \sigma^2} \right)$$
+\vspace{0.1in}
+
+Initial reaction?\pause  ``Eww''
+\vspace{0.1in}
+
+It's not so bad once we parse it out. But, we will need to introduce
+several new concepts to fully understand this equation. Once we do, we'll return
+to more fully explore the normal distribution.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Density}
+\subsection{PDF}
+
+\begin{frame}[fragile]
+\frametitle{Density}
+
+First, we need to introduce the concept of \textbf{density}. 
+\vspace{0.1in}
+
+\textbf{Informal definition:} For some data X, the density, $f_X(x)$, is a
+function describing how likely it is that $X=x$.\footnote{This is an intuitive
+definition, but not the formal one. We'll get to that distinction in the next slide.}
+\vspace{0.1in}
+
+\begin{itemize}
+  \item density is always written with a lower case `f'
+  \item the subscript `X' indicates that this is the density for data `X'
+  \item AKA probability density and PDF
+  \item \textbf{density IS NOT a probability}
+  \end{itemize}
+\vspace{0.2in}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Density}
+The left graph is the histogram for Southern turnout. The right is a plot of the
+corresponding PDF.
+
+\begin{columns}[c] 
+  \column{0.5\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<jk1, fig = T, echo=F>>=
+<<jk1>>
+@
+
+\column{0.5\textwidth}
+
+  \setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+xs = 30:70
+ysS = dnorm(xs, mean(t1972.South), sd(t1972.South))
+plot(xs, ysS*50, lwd=3, main='South', xlim=c(30, 70), ylim=c(0,7))
+abline(v = median(t1972.South), lwd=2, col='red')
+@
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Density}
+The formal definition for a PDF is slightly more complicated:
+\vspace{0.1in}
+
+\textbf{formal definition:} 
+$$\int_{-\infty}^{+\infty} f(x) dx = 1$$
+$$f(x) \geq 0$$
+\pause
+
+\begin{description}
+  \item[line 1:] don't worry about the integral\ldots
+  this simply means that the area under a density curve is equal to 1. We'll get
+  to why in a sec.
+  \item[line 2:] this is a formality arising from the relationship between
+  density and probability.
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Density}
+\textbf{Density is only meaningful for an infinitesimally small slice of values}
+\vspace{0.1in}
+
+\textit{What does this mean?} 
+\vspace{0.2in}
+
+Rather than give some hard-to-understand explanation, let's illustrate using
+some simulated (fake) data.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Example 1}
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+Let's simulate some normally distributed data. We use the `rnorm' command to
+do this.
+<<>>=
+fakedata = rnorm(1000, 0, 1)
+@
+\vspace{0.1in}
+
+\begin{description}
+  \item[arg 1:] How many data points to create (`1000' above)
+  \item[arg 2:] the mean of the data (0)
+  \item[arg 3:] the SD of the data (1)
+  \end{description}
+\vspace{0.1in} 
+
+ The `r' in `rnorm' stands for random, as in ``randomly draw a bunch of
+ numbers from a normal distribution with mean and SD equal to arguments 2 and
+ 3.''
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+\begin{columns}[c] 
+  \column{0.5\textwidth}
+
+\small
+Using a histogram, we see that these new data look like a bell curve (i.e.
+are normally distributed)
+
+  \column{0.5\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+\scriptsize
+<<fig = T, echo=T>>=
+hist(fakedata)
+abline(v=0, lwd=3)
+abline(v=2, col='red', lty=2, lwd=2)
+abline(v=-2, col='red', lty=2, lwd=2)
+@
+\normalsize
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+What do we observe?
+\vspace{0.1in}
+
+\begin{itemize}
+  \item The center of the data are around 0, which is what we
+  expect since we specified the mean to be 0.\vspace{0.1in}
+  \item most of the data lie within 2 SDs of the mean 
+  (between the 2 dotted, red lines). This is a property of normal distributions
+  (more on this later).
+  \end{itemize}
+\vspace{0.1in}
+
+We see what we expect, so we're confident the function did what we asked it to
+do.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+Now, let's generate some density values.
+\vspace{0.1in}
+
+<<>>=
+densAt1 = dnorm(1, 0, 1)
+@
+\vspace{0.1in}
+
+The `d' in `dnorm' stands for density, akin to the `r' in `rnorm'.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+The function `dnorm' returns density values for the normal distribution, using
+arguments similar to those we used for the `rnorm' function.
+\vspace{0.1in}
+
+\begin{description}
+  \item[arg 1:] What values of X to find the density at at. This can be a
+  scalar or a vector. Here, we passed it a scalar: 1\vspace{0.1in}
+  \item[arg 2:] the mean of the data (again, 0)\vspace{0.1in}
+  \item[arg 3:] the SD of the data (again, 1)\vspace{0.1in}
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+Looking at `densAt1', we see that the \textit{density}
+for some data X that are normally distributed with mean 0 and SD 1 is
+\Sexpr{round(densAt1, 4)}.
+\vspace{0.1in}
+
+<<>>=
+densAt1
+@
+\vspace{0.1in}
+
+Given the name of the function, we might think that if we drew 1000 random draws
+from the same distribution, about \Sexpr{round(densAt1, 2)*1000} of them should equal 1\ldots
+right?
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+Not so much\footnote{The `length' function returns the number of elements in a
+vector. Here there are 0 elements equalling 1, so it returns 0.}.
+\vspace{0.1in}
+
+<<>>=
+fakedataEq1 = subset(fakedata, fakedata==1)
+length(fakedataEq1)
+@
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+
+\textbf{Reason 1:} The normal distribution can take on \text{any} value,
+not just nicely rounded values like 1, 1.05 or 0.95. 
+\vspace{0.1in}
+
+The subset of our fakedata between 0.95 and 1.05 shows several values around 1,
+but none exactly equal to 1\footnote{In this `subset' call, there are 2
+conditions joined by an ampersand (\&). That symbol means AND; both conditions 1 AND 2 must be true.}.
+\vspace{0.1in}
+
+\scriptsize
+<<>>=
+fakedataApprox1 = subset(fakedata, fakedata < 1.05 & fakedata > 0.95)
+fakedataApprox1
+@
+\normalsize
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+\frametitle{Example 1}
+
+\textbf{Reason 2:} Even though we can think of it as a measure of
+likelihood, \textbf{density IS NOT a probability}.
+\vspace{0.2in}
+
+\begin{itemize}
+  \item We want probability (it's an intuitive measure) -- how do we get there?
+  \item What use is the density?
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{CDF \& Example 2}
+
+\begin{frame}[fragile]
+\frametitle{Cumulative density}
+Integrating the PDF gives us the \textbf{cumulative distribution function} (CDF)
+which IS a probability.
+\vspace{0.2in}
+
+\textbf{Definition:} For some data X with PDF $f_X$, the CDF is:
+$$F_X(b) = Pr(X \leq b) = \int_{-\infty}^{b} f_X dx$$
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Cumulative density}
+\begin{itemize}
+  \item \textbf{The CDF is the
+probability that the data takes on a value less than or equal to
+b.}\vspace{0.1in}
+  \item The `cumulative' in the name comes from the fact that it is the accumulation of
+the density function from $-\infty$ to $b$.\vspace{0.1in}
+\item This we can easily demonstrate using our fake data.
+  \end{itemize}
+
+
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+How many of our simulated observations are less than 1?\vspace{0.1in}
+\footnotesize
+<<>>=
+fakedataLt1 = subset(fakedata, fakedata<1)
+length(fakedataLt1)
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We use `pnorm' to get the CDF from -$\infty$ to $b$ (arg 1)\vspace{0.1in}
+\footnotesize
+<<>>=
+ThLt1 = pnorm(1, 0, 1)
+ThLt1 * 1000
+@
+\normalsize
+\vspace{0.1in}
+
+$ \Sexpr{round(ThLt1 * 1000, 2)} \approx \Sexpr{length(fakedataLt1)} $
+Thus, we see that $F_X(b)$ is indeed a measure of the probability of seeing
+$ X\leq b $.\footnote{The difference between the two is due to random chance in
+using `rnorm.'}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We can also use the CDF to determine the probability that some data fall within
+the range $a$ to $b$.
+
+$$Pr(a \leq X \leq b) = F_X(b) - F_X(a)$$
+\vspace{0.1in}
+
+Let's determine, using simulated data as well as theory, the probability that
+data distributed normally with mean 0 and SD 1 falls between -1 and 1.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+Using the simulated data:\vspace{0.1in}
+\footnotesize
+<<>>=
+a = -1
+b = 1
+fakedataA2B = subset(fakedata, fakedata<1 & fakedata>-1)
+length(fakedataA2B)
+@
+\normalsize
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Now, according to the definition of the CDF:
+\footnotesize
+<<>>=
+pnorm(b, 0, 1) - pnorm(a, 0, 1)
+@
+\normalsize
+\vspace{0.1in}
+
+Since \Sexpr{length(fakedataA2B)} $\approx$ \Sexpr{round(pnorm(b, 0, 1) - pnorm(a, 0, 1), 4)}, 
+we verify that the CDF does indeed let us find $Pr(a \leq X \leq b)$. 
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Density plot}
+
+\begin{frame}[fragile]
+\frametitle{Density plots}
+We can visualize PDFs using the \textbf{density plot}.
+\vspace{0.2in}
+
+The density plot is simply a line-graph, where the points that are being
+connected are values of the density function $f_X$ for some values of
+X. 
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Density plots}
+To create:\vspace{0.1in}
+\begin{itemize}
+  \item determine the domain of X you're interested in.\vspace{0.1in}
+  \item plug the range of values you're interested in into $f_X$.\vspace{0.1in}
+  \item plot the resulting points, then connect with lines.  
+  \end{itemize}
+\vspace{0.2in}
+
+Recall from earlier this lecture that the function `dnorm' returns density
+values for the normal distribution.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{CDF plots}
+You can also plot the CDF, just like the PDF.
+\vspace{0.2in}
+\begin{itemize}
+  \item The X-axis will be the same.\vspace{0.1in}
+  \item The Y-axis will range from 0 to 1 for the CDF. This is because of the
+  definition of the CDF \vspace{0.1in}
+  \begin{itemize}
+    \item CDF is the probability/proportion of observations that will
+  be below some value of x. \vspace{0.1in}
+  \item Probability cannot be less than 0 or greater than 1,
+  so the Y-axis of the CDF is likewise constrained.
+  \end{itemize}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Example 3}
+
+\begin{frame}[fragile]
+\frametitle{Example 3}
+First let's get the points we need to plot the PDF.
+\vspace{0.1in}
+
+Since we defined the mean and SD of `fakedata' as 0 and 1,
+a reasonable domain for X is -4 to 4.
+
+\footnotesize
+<<>>=
+Xs = seq(-4, 4, 0.1)
+@
+\normalsize
+\vspace{0.1in}
+
+Remember how we used X:Y to define a sequence of integers from X
+to Y? The function `seq' is similar, except the third argument lets you specify
+step size. Here, we are getting a vector from -4 to 4 in increments of 0.1.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+Now let's generate the PDF and CDF points using `dnorm' and `pnorm'
+
+\footnotesize
+<<>>=
+Ys.PDF = dnorm(Xs, 0, 1)
+Ys.CDF = pnorm(Xs, 0, 1)
+@
+\normalsize
+\vspace{0.1in}
+
+Finally, we'll plot these CDF and PDF points, using `plot', the most basic graphing function in R.
+\vspace{0.1in}
+
+\footnotesize
+<<eval=F>>=
+plot(Xs, Ys.PDF, main='Normal PDF, mean=0, SD=1', type='l')
+plot(Xs, Ys.CDF, main='Normal CDF, mean=0, SD=1', type='l')
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The plot function}
+\begin{itemize}
+  \item requires 2 arguments -- 1 for an x coordinate, another for
+  y.\vspace{0.1in}
+  \item coordinates can be scalars or vectors, e.g.:
+  \end{itemize}
+\vspace{0.1in}  
+
+\begin{description}
+    \item[scalar]: `plot(2, 3)' to plot a single point with x=2,
+    y=3\vspace{0.1in}
+    \item[vector]: `plot(c(1, 2), c(3, 4))' to plot two points -- one
+    with $x=1, y=3$; another with $x=2, y=4$.
+    \end{description}
+  \vspace{0.2in}  
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The plot function}
+    
+  \begin{itemize}
+  \item call `plot' with ``type='l','' to get lines, rather than points.
+  \vspace{0.1in}
+    \begin{itemize}
+      \item Try `plot(c(1, 2), c(3, 4), type='l')'
+      \end{itemize}\vspace{0.1in}
+  \item `hist' \& `boxplot' are specialized versions of `plot'. \vspace{0.1in}
+      \begin{itemize}
+      \item Any optional argument they can take, `plot' can -- e.g. `col',
+      `lwd', `lty', `xlab', `ylab', `main', etc.
+      \end{itemize}
+   \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+  \setkeys{Gin}{width=0.75\textwidth}
+<<fig=T, echo=F>>=
+plot(Xs, Ys.PDF, main='Normal PDF, mean=0, SD=1', type='l')
+@
+
+\textcolor{white}{\textbf{Here's some of the concepts covered today, plotted.}}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\setkeys{Gin}{width=0.75\textwidth}
+<<fig=T, echo=F>>=
+plot(Xs, Ys.PDF, main='Normal PDF, mean=0, SD=1', type='l')
+y0 = 1/sqrt(2*3.142)*exp(-.5*(-1-0)^2)
+polygon(c(Xs[which(Xs==-1):which(Xs==0)], 0, -1), c(Ys.PDF[which(Xs==-1):which(Xs==0)], 0, 0), col='lightblue')
+abline(h=y0, lwd=2, lty=2, col='red')
+abline(v=-1, lwd=2, lty=2, col='red')
+text(-1.2, 0.1, 'x = -1', srt=90)
+text(2.2, y0+0.01, '1/sqrt(2*3.142)*exp(-.5*(-1-0)^2)')
+text(-0.5, 0.15, 'This area = the Pr(-1<=X<=0)', srt=90)
+text(2, 0.15, 'Area under curve = 1')
+@
+
+\textcolor{white}{\textbf{Here's some of the concepts covered today, plotted.}}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\setkeys{Gin}{width=0.75\textwidth}
+<<fig=T, echo=F>>=
+plot(Xs, Ys.CDF, main='Normal CDF, mean=0, SD=1', type='l')
+@
+
+\textcolor{white}{\textbf{Here's more of today's concepts.}}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\setkeys{Gin}{width=0.75\textwidth}
+<<fig=T, echo=F>>=
+plot(Xs, Ys.CDF, main='Normal CDF, mean=0, SD=1', type='l')
+abline(h=0.5, lwd=2, lty=2, col='red')
+abline(v=0, lwd=2, lty=2, col='red')
+text(0.3, 0.2, 'X = 0', srt=-90)
+text(2, 0.53, 'Pr(X<=0) = 0.5')
+@
+
+\textbf{Here's more of today's concepts.}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Normal distribution parameters}
+
+\begin{frame}[fragile]
+\frametitle{Parameterizing the Normal distribution}
+As you've seen from the `\_norm' functions, we need two
+numbers to define a normal distribution -- the mean and the SD
+\vspace{0.1in}
+
+\begin{itemize}
+  \item The \_norm functions each took another argument\ldots\vspace{0.1in}
+  \item \ldots but that extra value was used to do
+  something with the distribution that was specified by mean and SD.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The mean and SD are called the \textbf{parameters} of the
+normal distribution
+\vspace{0.1in}
+
+\begin{itemize}
+  \item We've been calling them `arguments' since we've been thinking about
+them as values to pass to a programming function\vspace{0.1in}
+  \item This is not incorrect, but
+in the context of statistics, `parameter' is the better label.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+In prose, we say ``Data X [follow a
+normal distribution]/[is normally distributed] with mean $\mu$ and SD
+$\sigma$.''
+\vspace{0.1in}
+
+We can also write this more compactly:
+$$ \text{Data X} \sim N(\mu, \sigma) $$
+
+\begin{itemize}
+  \item The `$\sim$' symbol is read `is distributed'
+  \item $N$ signifies the normal distribution
+  \item $\mu$ is read `mu' and signifies the mean
+  \item $\sigma$ is read `sigma' and signifies the SD
+  \item If $\mu = 0$ \& $\sigma = 1$, we have the \textbf{standard normal
+  distribution}.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To recap: our goals for this theory/math heavy lecture\vspace{0.1in}
+
+\begin{itemize}
+  \item Gain a rudimentary understanding of (one of) the most important
+  distributions in statistics\vspace{0.1in}
+  \item Lay groundwork for next lecture where\ldots\vspace{0.1in}
+  \item we will acquire the tools necessary to rigourously test the assertion
+  that the turnout data are normal
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}

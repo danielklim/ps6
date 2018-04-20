@@ -1,0 +1,475 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 9]{PS6 Lecture 9}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{9/9/2013}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+library(MASS)
+library(plotrix)
+options(width = 60)
+load('../../data/gdp.rdata') #preload data
+bah = subset(gdp, Country=='Bahrain')
+r1 = function(x) return(round(x, 1))
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item Multiple regression\vspace{0.1in}
+  \begin{itemize}
+    \item Height versus weight example\vspace{0.1in}
+    \item Plotting fit lines\vspace{0.1in}
+    \item Interpretation of multiple regression model
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We left off last lecture with rather a bleak picture\vspace{0.1in}
+
+  \begin{itemize}
+    \item Obvious that we need to control for alternate
+    explanations\vspace{0.1in}
+    \item Possible to a limited extent when \textit{gathering}
+    data\vspace{0.1in}
+    \item \ldots but quickly becomes prohibitive
+    \end{itemize}
+\vspace{0.1in}
+
+So what can we do?
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Rather than control when gathering, let's try controlling when
+doing our analysis.\vspace{0.1in}
+  \begin{itemize}
+    \item In bivariate regression, we just regressed DV on single
+    IV\vspace{0.1in}
+    \item Quite easy to extend to multiple IVs\vspace{0.1in}
+    \item This technique, \textbf{multiple regression}, allows us to control
+    for alternate factors at \textit{time of analysis}
+    \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+As usual, let's examine this new concept, multiple regression, using simulated
+data.\vspace{0.1in}
+
+\begin{itemize}
+  \item fake height versus weight data as follows\vspace{0.1in}
+  \begin{itemize}
+    \item 50 observations, roughly half-half male/female
+    \item mean height is 66 inches (5.5 ft)
+    \item each inch is 1.9 lbs
+    \item males weigh a flat 40lbs more than females
+    \item noise in observations: mean 0, SD 10 (lbs)
+    \end{itemize}
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Imagine you know nothing about the relationship between weight
+and height.\vspace{0.1in}
+
+\begin{itemize}
+  \item naive hypothesis: weight is solely a linear function of
+  height\vspace{0.1in}
+  \item in reality, we know many different things account for
+  weight including sex\vspace{0.1in}
+  \item more sophisticated analysis would \textit{control} for
+  sex so we get a better estimate of relationship
+  between height and weight
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The following code implements this scenario.\vspace{0.1in}
+<<>>=
+nobs = 50
+x1 = rnorm(nobs, 66, 3)
+x2.pre = rnorm(nobs)
+x2 = ifelse(x2.pre > 0, 1, 0)
+y = 1.9*x1 + 40*x2 + rnorm(nobs, 0, 10)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+First, model this data \textit{without} accounting for sex\vspace{0.1in}
+
+\scriptsize
+<<>>=
+summary(m1 <- lm(y ~ x1))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+<<echo=F>>=
+coefs = coef(m1)
+sds = sqrt(diag(vcov(m1)))
+tvals = coefs/sds
+pvals = pt(abs(tvals), nobs-2, lower.tail=F)*2
+@
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item Naive estimate of effect of height on weight is
+  \Sexpr{round(coef(m1)[2], 3)}\vspace{0.1in}
+  \item $\beta_0$, i.e. the y-intercept, is estimated to be
+  \Sexpr{round(coef(m1)[1], 3)}\vspace{0.1in}
+  \item p-value on $\beta_0$ is \Sexpr{round(pvals[1], 4)} -- \texit{not}
+  statistically significant (
+  indicated by lack of stars in that row)\vspace{0.1in}
+  \item p-value on $\beta_1$ is pretty good: \Sexpr{round(pvals[2], 4)}
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Substantively this means that\ldots\vspace{0.1in}
+
+\begin{itemize}
+  \item When height is 0, our best guess at weight is \Sexpr{round(coef(m1)[1], 3)}\vspace{0.1in}
+  \item Lack of statistical significance means that we are not at
+  all sure about accuracy of this estimate\vspace{0.1in}
+  \item Specifically, we are \Sexpr{round(pvals[1], 3)*100}\% sure that the
+  null hypothesis cannot be rejected.\vspace{0.1in}
+  \item Of course, it's ridiculous to think that anyone would have 0 height, so
+  this is another case where the intercept is substantively meaningless.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+On the other hand\ldots\vspace{0.1in}
+
+\begin{itemize}
+  \item We are \Sexpr{round(pvals[2], 3)*100}\% sure that the
+  effect of height on weight is \texit{not zero} (i.e.
+  \Sexpr{100-round(pvals[2], 3)*100}\% sure the null hypothesis can be
+  rejected)\vspace{0.1in}
+  \item Since we created this fake data, we \texit{know} that the true effect of
+  height on weight is 1.9\vspace{0.1in}
+  \item However, because we haven't accounted for sex, the statistically significant 
+  estimated effect is \Sexpr{round(coef(m1)[2], 3)}\vspace{0.1in}
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+All this is indicative of an important point\ldots\vspace{0.1in}
+
+\begin{itemize}
+  \item Statistical significance simply means the coefficient is probably not
+ non-zero. \vspace{0.1in}
+ \item It \textbf{does not} mean that your estimate is necessarily close to the
+ true value.\vspace{0.1in}
+ \item In reality, we almost never know true value, so the accuracy of our
+ estimate is a subjective judgement
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Enough on interpretation -- let's plot the results of this
+regression. \vspace{0.1in}
+
+\begin{itemize}
+  \item We haven't yet explicitly covered this so let's do
+that now.\vspace{0.1in}
+  \item For linear regression, there are two ways to plot the
+  estimated relationship\vspace{0.1in}
+  \begin{itemize}
+    \item slope and intercept\vspace{0.1in}
+    \item predicted values
+    \end{itemize}
+  \end{itemize}\vspace{0.1in}
+
+In this class, we'll just cover the slope and intercept method.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Plotting: slope and intercept}
+\begin{itemize}
+  \item Bivariate linear regression is uniquely suited for plotting using
+  basic algebra\vspace{0.1in}
+  \item Recall that the linear model is of the form $Y = \beta_0 + \beta_1 X + \ldots$\vspace{0.1in}
+  \item Plot with $\beta_0$ as the y-intercept and $\beta_1$ as the slope
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+You can do this in R using the 'abline' command. Previously we used abline as follows:\vspace{0.1in}
+\begin{description}
+  \item[vertical line:] abline(v = [...] )\vspace{0.1in}
+  \item[horizontal line:] abline(h = [...] )\vspace{0.1in}
+  \end{description}\vspace{0.15in}
+  
+\textbf{To create a line by intercept and slope, use as follows:}
+<<eval=false>>=
+abline(a=b_0, b=b_1)
+@
+\end{frame}
+%%%%%%%%%%%%%
+
+<<core, eval=F, echo=F>>=
+plot(x1, y, type='n')
+points(x1[x2==1], y[x2==1], pch='x', col='blue')
+points(x1[x2==0], y[x2==0], pch='0', col='red')
+legend('topleft', legend=c('men','women'), 
+	col=c('blue','red'), pch=c('x','o'))
+@
+
+
+\begin{frame}[fragile]
+The following plots the fit line of `m1' using the slope -- y-intercept
+method.
+
+\small
+<<eval=F>>=
+<<core>>
+abline(a=coef(m1)[1], b=coef(m1)[2], col='black', lwd=2)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+<<echo=F, fig=T>>=
+<<core>>
+abline(a=coef(m1)[1], b=coef(m1)[2], col='black', lwd=2)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's reflect on what we just saw\vspace{0.1in}
+\begin{itemize}
+  \item Slope doesn't look too bad but\ldots\vspace{0.1in}
+  \item \ldots predictions have relatively large residuals (space
+  between actual data and the fit line)\vspace{0.1in}
+  \item Core problem is that we have not controlled for difference between men
+  and women
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We can account (i.e. control) for sex as follows\vspace{0.1in}
+
+\scriptsize
+<<>>=
+summary(m2 <- lm(y ~ x1 + x2))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+What did we do exactly?\vspace{0.1in}
+\begin{itemize}
+  \item We controlled for `x2', the indicator variable containing respondent
+  sex.\vspace{0.1in}
+  \item Estimated effect of 'x1' (height) while controlling for `x2'
+  (sex)\vspace{0.1in}
+  \item Alternatively, we could think of it as vice-versa (i.e. estimated effect
+  of `x2' while controlling for `x1')
+\end{itemize}\vspace{0.1in}
+
+\textbf{After controlling for sex, which we previously omitted
+  erroneously, the new estimated effect of height is closer to the true value.}
+\end{frame}
+%%%%%%%%%%%%%
+
+<<echo=F>>=
+c2 = round(coef(m2),3)
+@
+
+\begin{frame}[fragile]
+Interpretation is just like regression on a single IV\vspace{0.1in}
+\begin{itemize}
+  \item Each inch of height increases weight by \Sexpr{c2['x1']}
+  (the coefficient on 'x1')\vspace{0.1in}
+  \item If the person is male (i.e. `x2' == 1), they have an
+  additional weight gain of \Sexpr{c2['x2']}\vspace{0.1in}
+  \item `x2' only takes values of 0 and 1, so we
+  multiply \Sexpr{c2['x2']} by 0 and 1 as appropriate
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Plotting multiple regression}
+\begin{itemize}
+  \item Plotting multiple regression is more complicated because
+  now, there is more than a single IV\vspace{0.1in}
+  \item Our plots only enable us to see the relationship between the outcome and
+  a single IV\vspace{0.1in}
+  \item \textbf{In effect, we must fix all variables except the one we wish to
+  plot.}
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item Fixing other variables means we pick arbitrary values for
+  them just so we can plot.\vspace{0.1in}
+  \item In this case, we need to decide a value for `x2', after
+  which we can plot the relationship between `y' and `x1'\vspace{0.1in}
+  \item If there were other covariates (e.g. `x3', `x4', etc.), we'd need to fix
+  those as well.
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+For this particular case\ldots\vspace{0.1in}
+\begin{itemize}
+  \item `x2' can equal 0 (female) or 1 (male).\vspace{0.1in}
+  \item First, decide which group you wish to plot.\vspace{0.1in}
+  \item Then, plug into the linear regression model.
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+For males:
+\begin{align}
+  y &= \beta_0 + \beta_1 \times x1 + \beta_2 \times x_2\\
+    &= \beta_0 + \beta_1 \times x1 + \beta_2 \times 1\\
+    &= (\beta_0 + \beta_2 \times 1) + \beta_1 \times x_1\\
+    &= (\Sexpr{c2[1]} + \Sexpr{c2[3]} \times 1) + \Sexpr{c2[2]} \times x_1\\
+    &= (\Sexpr{c2[1]+c2[3]}) + \Sexpr{c2[2]} \times x_1
+  \end{align}
+
+In effect, we've added the effect of being a male to the intercept.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+For females:
+\begin{align}
+  y &= (\beta_0 + \beta_2 \times 0) + \beta_1 \times x_1\\
+    &= (\Sexpr{c2[1]} + \Sexpr{c2[3]} \times 0) + \Sexpr{c2[2]} \times x_1\\
+    &= \Sexpr{c2[1]} + \Sexpr{c2[2]} \times x_1
+  \end{align}
+
+Since `x2' is zero for women, the intercept does not change.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Once you've adjusted the intercept for the group you've chosen, plot just as we
+did before:
+
+\small
+<<eval = F>>=
+abline(a=coef(m2)[1], b=coef(m2)[2])
+abline(a=coef(m2)[1] + coef(m2)[3], b=coef(m2)[2])
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+<<echo=F, fig=T>>=
+<<core>>
+abline(a=coef(m1)[1], b=coef(m1)[2], col='black', lwd=3)
+abline(a=coef(m2)[1], b=coef(m2)[2], col='red', lwd=3)
+abline(a=coef(m2)[1] + coef(m2)[3], b=coef(m2)[2], col='blue', lwd=3)
+legend('bottomright', legend=c('naive','men','women'),
+col=c('black','blue','red'), lwd=rep(3,3)) 
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+As you add more IVs\ldots\vspace{0.1in}
+
+\begin{itemize}
+  \item The more stuff you are controlling for\vspace{0.1in}
+  \item The better your fit (i.e. $R^2$) will be\ldots
+\end{itemize}\vspace{0.1in}
+
+\textbf{BUT this\ldots}
+
+\begin{itemize}
+  \item \ldots complicates your model
+  \item \ldots potentially reduces the certainty of your estimates because you
+  are trying to do more with the same amount of data
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+For this hypothetical situation, we may additionally consider\vspace{0.1in}
+
+\begin{itemize}
+  \item race
+  \item nutrition
+  \item exercise level
+  \item medications
+  \item etc. etc.
+  \end{itemize}\vspace{0.1in}
+  
+Assuming you have the data, how to decide what to include and not include?
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Must strike balance between parsimony and real-world
+fidelity -- what \textit{really} matters in explaining your
+outcome?\vspace{0.1in}
+
+\begin{itemize}
+  \item Partly substantive determination\vspace{0.1in}
+  \item Partly testable by throwing stuff into regression model and seeing
+  what sticks (i.e. is statistically significant)\vspace{0.1in}
+  \item Like so many things we've covered, \textit{your} call as the analyst
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+
+\end{document}

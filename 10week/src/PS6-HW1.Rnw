@@ -1,0 +1,169 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\linespread{1.3}
+\usepackage{amssymb, amsmath, dcolumn, parskip, Sweave, float, booktabs,
+graphicx, subfig, fancyhdr, lastpage, enumitem}
+\floatstyle{boxed} 
+\pagestyle{fancy}
+\restylefloat{figure}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\begin{document}
+\cfoot{\thepage\ of \pageref{LastPage}}
+
+<<echo=F>>=
+options(width=60)
+load('../../data/turnout.rdata') #preload data
+t1972 = turnout$p1972
+@
+
+\lhead{PS6 HW1}
+\rhead{Due: 4/8/14}
+
+\section{Motivation}
+In lecture 2, we created a side-by-side boxplot of the turnout data.
+\begin{figure}[H]
+\begin{center}
+\footnotesize
+<<plot1, eval=F>>=
+boxplot(turnout[ , 2:12], 
+		main='Turnout in US presidential elections (by state)',
+		xlab='election', 
+		ylab='% turnout')
+@
+
+<<fig=T, echo=F>>=
+<<plot1>>
+@
+\normalsize
+\end{center}
+\end{figure}
+
+Clearly, patterns of turnout change over time. In this HW, you will be
+describing the data through the use of summary statistics, histograms and
+boxplots. This is \textit{purely} a descriptive exercise -- these
+tools alone aren't sufficient to talk about \textit{causes}.
+\newpage
+
+\section{Exercises}
+
+\textbf{Exercise 1:} For the years 1960, 1972, 1984, and 1996, calculate the mean, median and
+standard deviation of turnout for (a) Southern states, (b) non-Southern states,
+and (c) the country as a whole.
+
+\textbf{Exercise 2:} Create histograms for turnout in 1960, 1972, 1984, and 1996. Add 3
+lines (using `abline') to each of the histograms -- mean turnout in (a) the
+South, (b) non-Southern states, and (c) country as a whole.
+
+\textbf{Exercise 3:} Create side-by-side boxplots for each year we've thus far examined.
+Each figure should contain 3 boxplots: (a) Southern, (b) non-Southern and (c)
+all states. 
+
+\textbf{Exercise 4:} Using between 250 and 750 words, describe the \textit{general} purpose of the
+histogram and the boxplot. By general, I mean the \textit{kinds} of information
+each graph conveys, not the specific info contained in the graphs you created.
+
+\textbf{Exercise 5:} Using between 250 and 750 words, describe any patterns you
+see in these particular data. You should definitely talk about how the measures
+of central tendency and spread change over time. You should also refer to the plots you've
+made, pointing out particular features where relevant, to illustrate your observations.
+
+\section{Administrative details}
+
+\begin{itemize}
+  \item This assignment is due at 11:59 PM, 4/8/14 via turnitin.
+  \item You may work with one partner. If you do work with a partner,
+  include your partner's name under yours in the heading. Remember that working
+  with a partner does not mean copy from each other. Your submission
+  \textbf{must be} your own work.
+  \item You \textbf{do not} need to submit your R code.
+  \item See the syllabus for policies regarding late submissions and plagiarism.
+  \end{itemize}
+\newpage
+
+\section{Pointers}
+Refer to the notes for lectures 1 \& 2 for examples beyond the following.
+
+$\blacktriangleright$ \textbf{Getting subsets:} To get data by year and region,
+one approach is to pick the year, then subset the region you want:
+\small
+<<>>=
+to80 = turnout$p1980
+to80South = subset(to80, turnout$deepsouth == 1)
+mean(to80South)
+@
+\normalsize
+
+You can also separate the entire dataset by region, then pick the year:
+\small
+<<>>=
+toSouth = subset(turnout, turnout$deepsouth == 1)
+to80South = toSouth$p1980
+mean(to80South)
+@
+\normalsize
+
+Finally, if you feel comfrotable with R syntax and/or want to try out matrix
+notation, you can do something like\ldots
+\small
+<<>>=
+mean(turnout$p1980[turnout$deepsouth == 1])
+@
+\normalsize
+
+$\blacktriangleright$ \textbf{Dealing with NAs in summary statistics:} When you
+try to calculate summary statistics for some subsets, you may get the following message:
+\small
+<<>>=
+mean(turnout$p1960)
+@
+\normalsize
+
+This is because there is an NA (i.e. an empty cell) in the data. Add `na.rm=T'
+to your function call to override the error:
+\small
+<<>>=
+mean(turnout$p1960, na.rm=T)
+@
+\normalsize
+
+$\blacktriangleright$ \textbf{Arguments for plotting:} As you create your plots,
+there are many optional arguments you can use to make them more visually appealing. Here are a few you may want to use:
+
+\begin{description}[labelindent=1cm]
+  \item[main:] title of the plot; e.g. main=`my boxplot'
+  \item[xlab:] label for the x-axis; e.g. xlab=`regions'
+  \item[ylab:] same as `xlab' for the y-axis
+  \item[col:] color for plotting; e.g. col=`red'
+  \item[lwd:] width of lines used to plot; e.g. lwd=2
+  \end{description}
+
+$\blacktriangleright$ \textbf{Side-by-side boxplot:} To create side-by-side
+boxplot, use the `boxplot' function with multiple arguments at the front. For example:
+
+\small
+<<bp1, eval=F>>=
+to80 = turnout$p1980
+to80South = subset(to80, turnout$deepsouth == 1)
+to80Other = subset(to80, turnout$deepsouth == 0)
+boxplot(to80, to80South, to80Other, names=c('All', 'South', 'Other'), lwd=2)
+@
+\normalsize
+
+\begin{figure}[H]
+\begin{center}
+\small
+<<fig=T, echo=F>>=
+<<bp1>>
+@
+\normalsize
+\end{center}
+\end{figure}
+  
+\end{document}

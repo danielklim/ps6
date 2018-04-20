@@ -1,0 +1,126 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\linespread{1.3}
+\usepackage{amssymb, amsmath, dcolumn, parskip, Sweave, float, booktabs,
+graphicx, subfig, fancyhdr, lastpage, enumitem, multicol}
+\floatstyle{boxed} 
+\pagestyle{fancy}
+\restylefloat{figure}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\begin{document}
+\cfoot{\thepage\ of \pageref{LastPage}}
+
+\lhead{PS6 HW2 answer key}
+
+<<echo=F>>=
+load('../../data/turnout.rdata') #preload data
+
+##### work
+ex1 <- function(x, xlims = c(30, 80)){
+	year <- paste0('p', x)
+	S <- turnout[turnout$deepsouth == 1, year]
+	N <- turnout[turnout$deepsouth == 0, year]
+	mu.S <- mean(S, na.rm=T)
+	mu.N <- mean(N, na.rm=T)
+	sig.S <- sd(S, na.rm=T)
+	sig.N <- sd(N, na.rm=T)
+	
+	Xs <- xlims[1]:xlims[2]
+	Ys.S <- dnorm(Xs, mu.S, sig.S)
+	Ys.N <- dnorm(Xs, mu.N, sig.N)
+	
+	plot(NA, NA, type='n', main=paste0('turnout ', x,' normal dens. by region'), 
+			xlim = xlims, ylim = c(0, max(c(Ys.S, Ys.N))),
+			xlab = '% turnout', ylab = 'density')
+	lines(Xs, Ys.N, col='blue', lwd=2)
+	lines(Xs, Ys.S, col='grey', lwd=2)}
+
+t.test2 <- function(mu1, sig1, n1, mu2, sig2, n2, Delta=0){
+	Mu1 <- max(c(mu1, mu2)) 
+	Mu2 <- min(c(mu1, mu2)) 
+	T <- (Mu1 - Mu2 - Delta)/sqrt(sig1^2/n1 + sig2^2/n2)
+	nu <- (sig1^2 + sig2^2)^2/(sig1^4/(n1-1)+sig2^4/(n2-1))
+	pval <- 2*(1-pt(abs(T), nu))
+	return(list(pval=as.vector(pval), T=as.vector(T), nu=as.vector(nu)))}
+
+ex3 <- function(x, delta=0){
+	year <- paste0('p', x)
+	S <- turnout[turnout$deepsouth == 1, year]
+	N <- turnout[turnout$deepsouth == 0, year]
+	mu.S <- mean(S, na.rm=T)
+	mu.N <- mean(N, na.rm=T)
+	sig.S <- sd(S, na.rm=T)
+	sig.N <- sd(N, na.rm=T)
+	n.S <- length(S)
+	n.N <- length(N)
+	t.test2(mu.S, sig.S, n.S, mu.N, sig.N, n.N, delta)}
+
+ex4 = function(x, deltas, alpha=0.05){
+	pvals = numeric(length(deltas))
+	names(pvals) = deltas
+	for(i in 1:length(deltas)) pvals[i] = ex3(x, deltas[i])$pval
+	Tit <- paste0('Pr(N/S mu gap >= delta), ', x)
+	plot(deltas, pvals, type='l', main=Tit)
+	abline(h=alpha, lty=2, col='red')
+	return(pvals)}
+@
+
+\section*{Exercise 1: 20 points}
+Students should have plot fairly similar to the below. Dock for deviations such
+as not labeled axes, no title, truncation of plot, etc.
+\setkeys{Gin}{width=0.85\textwidth}
+\begin{figure}[H]
+\begin{center}
+<<fig=T, echo=F>>=
+ex1(1960)
+@
+\end{center}
+\end{figure}
+
+\setkeys{Gin}{width=0.85\textwidth}
+\begin{figure}[H]
+\begin{center}
+<<fig=T, echo=F>>=
+ex1(2000)
+@
+\end{center}
+\end{figure}
+
+\section*{Exercise 2: 20 points}
+1960: definitely not. 2000: possibly... there's a lot of overlap.
+
+\newpage
+
+\section*{Exercise 3: 20 points}
+Observation of decreasing gap is supported since the maximum gap between
+parent populations in 1960 is very much smaller than that in 2000. If repeated
+for interceding years, we'd probably see center of density curves move closer
+over time, as well as convergence in shapes of the curves (i.e. decrease in difference in spread).
+
+\section*{Exercise 4: 20 points}
+<<>>=
+ds = turnout$deepsouth
+t60s = turnout$p1960[ds == 1]
+t60n = turnout$p1960[ds == 0]
+t00s = turnout$p2000[ds == 1]
+t00n = turnout$p2000[ds == 0]
+### calcs ###
+pnorm( 50, mean( t60s ), sd( t60s ) ) #1
+1-pnorm( 70, mean( t60n, na.rm=T ), sd( t60n, na.rm=T ) ) #2
+pnorm( 60, mean( t00s ), sd( t00s ) ) - pnorm( 40, mean( t00s ), sd( t00s ) ) #3
+pnorm( 60, mean( t00n ), sd( t00n ) ) - pnorm( 40, mean( t00n ), sd( t00n ) ) #4
+@
+
+\section*{Exercise 5: 20 points}
+Response should talk about how CDF is area under density curve, which parts of
+curve we are actually calculating areas of, etc. Calculated again, we would
+expect to see fewer extreme values over time and more mass between 40 and 60.
+
+\end{document}

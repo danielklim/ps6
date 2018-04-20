@@ -1,0 +1,205 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\linespread{1.3}
+\usepackage{amssymb, amsmath, dcolumn, parskip, Sweave, float, booktabs,
+graphicx, subfig, fancyhdr, lastpage, enumitem}
+%\floatstyle{boxed} 
+\pagestyle{fancy}
+\restylefloat{figure}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\begin{document}
+\cfoot{\thepage\ of \pageref{LastPage}}
+
+<<echo=F>>=
+options(width=60, prompt = " ", continue = " ")
+load('../../data/turnout.rdata') #preload Turnout
+load('../../data/gdp.rdata') #preload GDP
+@
+
+\lhead{PS6 HW3}
+\rhead{Due: 4/29/13}
+
+\section{Motivation}
+\subsection*{Turnout and the two-tailed t-test}
+Up to now, we have used relatively imprecise methods to look at
+differences in turnout between the South and the rest of the Union across time.
+We've seen that turnout appears to have converged over time, but we stopped at a
+visual inspection without analyzing the extent of that convergence. Our final 
+task with the turnout data will be to use the first statistical test we've
+learned,  the two-tailed t-test, to quantify the extent to which turnout in the
+regions is different or similar.
+
+\subsection*{Intro to World GDP per Capita}
+In the second part of this assignment, we will take our first foray into
+analyzing the World GDP per capita data by looking more closely at outliers between 1975 and 1985. 
+
+\begin{figure}[H]
+\begin{center}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+plot(gdp$Year, gdp$GDPcapImp, main='World GDP per capita, 1966-1997', xlab='year', ylab='GDP/cap ($)')
+@
+\end{center}
+\end{figure}
+
+\newpage
+
+\section{Exercises}
+
+\textit{Turnout}
+
+\vspace{0.1in}
+
+\textbf{Exercise 1:} Let's quantify the difference in turnout between Southern
+and non-Southern states in 1960. Assume that our hypothesis is that the gap is
+at least 20\%.
+
+\begin{enumerate}
+  \item Using the language of the two-tailed t-test, clearly state the null hypothesis,
+and the alternate hypothesis.
+  \item What are the steps you must take to test this hypothesis?
+  \end{enumerate}
+
+\vspace{0.25in}
+
+\textbf{Exercise 2:} Using the two-tailed t-test\ldots
+
+\begin{enumerate}
+  \item Test whether the gap between South and non-South in 1960 is at least
+  20\%. Use the R-code from the `pointers' section of this assignment. Show how
+  you call that function (but don't include the code below), and show the
+  resulting output.
+  \item Interpret the results of this test -- can we reject the null hypothesis
+  or not? Why?
+  \end{enumerate}
+
+\vspace{0.25in}
+
+\textbf{Exercise 3:}
+\begin{enumerate}
+  \item For 1960, find the biggest integer value $\Delta$ for which we can
+  reject the (null) hypothesis that the regions are samples from populations with means that are no
+  more than $\Delta$ apart (\textit{hint:} work your way down from the
+  difference in sample means). 
+  \item Do the same for 2000.
+  \end{enumerate}
+
+\vspace{0.25in}
+
+\textbf{Exercise 4:} \textit{Answer using around 250 words:} In HW1 and
+HW2, it looked like the gap in turnout between the South and the rest decreased from 1960
+onwards. Is this observation supported by the results of the preceding
+exercises? If we were to repeat exercise 3 for other elections between 1960 and
+2000, what would we expect to see?
+
+\newpage
+
+\textit{World GDP per capita: let's arbitrarily
+designate countries with GDP/cap > 15000 in 1980 as the outliers we are looking for.}
+
+\vspace{0.1in}
+
+\textbf{Exercise 5:} Using the wide form GDP data, identify which countries are
+the outliers between 1971 and 1985. State clearly which they are.
+(\textit{hint:} there are 3 which meet our criteria.)
+
+\vspace{0.25in}
+
+\textbf{Exercise 6:} Recreate the scatterplot at the top of this assignment.
+Add to this plot lines for the outlier countries you've identified. Be sure to
+color the lines so that we can see which country is which, and add a legend.
+
+\vspace{0.25in}
+
+\textbf{Exercise 7:} Answer using between 250 and 750 words total: 
+\begin{itemize}
+  \item Briefly describe the pattern that you see.
+  \item What do these countries share in common? 
+  \item Given the time period in which we see these patterns, what do you think
+  might be the cause of the pattern? 
+  \item What information would you need to see whether your ideas are correct?
+  \end{itemize}
+
+You'll need to read about these countries to answer this question.
+Remember to cite your sources. Given the casual nature of the question,
+Wikipedia is an acceptable source.\vspace{0.25in}
+
+\section{Administrative details}
+
+\begin{itemize}
+  \item This assignment is due at 11:59 PM, 4/29/14 via turnitin.
+  \item You may work with one partner. If you do work with a partner,
+  include your partner's name under yours in the heading. Remember that working
+  with a partner does not mean copy from each other. Your submission
+  \textbf{must be} your own work.
+  \item Submit R code where specifically instructed to. Elsewhere, code is
+  optional.
+  \item See the syllabus for policies regarding late submissions and plagiarism.
+  \end{itemize}
+
+\newpage
+
+\section{Pointers}
+
+$\blacktriangleright$ \textbf{2 tailed t-test:} Copy-paste the following
+function into R  -- it is an implementation of the two-tailed t-test from the lecture notes:
+\small
+<<>>=
+t.test2 = function(mu1, sig1, n1, mu2, sig2, n2, Delta=0){
+	Mu1 = max(c(mu1, mu2)) 
+	Mu2 = min(c(mu1, mu2)) 
+	T <- (Mu1 - Mu2 - Delta)/sqrt(sig1^2/n1 + sig2^2/n2)
+	nu <- (sig1^2 + sig2^2)^2/(sig1^4/(n1-1)+sig2^4/(n2-1))
+	pval <- 2*(1-pt(abs(T), nu))
+	return(list(pval=as.vector(pval), T=as.vector(T), nu=as.vector(nu)))
+}
+@
+\normalsize
+
+To use it, just pass sample parameters. For example, to test for difference
+in means of 2 between two samples with $\mu_1 = 6, \sigma_1 = 1, N_1 = 20, \mu_2
+= 3, \sigma_2 = 2, N_2 = 30$:
+\small
+<<bp1, eval=F>>=
+t.test2(6, 1, 20, 3, 2, 30, Delta=2)
+@
+\normalsize
+\vspace{0.25in}
+
+$\blacktriangleright$ \textbf{Identifying particular countries:} In lecture,
+I showed how to find countries that had GDP/cap $> \$8000$ in 1981 as follows:
+
+\small
+<<>>=
+h81 = subset(gdp, gdp$Year == 1981 & GDPcapImp > 8000)
+highCountries = h81$Country
+gdp$high = ifelse(gdp$Country %in% highCountries, 1, 0)
+@
+\normalsize
+
+That was for the long-form. For the wide-form, the following accomplishes
+the same:
+
+\small
+<<eval = F>>=
+gdp.wide$high = ifelse(gdp.wide$'1981' >= 8000, 1, 0)
+@
+\normalsize
+Use whichever is appropriate for exercise 5.
+\vspace{0.25in}
+
+$\blacktriangleright$ \textbf{Scatterplot with lines:} Exercise 6 is done most
+easily by using both the long-form and wide-form versions of `gdp'. Roughly
+speaking, you should use the `plot' command with years for x values and gdp
+values from the long-form data as the y values (if you get really stuck, look
+very carefully at the plot at the beginning of this HW). Then, add lines for
+each row in the (wide-form) subset that you found in exercise 1.\vspace{0.25in}
+
+\end{document}

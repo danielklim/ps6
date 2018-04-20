@@ -1,0 +1,225 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\linespread{1.3}
+\usepackage{amssymb, amsmath, dcolumn, parskip, Sweave, float, booktabs,
+graphicx, subfig, fancyhdr, lastpage, enumitem}
+\floatstyle{boxed} 
+\pagestyle{fancy}
+\restylefloat{figure}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\begin{document}
+\cfoot{\thepage\ of \pageref{LastPage}}
+
+<<echo=F>>=
+options(width=60)
+load('../../data/gdp.rdata') #preload data
+options(SweaveHooks=list(fig=function()
+					par(mar=c(5.1, 4.1, 1.1, 2.1))))
+
+load('../../data/turnout.rdata') #preload data
+
+##### work
+ex1 <- function(x, xlims = c(30, 80)){
+	year <- paste0('p', x)
+	S <- turnout[turnout$deepsouth == 1, year]
+	N <- turnout[turnout$deepsouth == 0, year]
+	mu.S <- mean(S, na.rm=T)
+	mu.N <- mean(N, na.rm=T)
+	sig.S <- sd(S, na.rm=T)
+	sig.N <- sd(N, na.rm=T)
+	
+	Xs <- xlims[1]:xlims[2]
+	Ys.S <- dnorm(Xs, mu.S, sig.S)
+	Ys.N <- dnorm(Xs, mu.N, sig.N)
+	
+	plot(NA, NA, type='n', main=paste0('turnout ', x,' normal dens. by region'), 
+			xlim = xlims, ylim = c(0, max(c(Ys.S, Ys.N))),
+			xlab = '% turnout', ylab = 'density')
+	lines(Xs, Ys.N, col='blue', lwd=2)
+	lines(Xs, Ys.S, col='grey', lwd=2)}
+
+t.test2 <- function(mu1, sig1, n1, mu2, sig2, n2, Delta=0){
+	Mu1 <- max(c(mu1, mu2)) 
+	Mu2 <- min(c(mu1, mu2)) 
+	T <- (Mu1 - Mu2 - Delta)/sqrt(sig1^2/n1 + sig2^2/n2)
+	nu <- (sig1^2 + sig2^2)^2/(sig1^4/(n1-1)+sig2^4/(n2-1))
+	pval <- 2*(1-pt(abs(T), nu))
+	return(list(pval=as.vector(pval), T=as.vector(T), nu=as.vector(nu)))}
+
+ex3 <- function(x, delta=0){
+	year <- paste0('p', x)
+	S <- turnout[turnout$deepsouth == 1, year]
+	N <- turnout[turnout$deepsouth == 0, year]
+	mu.S <- mean(S, na.rm=T)
+	mu.N <- mean(N, na.rm=T)
+	sig.S <- sd(S, na.rm=T)
+	sig.N <- sd(N, na.rm=T)
+	n.S <- length(S)
+	n.N <- length(N)
+	t.test2(mu.S, sig.S, n.S, mu.N, sig.N, n.N, delta)}
+
+ex4 = function(x, deltas, alpha=0.05){
+	pvals = numeric(length(deltas))
+	names(pvals) = deltas
+	for(i in 1:length(deltas)) pvals[i] = ex3(x, deltas[i])$pval
+	Tit <- paste0('Pr(N/S mu gap >= delta), ', x)
+	plot(deltas, pvals, type='l', main=Tit)
+	abline(h=alpha, lty=2, col='red')
+	return(pvals)}
+
+@
+
+\lhead{PS6 HW3 answer key}
+
+\textbf{Exercise 1:}
+\begin{enumerate}
+  \item Null and alternate hypotheses
+  \begin{description}
+    \item[null] the gap between parent populations is NO MORE than 20\% big
+    \item[alternate] the gap between parent populations is AT LEAST 20\% big
+  \end{description}\vspace{0.3in}
+  \item Steps to test
+  \begin{enumerate}
+    \item Assume 1960 turnout normal by region
+    \item calculate sample mean, SD and size
+    \item run 2-tailed t-test with params from previous step and $\Delta = 20$
+    \item accept or reject based on p-val
+  \end{enumerate}
+\end{enumerate}
+\vspace{0.3in}
+
+\textbf{Exercise 2:}
+\begin{enumerate}
+  \item Something similar to the below (hardcoded numbers is fine)
+
+<<echo=T, eval=T>>=
+s60 = turnout$p1960[turnout$deepsouth==1]
+n60 = na.omit( turnout$p1960[turnout$deepsouth==0] )
+t.test2( mean(n60), sd(n60), length(n60), 
+		mean(s60), sd(s60), length(s60), 20)
+
+## hardcoded
+#t.test2( 69.69487,  8.48465, 39, 38.78182, 9.50113, 11, 20)
+@
+  
+  \item yes we can reject since < 0.05. 
+\end{enumerate}
+\newpage
+
+\textbf{Exercise 3:}
+\begin{enumerate}
+  \item 1960: $\Delta \approx 24.4$ is max distance between the population means
+of South and North that is statistically significant.
+  \item 2000: $\Delta \approx 3.25$
+\end{enumerate}
+
+See below plots for reasoning.
+\setkeys{Gin}{width=0.7\textwidth}
+\begin{figure}[H]
+\begin{center}
+\small
+<<fig=T, echo=F>>=
+tmp=ex4(1960, 20:27)
+abline(v=24.4)
+@
+\normalsize
+\end{center}
+\end{figure}
+
+\begin{figure}[H]
+\begin{center}
+\small
+<<fig=T, echo=F>>=
+tmp=ex4(2000, 0:5)
+abline(v=3.25)
+@
+\normalsize
+\end{center}
+\end{figure}
+
+\textbf{Exercise 4:}
+Observation of decreasing gap is supported since the maximum gap between
+parent populations in 1960 is very much smaller than that in 2000. If repeated
+for interceding years, we'd probably see $\Delta_{max}$ from exercise 4 decrease
+across years. Additionally, grade based on whether there is anything incorrect
+stated, and whether word limit (~250) is met.
+\vspace{0.3in}
+
+\textbf{Exercise 5:} Using the wide form GDP data, identify which countries are
+the outliers between 1971 and 1985. State clearly which they are.
+(\textit{hint:} there are 3 which meet our criteria.)
+
+\small
+<<>>=
+outliers = subset(gdp.wide, gdp.wide$'1980' > 15000)
+print(outliers$Country)
+@
+\normalsize
+\newpage
+
+\textbf{Exercise 6:} Recreate the scatterplot at the top of this assignment.
+Add to this plot lines for the outlier countries you've identified. Be sure to
+color the lines so that we can see which country is which, and add a legend
+\vspace{0.25in}
+
+\textbf{Dock points if legend missing or things obviously wrong with plot. Title
+and axis labels are optional. Do NOT dock for legend covering parts of graph --
+some issues with RStudio and legend scaling.}
+
+\vspace{0.25in}
+\small
+<<ex2, eval = F>>=
+xs = 1966:1997
+nrows = dim(outliers)[1]
+Cols = rainbow(nrows)
+plot(gdp$Year, gdp$GDPcapImp)
+for(i in 1:nrows) 
+	lines(xs, outliers[i, 2:33], col=Cols[i], 
+			lwd=2, xlab='year', ylab='GDP/cap')
+legend('topleft', outliers$Country, col=Cols, lwd=rep(2,nrows))
+@
+\normalsize
+
+(plot on next page)
+
+\newpage
+
+\setkeys{Gin}{width=0.9\textwidth}
+\begin{figure}[H]
+\begin{center}
+<<echo=F, fig=T, width=7.5, height=7.5>>=
+<<ex2>>
+@
+\end{center}
+\end{figure}
+\newpage
+
+
+\textbf{Exercise 7:} Answer using between 500 and 1000 words total: 
+\begin{itemize}
+  \item Briefly describe the pattern that you see.
+  \item What do these countries share in common? 
+  \item Given the time period in which we see these patterns, what do you think
+  might be the cause of the pattern? 
+  \item What information would you need to see whether your ideas are correct?
+  \end{itemize}
+
+You'll need to read about these countries to answer this question.
+Remember to cite your sources. Given the casual nature of the question,
+Wikipedia is an acceptable source.\vspace{0.25in}
+
+\textbf{Any reasonable response that answers the above questions and meets the
+word limits is acceptable. Dock points for nonsensical statements, if any of the
+questions above are not addressed, not meeting word count reqs, and for improper
+citation.}
+
+\vspace{0.5in}
+
+\end{document}

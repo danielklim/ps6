@@ -1,0 +1,609 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 6]{PS6 Lecture 6}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{4/16/2014}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+options(width = 60)
+load('../../data/gdp.rdata') #preload data
+library(MASS)
+library(plotrix)
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item Intro to Bivariate Analysis
+  \item Contingency Tables
+  \item Scatterplots
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Bivariate analysis}
+So far, we've only looked at single variables/columns of data.
+\vspace{0.2in}
+
+However, most things we do in social science are about explaining relationships
+\vspace{0.1in}
+
+\begin{itemize}
+  \item relationships require multiple variables\vspace{0.1in}
+  \item let's start with most basic type -- bivariate relationships (i.e.
+  between 2 variables)
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Visualizing bivariate data}
+Upon loading multivariate data, you should\ldots
+\vspace{0.1in}
+
+\begin{itemize}
+  \item visualize univariate dists. using techniques covered so
+  far.\vspace{0.1in}
+  \item visualize bivariate relationships
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Visualizing bivariate data}
+
+In fact, we already saw one way to view bivariate relationships, using
+side-by-side boxplots (lecture 2). Here we'll cover 2 more:
+\vspace{0.1in}
+\begin{itemize}
+  \item contingency tables (AKA cross tabs)\vspace{0.1in}
+  \item scatterplots
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\section{Contingency tables}
+\subsection{Description/definition}
+
+\begin{frame}[fragile]
+\frametitle{Contingency tables}
+Contingency tables let us look at the breakdown of data by bivariate
+relationship.
+\vspace{0.2in}
+
+Let's load a small dataset to demonstrate.
+\vspace{0.2in}
+
+\textbf{Composition of one PS6 section by sex, field and year in school}
+\footnotesize
+<<>>=
+f.roster = '../../data/roster.csv'
+roster = read.csv(f.roster, stringsAsFactors = F)
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Contingency tables}
+
+Breakdowns by sex and field
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+table(roster$female, roster$field)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Contingency tables}
+
+\ldots by sex and class year.
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+table(roster$female, roster$year)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+\frametitle{Contingency tables}
+
+\ldots by field and class year
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+table(roster$field, roster$year)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item Such tables allow us to see how one var. varies with
+  another\vspace{0.1in}
+  \item Very useful for simple data -- quick and succinct summary\vspace{0.1in}
+  \item While not included here, contingency tables often have an addt'l row
+  and column summing the results by row and column. These are called the
+  \textbf{margins}.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Margins}
+You can add margins to a table as follows:
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+tab1 = table(roster$field, roster$year)
+mar.row = margin.table(tab1, 1)
+tab1 = cbind(tab1, mar.row)
+mar.col = margin.table(tab1, 2)
+tab1 = rbind(tab1, mar.col)
+tab1
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Notes regarding code on previous slide
+\vspace{0.2in}
+
+\begin{itemize}
+  \item `margin.table' computes margins for the table specified in
+  \textit{arg1}, for the dimension specified in \textit{arg2}
+  \begin{itemize}
+    \item 1 is by row, 2 is by column
+    \end{itemize}
+    \vspace{0.1in}
+    
+  \item `cbind' adds a column to the end of a table\vspace{0.1in}
+  \item `rbind' adds a row to the end of a table
+  \begin{itemize}
+    \item can add as many rows/cols as you want, but order matters
+    \item `cbind'ing N vectors of length M creates an $M \times N$ table
+    \item `rbind'ing N vectors of length M creates an $N \times M$ table
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+\subsection{Limitations}
+
+\begin{frame}[fragile]
+\frametitle{Limitations of contingency tables}
+One limitation of contingency tables: they don't work well with
+continuous data, or discrete data with too many unique values.
+\vspace{0.2in}
+
+Try the following to see what I mean.
+\small
+<<eval=F>>=
+table(gdp$Year, gdp$GDPcapImp)
+@
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To use contingency tables with such data, we need to segment the data,
+limiting the number of unique values that we are making a table out of.
+\vspace{0.2in}
+
+We can do this in R using the `cut' function
+
+\begin{description}
+  \item[arg 1:] the data that you want to segment
+  \item[arg 2:] can be one of 2 things:
+  \begin{itemize}
+    \item single number specifying how many bins
+    \item vector of points at which to cut the data.
+  \end{itemize}
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Here's a simple example to see how `cut' works
+\footnotesize
+<<>>=
+fake = 1:10
+fake1 = cut(fake, 2)
+fake2 = cut(fake, c(-100, 2, 7, 100))
+table(fake1)
+table(fake2)
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Here we use `cut' to preprocess the GDP data before tabling. 
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+year2 = cut(gdp$Year, seq(1960, 2000, 10))
+gdp2 = cut(gdp$GDPcapImp, c(0, 1000, 5000, 10000, 20000, 1e6))
+tab2 = table(year2, gdp2)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\footnotesize
+<<>>=
+tab2
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+We see that\ldots
+\vspace{0.1in}
+\begin{itemize}
+  \item the distribution of GDP/cap expands upward over time
+  \begin{itemize}
+    \item beyond this basic point, hard to see other patterns using table
+    \end{itemize}
+    \vspace{0.1in}
+    
+  \item given the continuous nature of gdp/cap\ldots
+  \begin{itemize}
+    \item we've lost a lot of information by segmenting
+    \item visualizing using a side-by-side boxplot or scatterplot would be a
+    better choice
+    \end{itemize}
+\end{itemize}
+\vspace{0.1in}
+
+It's helpful to see how these data look using a scatterplot.
+
+\end{frame}
+%%%%%%%%%%%%%
+\section{Scatterplots}
+\subsection{Description/definition}
+\begin{frame}[fragile]
+\frametitle{Scatterplots}
+
+Plot with a single mark (typically a dot) for each observation\vspace{0.2in}
+
+\begin{itemize}
+  \item x coordinate is each observation's value on one variable\vspace{0.1in}
+  \item y coordinate is value on the other variable
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Scatterplots}
+
+In R, use the `plot' command to create scatterplots.\vspace{0.1in}
+
+\begin{itemize}
+  \item We previously used `plot' with the ``type='l' '' argument to create
+  densities.\vspace{0.1in}
+  \item For scatterplots, just omit `type'.
+\end{itemize}
+\vspace{0.2in}
+
+For example:
+\footnotesize
+<<sp1, eval=F>>=
+plot(gdp$Year, gdp$GDPcapImp)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+
+\begin{center}
+\setkeys{Gin}{width=0.7\textwidth}
+<<echo=F, fig=T>>=
+<<sp1>>
+@
+\end{center}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+What are some things we notice from this plot?  
+\vspace{0.1in}
+
+\begin{itemize}
+  \item growing gap between GDP/cap in rich and poor countries -- the rich get
+  richer, the poor stay relatively poor\vspace{0.1in}
+  \item hard to say definitively but it looks like there's a lot more poor
+  countries than rich\vspace{0.1in}
+  \item there are a few extremely high outliers between 1975 and 1985
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The gap between rich and poor}
+\begin{itemize}
+  \item While it seems fairly obvious, let's first make sure it's the same countries
+that continue to get richer from year to year. We'll do this by coloring the
+countries in the upper band a separate color.\vspace{0.1in}
+  \item I'm going to use 1981 as a reference year. It looks like the upper band of
+countries are those with GDP/cap $> \$8000$ in that year. \vspace{0.1in}
+  \item I just eyeballed this as in the next slide.
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\setkeys{Gin}{width=0.8\textwidth}
+<<echo=F, fig=T>>=
+<<sp1>>
+abline(h=8000, col='red', lwd=2, lty=2)
+text(1970, 8700, 'GDP/cap = 8000')
+polygon(c(1980.5, 1981.5, 1981.5, 1980.5), c(8100, 8100, 15000, 15000), col=NA, border='red')
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To color these countries separately:
+\vspace{0.1in}
+
+\begin{enumerate}
+  \item subset countries that had GDP/cap $> \$8000$ in 1981 \vspace{0.1in}
+  \item add an indicator (`high') to the full dataset that equals 1 if in the
+  list from step 1, and 0 otherwise \vspace{0.1in}
+  \item plot only those countries with `high==0', then add those with `high==1'
+  separately in a different color
+\end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Here's the code for steps 1 and 2.
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+h81 = subset(gdp, gdp$Year == 1981 & GDPcapImp > 8000)
+highCountries = h81$Country
+gdp$high = ifelse(gdp$Country %in% highCountries, 1, 0)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Notes regarding code on previous slide
+\vspace{0.1in}
+
+\begin{itemize}
+  \item[line 1:] since we subset on `gdp', which is the entire dataset, we will
+  get all variables for every observation that satisfies the 2 conditions in
+  \textit{arg2} of the subset command.\vspace{0.1in}
+  
+  \begin{itemize}
+    \item you can verify this by running `str' on gdp, then on h81
+    \end{itemize}
+    \vspace{0.1in}
+    
+  \item[line 2:] we are extracting the list of countries in the subset to the
+  variable `highCountries'\vspace{0.1in}
+  
+    \begin{itemize}
+    \item enter `highCountries' to see what's in that vector
+    \end{itemize}
+  
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item[line 3:] we create a new variable (i.e. column) in `gdp' called high
+  using the return from calling `ifelse'
+  
+  \begin{itemize}
+    \item `high' does not exist in `gdp'. For dataframes, if you refer to a
+    column that doesn't exist, it is created\vspace{0.1in}
+    
+    \item `ifelse' takes 3 args: (1) a condition, (2) the value returned when
+    the condition is true, (3) value returned when false\vspace{0.1in}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+  
+  \begin{itemize}
+    
+    \item `gdp\$Country' is the vector of country names for the entire `gdp'
+    dataset. This condition checks each entry to see if it is in the vector
+    `highCountries', returning true when it is and false
+    otherwise.\vspace{0.1in}
+    
+    \item resultantly, for each observation that is a country in
+    `highCountries', we get 1, and 0 otherwise.
+    \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's now plot the points. Observations with `high==1' will be colored red, and
+marked with an `x' rather than the default circle.
+\vspace{0.1in}
+
+\footnotesize
+<<spbro, eval=F>>= 
+gdpLow = subset(gdp, gdp$high == 0)
+gdpHigh = subset(gdp, gdp$high == 1)
+plot(gdpLow$Year, gdpLow$GDPcapImp)
+points(gdpHigh$Year, gdpHigh$GDPcapImp, pch='x', col='red')
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\setkeys{Gin}{width=0.8\textwidth}
+<<fig=T, echo=F>>= 
+<<spbro>>
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\setkeys{Gin}{width=0.8\textwidth}
+<<fig=T, echo=F>>= 
+<<spbro>>
+par(new=T)
+plot(c(0,10), c(0,10), type="n", axes=F, xlab='', ylab='')
+draw.ellipse(9.3, 8.8, 2, 1, 70, deg=T, border='blue', lwd=3)
+draw.ellipse(8, 3, 3, 2, border='blue', lwd=3)
+text(6, 6, 'Huh?', col='blue', cex=2)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Some unexpected results. 
+\vspace{0.2in}
+
+\begin{itemize}
+  \item there are some countries that were in the high cluster as of 1981, but
+  then started stagnating. (red Xs separate from main pack post-1981).
+  \item there's also countries that were in the low clusters prior to 1981, but
+  then ended up in the high clusters in later years. (black circles in
+  the high clusters).
+\end{itemize}
+\vspace{0.2in}
+
+Set this aside for the moment -- we'll resume investigating with line graphs
+next lecture.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Limitations}
+\begin{frame}[fragile]
+\frametitle{Limitations of scatterplots}
+Clearly, scatterplots are nice, but they also have limitations. 
+\vspace{0.2in}
+
+They don't deal well with
+\begin{itemize}
+  \item discrete/categorical data.
+  \item non-cardinal data (i.e. ordinal data, text)
+\end{itemize}
+\vspace{0.2in}
+
+First, try 
+\footnotesize
+<<eval=F>>=
+plot(roster$female, roster$year)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+plot(roster$female, roster$year)
+@
+  
+  \column{0.3\textwidth}
+  
+All the values are overlapping -- not very helpful is it?
+\vspace{0.1in}
+
+You could change the size of the circle at each nexus based on number of
+circles there, but then it's not longer strictly a scatterplot.
+
+\end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Next, try 
+\footnotesize
+<<eval=F>>=
+plot(roster$female, roster$field)
+@
+\vspace{0.1in}
+\normalsize
+
+\begin{itemize}
+  \item This gives an error\ldots 
+  \item \ldots because `roster\$field' is full of text values\ldots how would
+  you arrange a \textit{meaningful} axis for 'other', 'humanities', 'social sciences', and
+'hard sciences'?
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+One could substitute values for each category, but this creates other problems:
+\vspace{0.1in}
+\begin{itemize}
+  \item \textit{post grad. avg. salary}: nice, except this is no longer the same
+  data
+  \item \textit{arbitrary nums}: the axis no longer holds meaning. Might as well
+  side-by-side barplot
+\end{itemize}
+\vspace{0.2in}
+
+\textbf{Bottom line:} no single plot type is perfect for every situation.
+You need to know many different types because each has strengths and weaknesses.
+\end{frame}
+%%%%%%%%%%%%%
+
+\end{document}

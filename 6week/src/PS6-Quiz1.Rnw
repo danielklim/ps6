@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\linespread{1.3}
+\usepackage{amssymb, amsmath, dcolumn, parskip, Sweave, float, booktabs,
+graphicx, subfig, fancyhdr, lastpage, enumitem, multicol}
+\floatstyle{boxed} 
+\pagestyle{fancy}
+\restylefloat{figure}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\begin{document}
+\cfoot{\thepage\ of \pageref{LastPage}}
+
+<<echo=F>>=
+options(width=60)
+data = read.csv('../../data/meansat.csv')
+satc = data[[1]]
+@
+
+\lhead{Name:}
+\rhead{PS6, Summer 2013, Quiz 1}
+
+\setkeys{Gin}{width=0.95\textwidth}
+\begin{figure}[H]
+\begin{center}
+<<fig=T, echo=F>>=
+xlims = c(1000, 2400)
+Hist = hist(satc, ylim=c(0, 300), xlim=xlims, main='mean SAT scores across US colleges')
+boxplot(satc, horizontal=T, add=T, axes=F, xlim=xlims, at=225, boxwex=40)
+text(Hist$mids, Hist$counts + 8, Hist$counts)
+Median = median(satc)
+Mean = mean(satc)
+Qle = quantile(satc, c(.25, .75))
+abline(v=Mean)
+abline(v=Median)
+text(Mean+30, 280, 'A')
+text(Median-30, 280, 'B')
+text(Qle[1], 245, 'C')
+text(Qle[2], 245, 'D')
+text(2200, 210, 'E')
+@
+\normalsize
+\end{center}
+\end{figure}
+
+\begin{multicols}{3}
+\begin{description}
+    \item[sum:] \Sexpr{sum(satc)}
+    \item[variance:] \Sexpr{round(var(satc), 2)}
+    \item[# observations:] \Sexpr{length(satc)}
+\end{description}
+\end{multicols}
+\vspace{0.25in}
+
+\textbf{Answer the following questions using the above plot and information.
+Show all work for questions requiring calculation.}
+
+\textbf{(1) What is the mean of this data?}\newpage
+
+\textbf{(2) What is the standard deviation of this data?}\vspace{0.75in}
+
+\textbf{(3) The letters A through E mark features of
+interest on the plot. What is the name of each?}
+
+\begin{multicols}{2}
+\begin{description}
+  \item[A:]
+  \item[B:]
+  \item[C:]
+  \item[D:]
+  \item[E:]
+\end{description}
+\end{multicols}
+\textbf{(4) What is the name of the distance between points C and
+D?}\vspace{0.75in}
+
+\textbf{(5) Points A and B mark two measures of central tendency. In a
+few sentences, explain why they are not equal.}\vspace{2.5in}
+
+\textbf{(6) What is the bin size of the histogram in this
+plot?}\newpage
+
+\textbf{Based on this histogram, if I were to randomly name a US college,
+what is the probability that the mean SAT score at the named school is\ldots}
+
+\textbf{(7) \ldots greater than 1800?}\vspace{0.75in}
+
+\textbf{(8) \ldots less than 1400?}\vspace{0.75in}
+
+\textbf{(9) \ldots between 1400 and 1800?}\vspace{0.75in}
+
+\textbf{(10) Let us assume that these data are bimodal for a substantive reason
+(i.e. the two peaks in the histogram are NOT just due to chance). Given that
+this is a plot of mean SAT scores across US colleges, what are some possible
+explanations for this bimodality? Name at least 2 reasons and explain your
+rationale for each.}
+
+
+\end{document}

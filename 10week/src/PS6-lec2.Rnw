@@ -1,0 +1,821 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 2]{PS6 Lecture 2}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{4/2/2014}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+options(width = 60)
+load('../../data/turnout.rdata') #preload data
+t1972 = turnout$p1972
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item Histogram
+  \item Measures of spread
+  \item Boxplots
+  \item Subsetting data
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\section{Histograms}
+\subsection{Basics}
+\begin{frame}[fragile]
+\frametitle{Histograms}
+\begin{itemize}
+  \item Previously, we considered measures of central tendency\ldots but only as
+numbers.\vspace{0.1in}
+  \item Graphing the data contextualizes and helps us better understand what's going on.\vspace{0.1in}
+  \item We'll use a \textbf{histogram} -- the first of several basic graphs that we'll
+learn in this course -- to visualize the turnout data.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+\frametitle{Histograms}
+To create\ldots\vspace{0.1in}
+\begin{enumerate}
+  \item divide up the \textit{range} of the data into several
+  \textit{bins}\vspace{0.1in}
+  \item count how many observations of the data fit into each bin\vspace{0.1in}
+  \item draw a bar for each bin with height corresponding to the number of
+  observations in that bin.
+  \end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\setkeys{Gin}{width=0.7\textwidth}
+\begin{center}
+<<fig = T>>=
+hist(t1972)
+@
+\end{center}
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Histograms}
+A few observations we can immediately make.
+\vspace{0.1in}
+
+\begin{itemize}
+  \item there are 8 bins at intervals of 5\vspace{0.1in}
+  \item there are 2 bins, at 45-50 and 60-65, where there are
+  \textit{local} peaks - we say that these data are
+  \textbf{bimodal}\vspace{0.1in}
+  \item the \textit{actual} mode is \textit{probably} somewhere in the range
+  60-65\footnote{This may or may not be true depending on the actual values,
+  and rounding.}.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Histograms}
+Add lines for the mean and median to the histogram using the `abline'
+command:\vspace{0.1in}
+\begin{enumerate}
+  \item save the mean and median to variables.\vspace{0.05in}
+  \item draw the histogram\vspace{0.05in}
+  \item call `abline' using the `v' argument (vertical).
+  \end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Histograms}
+
+The previous steps, in R code:\vspace{0.1in}
+<<hist1, eval=F>>=
+myMean = mean(t1972)
+myMedian = median(t1972)
+hist(t1972)
+abline(v = myMean, col='red', lwd=3, lty=1)
+abline(v = myMedian, col='blue', lwd=4, lty=2)
+@
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+\frametitle{Histograms}
+
+Notice the additional arguments used in the `abline' commands from the previous
+slide:\vspace{0.1in}
+\begin{description}
+  \item[`col' (color)] changes the color of the line.\vspace{0.05in}
+  \item[`lwd' (line width)] set line thickness\vspace{0.05in}
+  \item[`lty' (line type)] sets various dot patterns
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Histograms}
+\setkeys{Gin}{width=0.7\textwidth}
+\begin{center}
+<<fig = T, echo=F>>=
+<<hist1>>
+@
+\end{center}
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Histograms}
+Summary statistics can be misleading when taken out of context.\vspace{0.2in}
+\begin{itemize}
+  \item \textit{For these data}, neither the mean nor median describe what we'd 
+  \textit{intuitively} think of as ``the center of the data''\vspace{0.05in}
+  \item We discovered this discrepancy by examining the summary statistics in
+  the context of a histogram
+  \end{itemize}
+\vspace{0.2in}
+
+\textbf{Main takeaway:} Always visualize data -- do not just stop with summary
+statistics.
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\section{Measures of spread}
+\begin{frame}
+\frametitle{Measures of spread}
+More summary statistics: \textbf{measures of spread} show how
+``spread out'' the data are.\vspace{0.2in}
+\begin{itemize}
+  \item Range\vspace{0.1in}
+  \item Standard deviation/variance\vspace{0.1in}
+  \item Percentiles/Interquartile Range
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Range}
+\begin{frame}[fragile]
+\frametitle{Range}
+\textbf{Definition:} the minimum and maximum values taken by the data.
+\vspace{0.2in}
+
+You can find the range manually, using the `min' and `max' commands in R.
+
+\footnotesize
+\begin{columns}[c] 
+  \column{0.05\textwidth}
+  \column{0.45\textwidth}
+<<>>=
+min(t1972)
+@
+  \column{0.45\textwidth}
+<<>>=
+max(t1972)
+@
+\end{columns} 
+\normalsize
+\vspace{0.2in}
+
+Alternatively, use the `range' command, which does both.
+\begin{columns}[c] 
+  \column{0.05\textwidth}
+  \column{0.45\textwidth}
+\footnotesize
+<<>>=
+range(t1972)
+@
+\normalsize
+\column{0.45\textwidth}
+\end{columns} 
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{An aside on vectors}
+\begin{itemize}
+  \item Note that `min' and `max' return single values (scalars) while `range' returns 2
+values (a vector).\vspace{0.1in}
+  \item In R, any collection of values of length greater than 1 is referred to as a
+\textbf{vector}\footnote{This is true for many programming languages, not to
+mention in physics and mathematics in general.}.\vspace{0.1in}
+  \item `t1972' is a vector. So is the output from calling `range.'
+  \end{itemize}
+
+\begin{columns}[c] 
+  \column{0.05\textwidth}
+  \column{0.45\textwidth}
+\footnotesize
+<<>>=
+myRange = range(t1972)
+is.vector(myRange)
+@
+\normalsize
+\column{0.45\textwidth}
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{An aside on vectors}
+Remember how we used matrix notation to retrieve rows, columns and specific
+elements from the turnout data? We do the same for vectors.
+\vspace{0.2in}
+
+\begin{columns}[c] 
+\column{0.05\textwidth}
+
+\column{0.45\textwidth}
+1st element of `myRange'
+\footnotesize
+<<>>=
+myRange[1]
+@
+\normalsize
+
+\column{0.45\textwidth}
+20th element of `t1972'
+\footnotesize
+<<>>=
+t1972[20]
+@
+\end{columns} 
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{An aside on vectors}
+A few other thoughts before returning to spread.
+\vspace{0.2in}
+\begin{itemize}
+  \item No commas for vector elements since they are
+  one-dimensional.\vspace{0.1in}
+  \item `c' (the concatenate command) creates vectors\vspace{0.1in}
+  \item data.frames (like `turnout') are collections of vectors
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\subsection{Standard Deviation \& Variance}
+\begin{frame}[fragile]
+\frametitle{Standard Deviation \& Variance}
+Standard deviation and variance are measures of the distance between individual
+observations and their mean.
+\vspace{0.2in}
+
+\begin{description}
+  \item[Mean:] $\bar{x} = \frac{1}{n} \Sigma_{i=1}^{n}x_i$\vspace{0.1in}
+  \item[Variance:] $\sigma^2 = \frac{(x_1-\bar{x})^2 + (x_2-\bar{x})^2 + \ldots
+  + (x_n-\bar{x})^2}{n}$\vspace{0.1in}
+  \item[S.D.:] $\sigma = \sqrt{\sigma^2}$
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Standard Deviation \& Variance}
+Look at the summands (i.e. individual terms) in the numerator of variance:
+$$(x_i-\bar{x})^2$$
+\vspace{0.05in}
+
+You can \textit{think} about S.D. as the (weighted) average distance of an
+observation from the mean of the data.
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Standard Deviation \& Variance}
+Why is the summand squared?\vspace{0.2in}
+\begin{itemize}
+  \item penalizes observations for being further away from the
+  center.\vspace{0.1in}
+  \item consequence: variance is NOT on the same scale as the original
+  variable.\vspace{0.1in}
+  \item S.D. = $\sqrt{Var}$ so IS on the same scale as the original variable.
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Standard Deviation \& Variance}
+Finding SD and Variance in R is simple. Let's do so for the 1972 turnout
+data.\vspace{0.2in}
+
+\footnotesize
+<<>>=
+var(t1972)
+sd(t1972)
+@
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Visualizing SD and Var}
+Let's visualize the range and S.D. using histograms.\vspace{0.2in}
+
+\footnotesize
+<<hist1, eval=F>>=
+myMean = mean(t1972)
+hist(t1972)
+abline(v = myMean, col='black', lwd=3, lty=1)
+@
+\normalsize
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+\frametitle{Visualizing SD and Var}
+We'll first define a few values we are interested in. Let's say, 1 and 2 SDs to
+the left and the right of the mean\footnote{Another note on syntax: when you do any basic operation (e.g. add, substract,
+multiply) between a vector (the term created by the `c' command) and a scalar
+(e.g. `mySd'), you get a new vector where the operation is performed between
+each element of the original vector and the scalar.}.\vspace{0.2in}
+
+\footnotesize
+<<hist2, eval=F>>=
+mySd = sd(t1972)
+vals = myMean + c(-2, -1, 1, 2) * mySd
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Visualizing SD and Var}
+Finally, add these new lines to the original histogram to demarcate
+points 1 and 2 S.D. to the left and right of the mean.\vspace{0.1in}
+
+\footnotesize
+<<hist3, eval=F>>=
+abline(v = vals[1], col='red', lwd=2, lty=2)
+abline(v = vals[2], col='blue', lwd=2, lty=2)
+abline(v = vals[3], col='blue', lwd=2, lty=2)
+abline(v = vals[4], col='red', lwd=2, lty=2)
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+
+\begin{center}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig = T, echo=F>>=
+<<hist1>>
+<<hist2>>
+<<hist3>>
+@
+\end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Visualizing SD and Var}
+What do we notice?\vspace{0.1in}
+  
+  \begin{itemize}
+    \item Most data fall within 2 SDs of the mean (i.e. between the 2 red
+    lines)\vspace{0.1in}
+    \item The mean (solid black line) is not a good measure of what
+    we'd intuitively think of as the center(s) of this data\vspace{0.1in}
+    \item The data tapers off more steeply on the right hand side.\vspace{0.1in}
+    \item The last 2 points have to do with the bimodality of the data. We'll
+    explore this issue later.
+    \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Percentiles/IQR}
+
+\begin{frame}[fragile]
+\frametitle{Percentiles/Interquartile Range}
+\textbf{Definition:} the \textbf{Xth percentile} is the value under
+which X percent of observations lie.
+\vspace{0.2in}
+
+\begin{itemize}
+  \item To find percentiles, sort the data and just count until you get to the desired
+percentile.\vspace{0.1in}
+  \item e.g. consider some data ranging from 0 to 10: 0, 1,\ldots
+  10.\vspace{0.1in}
+  \begin{itemize}
+    \item The $20^{th}$ percentile is 2, the $75^{th}$ is 7.5, etc.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Percentiles/Interquartile Range}
+Certain percentiles have special names.
+\vspace{0.1in}
+
+\begin{columns}
+\column{0.01\textwidth}
+\column{0.45\textwidth}
+\begin{description}
+  \item[25]: first quartile
+  \item[50]: median
+  \item[75]: 3rd quartile
+  \end{description}
+\column{0.45\textwidth}
+\begin{description}
+  \item[20]: first quintile
+  \item[40]: second quintile
+  \item[60]: third quintile
+  \item[80]: fourth quintile
+  \end{description}
+\column{0.09\textwidth}
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Percentiles/Interquartile Range}
+The interquartile range (IQR) is the distance between the 3rd and 1st quartiles.
+
+$$IQR = Q_3 - Q_1$$
+\vspace{0.1in}
+
+It can be a better measure of spread than range and SD when there are a lot of
+extreme values (outliers).
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Percentiles/Interquartile Range}
+In R, use the quantile command to retrieve specific percentiles.\vspace{0.1in}
+
+1st quantile for the 1972 turnout data.
+\footnotesize
+<<>>=
+quantile(t1972, 0.25)
+@
+\normalsize
+\vspace{0.1in}
+You can also pass a vector of percentiles that you want to find. E.g. find
+\textit{all} quartiles.
+\footnotesize
+<<>>=
+quantile(t1972, c(0.25, 0.5, 0.75))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\section{Boxplots}
+\subsection{Basics}
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+To easily visualize quartiles/IQR, use the \textbf{boxplot}
+\vspace{0.1in}
+
+\begin{itemize}
+  \item also called a box and whisker plot\vspace{0.1in}
+  \item easily see the 3 quartiles and the range of \textit{most} of the
+  data\vspace{0.1in}
+  \item has slightly different implementations depending on who's
+  defining it\vspace{0.1in}
+  \item hard to describe in words... so lets just see what it looks like
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+Boxplot syntax is very similar to histogram syntax.
+\vspace{0.2in}
+
+<<bp1, eval=F>>=
+boxplot(t1972, horizontal=T)
+@
+\vspace{0.2in}
+
+The `horizontal = T' argument makes the plot horizontal, rather than the default
+vertical.
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+<<bp1>>
+@
+\vspace{0.2in}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+<<bp1>>
+vs = boxplot.stats(t1972)$stats
+text(vs[1]+4, 1.17, '-1.58 IQR/sqrt(n)')
+text(vs[2], 0.7, '1st quartile')
+text(vs[3], 1.3, 'median')
+text(vs[4], 0.7, '3rd quartile')
+text(vs[5]-4, 1.17, '+1.58 IQR/sqrt(n)')
+@
+\vspace{0.2in}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+Lines coming out the sides of the box are called whiskers
+\vspace{0.1in}
+
+\begin{itemize}
+  \item In R, the default length of the whiskers is $\pm 1.58 \times$
+  IQR$/\sqrt{n}$, where n is the total number of observations.\vspace{0.1in}
+  \item Other sources suggest min/max, $1.5\times$IQR, $2\times$SD, etc. The
+  specific implementation is not that important.\vspace{0.1in}
+  \item What is important is the idea that \textit{most} observations fall
+  within the whiskers. Anything outside can be considered an \textbf{outlier}
+  (i.e. unsually extreme value).
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+\begin{columns}[c] 
+
+  \column{0.5\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+hist(t1972, ylim=c(0, 21), xlim=c(30,70))
+boxplot(t1972, horizontal=T, add=T, axes=F, xlim=c(30,70), at=19, boxwex=5)
+@
+
+\column{0.5\textwidth}
+
+Comparing the histogram and the boxplot\ldots 
+ \begin{itemize}
+  \item 1 advantage: boxplot lets us easily see quartiles
+  \item are there any other advantages?
+  \end{itemize}
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+\begin{columns}[c] 
+  \column{0.6\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+<<bp2, fig = T, echo=F>>=
+boxplot(turnout[ , 2:12])
+@
+
+\column{0.4\textwidth}
+
+\small
+This is called a \textbf{side-by-side} boxplot. 
+\vspace{0.2in}
+
+Useful for presenting\ldots
+\begin{itemize}
+  \item data from different \textbf{clusters}
+  \item changes over time (AKA \textbf{longitudinal data})
+  \end{itemize}
+\end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+How was the last plot created?
+
+<<eval=F>>=
+<<bp2>>
+@
+\vspace{0.1in}
+
+\begin{itemize}
+  \item `X:Y' creates a vector of integers from X to Y.\vspace{0.1in}
+  \item `turnout[, 2:12]' tells R, ``create a new
+  data.frame using only columns 2 to 12 of the `turnout'
+  data.frame.''\vspace{0.1in}
+  \item Passing a data.frame to `boxplot' creates a boxplot for each
+  column. Here, each column is one election in 1960-2000.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Boxplots}
+What should we notice?
+\vspace{0.1in}
+
+\begin{itemize}
+  \item Median turnout across the states has steadily decreased since 1960,
+  settling to $\approx 55$\%, with a spike in 1992.\vspace{0.1in}
+  \item There is an outlier in 1980, indicated by the open circle\vspace{0.1in}
+  \item The spread of the data has decreased somewhat since 1960.\vspace{0.1in}
+  \item We do not see bimodality in the data as with the histograms -- a
+  tradeoff between the two types of plots.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Subsetting data}
+\begin{frame}[fragile]
+\frametitle{Subsetting data}
+
+\textbf{Motivation:} So far we've been observing the bimodality of the 1972
+turnout data but haven't dug into what's causing it.
+\vspace{0.2in}
+
+Further, because our data are bimodal, our measures of centrality  
+don't quite describe what we intuitively think of as `central.'
+\vspace{0.2in}
+
+Let's mitigate the bimodality issue by \textbf{subsetting}.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bimodality}
+\begin{frame}[fragile]
+\frametitle{Bimodality}
+Bimodality/multiple peaks are often caused by some underlying factor that
+separates subgroups of the data.
+\vspace{0.2in}
+
+Examples:
+\begin{itemize}
+  \item sex
+  \item race \& ethnicity
+  \item government type
+  \item location
+\end{itemize}
+\vspace{0.2in}
+
+For our data (state-by-state turnout) one such factor is region -- specifically,
+whether a state is located in the South.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\footnotesize
+<<>>=
+str(turnout)
+@
+\normalsize
+\vspace{0.1in}
+
+We want the last column -- `deepsouth'.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Bimodality}
+\begin{itemize}
+  \item `deepsouth,'only takes values of 0 and 1.
+This type of variable is called an \textbf{indicator} because it indicates
+whether a condition is true (1) or not (0).\vspace{0.1in}
+\item We want to separate out the turnout data by whether the corresponding state is
+in the South or not; i.e. whether deepsouth $= 1$ or 0.\vspace{0.1in}
+\item There are many ways to do this. For now, we'll use the `subset' command.
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Subsetting example}
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+First, lets retrieve the `deepsouth' column from `turnout'.
+\footnotesize
+<<>>=
+deepsouth = turnout$deepsouth
+@
+\normalsize
+\vspace{0.2in}
+
+Next, take the subset of the data that ARE in the South, and take another
+subset that are NOT in the South
+\footnotesize
+<<>>=
+t1972.South = subset(t1972, deepsouth == 1)
+t1972.Other = subset(t1972, deepsouth == 0)
+@
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+\textbf{subset}(\textit{arg1}, \textit{arg2})\vspace{0.1in}
+\begin{itemize}
+  \item arg 1: what data we are subsetting\footnote{Here we are
+  subsetting a vector, but the function will take data.frames as well. Try
+  subsetting on `turnout' to see what happens}\vspace{0.1in}
+  \item arg 2: \textbf{condition} to subset on.
+    \begin{itemize}
+      \item `X == Y' is like saying ``return TRUE when X is equal to Y; else,
+      return FALSE''
+      \item Since `deepsouth' is a vector, `deepsouth == 1' gets us a vector of
+      TRUEs and FALSEs
+      \item Enter `deepsouth == 1' into the console to see how this works.
+      \end{itemize}
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+From subsetting, we now have 2 vectors of turnout data: one for the South, and
+another for the remaining states\vspace{0.1in}
+\footnotesize
+<<>>=
+t1972.South
+t1972.Other
+@
+\normalsize
+\vspace{0.1in}
+
+Now let's compare them graphically.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+\begin{columns}[c] 
+  \column{0.5\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+hist(t1972.South, main='South', xlim=c(30, 70), breaks=seq(30, 70, 5))
+abline(v = median(t1972.South), lwd=2, col='red')
+@
+
+\column{0.5\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+hist(t1972.Other, main='Other', xlim=c(30, 70), breaks=seq(30, 70, 5))
+abline(v = median(t1972.Other), lwd=2, col='red')
+@
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Subsetting}
+\begin{columns}[c] 
+
+\column{0.5\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+<<fig = T, echo=F>>=
+boxplot(t1972.South, t1972.Other, names=c('South', 'Other'), lwd=2)
+@
+
+\column{0.5\textwidth}
+It's pretty clear that there is something that sets southern states apart
+from the rest of the Union in the 1972 elections.
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}

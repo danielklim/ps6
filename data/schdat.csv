@@ -1,0 +1,1159 @@
+rownum,schoolName,type,satc,admRate,yield,pctRet2,schoolSz,pctLifeOC,finaidAvgAmt
+567,Guilford Technical Community College,Public,1760,100.0,32.2,,14997,,6455
+939,Owens Community College: Toledo,Public,1620,100.0,22.4,,16993,,7264
+635,Florida State College at Jacksonville,Public,1375,100.0,49.4,,30053,,
+3271,New Mexico Highlands University,Public,1330,100.0,86.7,55,2416,29,1472
+2980,Central Wyoming College,Public,1290,100.0,55.6,,2164,8,
+2326,Jarvis Christian College,Private,1045,100.0,22.9,55,603,,12399
+2285,University of Texas at El Paso,Public,1395,99.8,48.7,72,19217,,12894
+265,Kent State University: Ashtabula,Public,1515,99.5,66.2,49,2511,,7053
+1099,Ohio State University Agricultural Technical Institute,Public,1500,99.3,56.8,,612,81,8506
+2700,Valencia College,Public,1470,99.2,76.5,,42915,,
+1484,Lewis-Clark State College,Public,1470,99.1,51.7,50,4525,,7347
+2455,University of Arkansas at Little Rock,Public,1480,99.0,41.0,59,10311,15,
+565,Virginia Intermont College,Private,1445,99.0,29.0,61,496,20,19642
+279,Ohio State University: Lima Campus,Public,1600,98.8,40.5,62,1067,,7389
+2004,Ohio State University: Newark Campus,Public,1535,98.6,41.7,61,2301,8,7777
+4181,Ohio State University: Mansfield Campus,Public,1465,98.6,36.0,70,1204,17,7338
+2204,Ohio State University: Marion Campus,Public,1585,98.5,48.7,67,1224,,7589
+3658,Evergreen State College,Public,1625,98.4,32.9,72,4193,20,8012
+3125,Lyndon State College,Public,1395,98.0,23.0,62,1406,50,
+4432,Huntington University,Private,1530,97.3,29.7,73,1134,74,19818
+356,Southeast Missouri State University,Public,1560,97.2,46.7,74,10541,30,8153
+818,South Carolina State University,Public,1235,97.1,22.5,67,,60,
+1276,Montana State University: Billings,Public,1525,96.9,52.0,56,4537,18,8553
+1710,University of Akron,Public,1535,96.7,40.0,67,22122,15,7276
+3885,Utah State University,Public,1665,96.7,43.7,74,25445,,8137
+314,Wayland Baptist University,Private,1425,96.6,68.2,48,1385,65,11665
+3972,American Jewish University,Private,1575,96.4,48.1,58,125,34,30000
+2267,Warren Wilson College,Private,1655,96.3,34.1,,852,90,20005
+3240,Kent State University: Stark,Public,1365,96.3,69.1,59,4816,,6601
+531,Palm Beach Atlantic University,Private,1535,95.9,33.6,82,2751,38,17836
+3880,University of Wyoming,Public,1675,95.7,39.6,76,10194,23,9259
+3981,Western State Colorado University,Public,1530,95.6,31.1,64,2103,37,9280
+2504,East Central University,Public,1475,95.4,65.8,59,3804,28,
+2534,Wichita State University,Public,1565,95.2,40.6,70,12192,,4231
+104,Hebrew Theological College,Private,1505,94.8,81.9,,571,,
+612,Lynn University,Private,1355,94.7,20.3,69,1657,48,17544
+335,Concordia University Texas,Private,1540,94.6,29.4,57,1591,7,17540
+2692,Virginia State University,Public,1230,94.4,26.5,67,5570,63,
+369,Colorado State University: Pueblo,Public,1425,94.3,30.9,64,5390,19,8616
+2607,University of the Incarnate Word,Private,1470,94.1,29.9,75,6404,18,18353
+754,Southern Adventist University,Private,1530,94.0,27.9,75,2895,66,
+3191,University of Montana,Public,1610,94.0,39.8,74,12657,25,7599
+2440,Texas A&M; University-Kingsville,Public,1380,93.5,25.5,62,5967,30,10905
+228,Tennessee Technological University,Public,1665,93.2,45.6,73,,27,
+703,Oregon Institute of Technology,Public,1525,93.1,45.0,73,3974,11,
+1769,Morehead State University,Public,1520,93.0,44.0,67,9725,30,10974
+656,Lubbock Christian University,Private,1500,92.8,34.7,65,1640,65,12880
+3729,Ferrum College,Private,1380,92.4,23.3,53,1510,90,22561
+3970,University of Colorado Colorado Springs,Public,1625,92.4,27.9,66,8354,13,8718
+441,Grand View University,Private,1415,92.3,38.5,73,2195,35,21269
+3465,Sonoma State University,Public,1505,92.3,14.3,79,8122,37,9613
+3942,Western Kentucky University,Public,1485,92.3,42.9,71,18101,29,12766
+1500,Menlo College,Private,1505,92.2,10.5,71,681,67,29239
+968,Brewton-Parker College,Private,1370,92.2,50.6,46,680,46,13227
+3386,Southern Oregon University,Public,1530,92.1,37.1,68,5660,24,8440
+3478,Idaho State University,Public,1580,91.9,78.8,60,12143,8,8971
+2637,Nicholls State University,Public,1425,91.8,58.4,72,6012,17,
+1331,College of Mount St. Vincent,Private,1345,91.7,20.1,71,1691,43,
+354,South Dakota State University,Public,1510,91.7,51.3,75,11118,42,8791
+471,University of Houston-Downtown,Public,1330,91.5,37.6,67,13709,,7904
+3552,University of Louisiana at Monroe,Public,1495,91.4,54.8,68,7298,23,
+6,Quincy University,Private,1420,91.4,27.7,70,1226,63,24534
+3946,Wittenberg University,Private,1680,91.2,11.0,78,1881,93,30942
+4474,Grace College,Private,1585,90.9,17.7,85,1530,59,
+4213,California College of the Arts,Private,1600,90.4,20.9,78,1465,20,27032
+780,Garrett College,Public,1380,90.2,17.4,,873,19,
+347,Angelo State University,Public,1415,90.2,60.0,59,6006,32,10212
+1310,Chestnut Hill College,Private,1465,90.0,14.7,74,1581,38,20920
+3631,Northern State University,Public,1475,89.8,40.4,69,2967,26,
+4229,Felician College,Private,1270,89.8,11.6,73,1775,,25020
+142,Texas A&M; University-Corpus Christi,Public,1465,89.7,29.4,63,8740,15,6453
+410,Saint Cloud State University,Public,1520,89.7,37.8,70,14787,19,8445
+1504,Montana Tech of the University of Montana,Public,1720,89.7,58.3,66,2646,12,9592
+2314,Missouri University of Science and Technology,Public,1900,89.5,44.2,85,5843,,10704
+1589,East Tennessee State University,Public,1480,89.2,45.5,66,12267,20,
+3250,"Penn State Fayette, The Eberly Campus",Public,1415,89.2,41.2,69,867,,9296
+1308,Centenary College,Private,1340,89.2,31.4,76,,56,
+1301,University of Northern Colorado,Public,1575,89.1,36.7,64,10102,29,
+2815,Lee University,Private,1575,89.1,53.7,73,4565,48,12502
+3040,Delta State University,Public,1440,89.0,73.0,52,2756,20,
+4389,Rochester College,Private,1715,89.0,36.9,,1183,22,
+3787,Elmira College,Private,1630,88.9,20.3,75,1386,93,30429
+2647,Dakota State University,Public,1505,88.8,47.5,60,2872,33,7498
+2319,University of South Dakota,Public,1615,88.6,44.4,74,7690,28,5608
+2902,Western Oregon University,Public,1445,88.3,40.9,70,5387,26,9607
+975,College of Coastal Georgia,Public,1380,88.3,71.3,,3156,12,9309
+4048,Thomas More College,Private,1520,88.3,27.7,66,1652,27,20662
+2629,Lamar University,Public,1380,88.3,39.0,55,9800,26,6961
+2693,Virginia Union University,Private,1165,88.3,7.5,49,1359,57,11765
+2589,Northwest Missouri State University,Public,1535,88.1,34.9,67,6014,38,9208
+404,Arkansas Tech University,Public,1535,88.0,52.7,67,10089,30,8886
+353,South Dakota School of Mines and Technology,Public,1720,87.9,46.4,79,2101,38,13258
+3249,Penn State DuBois,Public,1430,87.9,47.4,71,704,,9641
+1094,Arizona State University,Public,1675,87.9,34.3,80,59382,20,12756
+2244,Southwestern College,Private,1410,87.9,49.7,60,1304,72,19016
+1417,University of Pittsburgh at Greensburg,Public,1540,87.9,33.5,80,1733,40,10716
+1223,Cheyney University of Pennsylvania,Public,1145,87.8,21.6,60,1224,67,
+147,University of Dallas,Private,1780,87.6,34.3,80,1356,65,26613
+919,Chaminade University of Honolulu,Private,1460,87.4,28.4,69,,35,
+3255,Penn State Beaver,Public,1435,87.3,35.6,71,759,22,10079
+1206,University of South Alabama,Public,1530,87.2,46.7,66,11315,25,9069
+3568,Unity College,Private,1570,87.1,34.3,75,537,55,18123
+913,California State University: Dominguez Hills,Public,1275,87.0,14.9,77,11427,6,5776
+3790,Youngstown State University,Public,1410,86.7,57.4,69,12644,7,8155
+4440,Columbus College of Art and Design,Private,1490,86.7,54.1,78,1375,31,19315
+934,Principia College,Private,1560,86.7,68.0,81,497,99,27553
+2471,University of St. Thomas,Private,1775,86.7,31.1,88,6336,42,23042
+4231,Iona College,Private,1520,86.4,9.6,81,3462,43,21088
+466,University of Texas of the Permian Basin,Public,1550,86.4,46.1,66,3335,17,10500
+3258,Penn State Hazleton,Public,1425,86.3,42.5,78,1060,45,9762
+1559,Indiana State University,Public,1385,86.3,28.8,61,10076,36,9982
+2627,Louisiana State University in Shreveport,Public,1585,86.3,68.1,66,4124,,
+2282,Texas Woman's University,Public,1405,86.2,31.5,68,9443,20,9331
+1370,University of New England,Private,1600,86.1,18.9,75,2637,63,
+1903,Bellarmine University,Private,1640,86.1,16.3,81,2730,44,27350
+3572,Burlington College,Private,1580,86.1,21.4,69,198,16,16520
+2993,Truett-McConnell College,Private,1430,86.1,58.7,58,1340,77,
+1899,Austin Peay State University,Public,1475,85.7,51.4,67,9735,14,10397
+2698,Virginia Wesleyan College,Private,1495,85.6,13.1,67,1431,61,21910
+1157,Penn State Lehigh Valley,Public,1510,85.5,29.0,81,907,,8602
+3215,Vaughn College of Aeronautics and Technology,Private,1515,85.5,51.9,80,1799,10,10170
+842,Boise State University,Public,1605,85.4,53.6,72,19653,6,7527
+173,University of Nebraska - Kearney,Public,1645,85.3,47.3,79,5648,56,10994
+1416,University of Pittsburgh at Bradford,Public,1465,85.3,47.3,69,1518,62,12975
+3257,Penn State Altoona,Public,1495,85.2,28.4,84,3863,24,8480
+2680,Azusa Pacific University,Private,1645,85.1,17.8,83,6224,58,19088
+424,West Virginia University,Public,1560,85.1,36.5,77,22827,25,5361
+4428,Hope College,Private,1775,85.1,30.4,90,3343,81,23044
+1647,Drew University,Private,1635,85.1,11.0,75,1636,78,
+60,Tabor College,Private,1455,85.0,45.5,56,760,84,23759
+2941,Columbia College Chicago,Private,1515,85.0,33.2,64,10310,18,
+2592,Northwestern State University,Public,1475,84.9,49.8,68,8312,19,11115
+3889,Transylvania University,Private,1730,84.9,25.0,88,1074,75,24845
+3349,Saint Leo University,Private,1525,84.8,28.2,73,2167,62,18921
+2733,Baker University,Private,1465,84.8,30.7,75,936,74,21975
+1398,Franklin Pierce University,Private,1475,84.8,17.9,63,1737,85,23903
+811,Saint Mary's College,Private,1675,84.8,33.2,88,1469,87,27047
+3253,Hartwick College,Private,1675,84.7,9.1,76,1558,75,28851
+2686,Pacific University,Private,1655,84.6,20.8,82,1716,,27564
+815,Shenandoah University,Private,1515,84.6,29.5,80,2402,55,19000
+3859,Penn State York,Public,1485,84.5,26.7,76,1155,,9465
+1392,Culinary Institute of America,Private,1565,84.4,66.5,91,2827,80,14629
+1558,University of Indianapolis,Private,1530,84.4,18.5,72,4281,36,
+2845,Seton Hall University,Private,1660,84.4,17.0,84,5497,41,
+1151,Grove City College,Private,1845,84.2,53.7,91,2506,94,6405
+1383,Curry College,Private,1375,84.1,12.6,69,2769,50,23406
+3862,"Penn State Erie, The Behrend College",Public,1600,84.1,37.4,82,4065,41,8815
+3743,Glenville State College,Public,1245,84.1,39.1,65,1898,30,
+1130,St. John's College,Private,1890,84.1,47.4,70,349,73,36445
+1905,Belmont University,Private,1750,84.1,37.0,81,5289,50,14656
+2378,University of Great Falls,Private,1470,83.7,21.2,66,974,34,17228
+409,Minnesota State University Moorhead,Public,1530,83.6,35.0,68,6426,26,
+994,University of Colorado Boulder,Public,1770,83.6,30.1,84,25805,28,12944
+179,North Dakota State University,Public,1655,83.5,52.5,80,12332,33,8275
+1701,Taylor University,Private,1745,83.5,33.8,88,2237,86,19318
+577,Randolph College,Private,1645,83.2,24.3,80,623,91,27128
+3598,Gannon University,Private,1555,83.1,19.6,80,3008,45,21970
+3453,Willamette University,Private,1840,83.1,10.0,86,2103,68,29552
+2,Penn State Berks,Public,1490,83.1,38.1,80,2743,29,8195
+2260,Christendom College,Private,1775,83.1,48.8,83,388,90,14725
+3243,Kent State University,Public,1560,83.0,31.0,77,22436,29,9415
+3261,University of Nevada: Reno,Public,1605,83.0,44.8,79,15082,16,7895
+2650,Hendrix College,Private,1825,83.0,26.9,86,1373,88,29273
+1178,University of Virginia's College at Wise,Public,1420,82.9,44.2,72,2420,38,10026
+2744,Regent University,Private,1505,82.9,17.6,78,2432,21,11634
+872,University of Southern Maine,Public,1500,82.8,26.8,64,7407,19,
+1485,Linfield College,Private,1625,82.8,22.9,88,1663,75,28193
+1625,Long Island University: Brooklyn Campus,Private,1355,82.8,21.8,65,5109,15,19313
+3592,Penn State Mont Alto,Public,1450,82.7,47.5,74,1106,29,10099
+3650,Oglethorpe University,Private,1695,82.7,13.6,80,1053,57,27558
+3342,University of Utah,Public,1725,82.6,38.0,88,24840,14,14194
+1091,University of Maine at Machias,Public,1355,82.6,37.8,67,925,41,
+2611,Iowa State University,Public,1750,82.5,39.3,86,25555,34,12000
+1501,Colorado Mesa University,Public,1440,82.5,43.7,64,9414,23,7408
+35,Jacksonville State University,Public,1455,82.4,51.2,67,7991,25,8630
+2201,Trinity Christian College,Private,1550,82.3,32.9,80,1346,45,17373
+4112,Robert Morris University,Private,1550,82.3,19.9,76,4144,43,21703
+945,Saint Martin's University,Private,1570,82.3,34.1,73,1494,33,23893
+976,Charleston Southern University,Private,1460,82.3,29.0,,2779,47,
+1693,Shawnee State University,Public,1435,82.2,32.7,49,4554,23,
+1536,Georgetown College,Private,1530,82.2,16.7,75,1116,90,26977
+3120,Rivier University,Private,1380,82.2,34.6,78,1559,20,
+1295,University of Puget Sound,Private,1870,82.2,17.2,86,2578,57,28062
+936,Indiana University-Purdue University Fort Wayne,Public,1505,82.1,60.6,60,13117,6,8717
+1352,Penn State Wilkes-Barre,Public,1500,82.0,38.2,84,617,,9691
+16,Penn State Worthington Scranton,Public,1410,81.9,47.7,69,1234,,9463
+1858,Judson College,Private,1420,81.6,31.0,72,357,63,19743
+2313,University of Missouri: Columbia,Public,1755,81.5,38.8,84,26996,26,13836
+2058,John Carroll University,Private,1655,81.5,24.0,87,2949,59,27889
+1414,Utica College,Private,1440,81.3,19.1,63,,36,28269
+4435,Holy Cross College,Private,1465,81.3,28.9,46,450,49,
+31,Landmark College,Private,1545,81.3,67.3,,472,95,20889
+3550,Valley City State University,Public,1370,81.2,66.7,57,1214,33,8553
+3963,University of Hawaii at Manoa,Public,1640,81.2,35.5,79,14655,25,12243
+1327,Mount Saint Mary College,Private,1505,81.1,15.7,70,2286,44,16818
+1351,Penn State Schuylkill,Public,1275,81.1,44.1,69,867,32,10233
+3559,University of Maine,Public,1610,81.1,28.9,76,8778,24,
+816,Shepherd University,Public,1500,81.0,46.1,63,4170,33,10971
+360,Wingate University,Private,1525,80.9,11.1,71,1773,84,22406
+762,Villa Maria College of Buffalo,Private,1225,80.7,38.3,,411,12,10528
+3959,University of Nevada: Las Vegas,Public,1495,80.6,64.2,76,22432,4,8872
+985,Thomas Aquinas College,Private,1880,80.6,63.2,85,370,99,22441
+3799,Shippensburg University of Pennsylvania,Public,1475,80.6,28.8,68,6712,33,7598
+2005,Ohio Northern University,Private,1765,80.5,26.8,86,2629,,
+2854,Alvernia University,Private,1440,80.5,27.5,75,2347,57,
+3083,The Citadel,Public,1635,80.4,32.9,84,2629,100,12803
+4388,University of Mobile,Private,1685,80.4,36.3,73,1552,38,16908
+223,D'Youville College,Private,1580,80.4,29.4,72,2139,14,18410
+686,Marymount University,Private,1505,80.3,24.0,74,2470,34,19058
+2860,University of Evansville,Private,1695,80.1,22.5,85,2612,66,26242
+3270,New Mexico State University,Public,1480,80.1,43.4,72,14276,18,9890
+3821,Guilford College,Private,1700,80.0,14.9,71,2462,77,24649
+2318,University of St. Thomas,Private,1705,80.0,39.3,79,1626,17,19110
+2533,William Woods University,Private,1710,79.9,32.1,74,1364,64,
+3594,Penn State Harrisburg,Public,1555,79.9,28.1,81,3426,12,9202
+3126,Stonehill College,Private,1730,79.9,16.6,86,2599,92,27392
+1153,Penn State Greater Allegheny,Public,1445,79.8,36.0,75,635,27,12135
+678,Marshall University,Public,1500,79.8,82.7,71,9885,,9893
+3800,Humboldt State University,Public,1525,79.7,15.6,73,7597,14,12754
+1279,Eastern Washington University,Public,1460,79.7,38.1,76,11360,10,12975
+4053,Western Washington University,Public,1685,79.7,34.5,85,13902,29,13143
+4228,Immaculata University,Private,1410,79.6,18.5,80,2883,19,
+4047,Valparaiso University,Private,1680,79.6,17.5,87,2980,65,24998
+1371,University of Saint Joseph,Private,1470,79.5,29.6,79,1067,36,22202
+143,University of Texas at Tyler,Public,1610,79.5,42.8,64,5239,14,10273
+798,Seattle Pacific University,Private,1670,79.5,21.6,85,3238,52,29000
+302,Southern California Institute of Architecture,Private,1805,79.4,28.6,71,272,,25208
+3348,Sweet Briar College,Private,1570,79.3,29.1,74,723,93,20448
+105,Davis and Elkins College,Private,1420,79.2,16.4,66,818,54,21840
+3666,California State University: Chico,Public,1530,79.2,22.0,86,15316,1,12538
+2317,University of Oklahoma,Public,1775,79.1,44.9,85,21982,30,11837
+551,Dordt College,Private,1705,79.1,39.9,79,1379,85,21689
+1088,Saint Bonaventure University,Private,1575,79.1,25.0,81,1908,76,24807
+3247,Penn State Brandywine,Public,1470,79.0,36.4,71,1581,,8727
+297,St. Mary's University of Minnesota,Private,1525,79.0,24.4,75,1985,88,24135
+4114,Western New England University,Private,1605,79.0,16.6,75,2695,65,23697
+823,Southern Polytechnic State University,Public,1730,79.0,65.2,75,5402,28,1999
+2903,Oregon State University,Public,1660,78.8,34.3,81,21812,21,
+1433,Long Island University: C. W. Post Campus,Private,1500,78.8,17.2,68,8315,36,20514
+4161,Northpoint Bible College,Private,1365,78.7,88.6,67,397,85,7612
+4070,Marlboro College,Private,1815,78.5,24.4,68,240,84,29719
+1322,Moravian College,Private,1555,78.5,23.7,76,1582,74,26847
+1190,University of North Alabama,Public,1475,78.5,50.4,69,6082,23,6752
+4063,Keene State College,Public,1470,78.5,23.9,76,4933,54,10873
+412,University of Iowa,Public,1790,78.4,29.3,83,21320,31,12603
+3127,Suffolk University,Private,1530,78.4,16.8,76,5770,22,23479
+1507,Saint Joseph's University,Private,1685,78.3,21.3,89,5342,59,24005
+4234,School of the Art Institute of Chicago,Private,1690,78.3,25.1,79,2627,,
+2469,College of St. Scholastica,Private,1685,78.3,33.2,81,2877,52,23647
+2399,Paul Smith's College,Private,1450,78.2,40.3,76,1067,77,22576
+2147,Creighton University,Private,1780,78.2,22.5,90,4032,49,29251
+1665,Wright State University: Lake Campus,Public,1510,78.1,65.8,,1104,4,8683
+1373,Saint Michael's College,Private,1720,78.0,15.3,90,1971,96,26539
+3561,University of New Hampshire,Public,1650,77.9,22.3,86,12811,57,21088
+1553,Indiana University Southeast,Public,1415,77.9,55.8,59,6203,,7308
+220,Penn State Abington,Public,1430,77.7,27.6,74,3506,,9830
+2008,Ohio University,Public,1635,77.7,28.6,79,22685,43,8679
+2311,University of Minnesota: Duluth,Public,1610,77.7,35.8,75,10346,28,10567
+3949,Walsh University,Private,1550,77.7,39.2,74,2371,46,19554
+2474,Concordia College: Moorhead,Private,1685,77.7,34.7,80,2603,63,25220
+4040,University of Alabama in Huntsville,Public,1720,77.7,41.5,79,5882,19,10839
+2842,St. Thomas Aquinas College,Private,1455,77.7,20.3,81,1796,33,
+1059,Longwood University,Public,1555,77.6,32.0,79,4355,71,15918
+3320,Knox College,Private,1915,77.6,22.0,88,1430,85,30376
+326,Oklahoma State University,Public,1670,77.6,45.9,79,20130,45,12558
+426,West Virginia Wesleyan College,Private,1450,77.5,26.0,64,1315,76,23523
+2915,Ripon College,Private,1715,77.5,25.3,86,931,87,27219
+630,Furman University,Private,1820,77.5,14.9,90,2753,96,26910
+1225,East Stroudsburg University of Pennsylvania,Public,1455,77.3,27.1,70,6355,44,
+1608,Auburn University,Public,1780,77.2,28.6,90,20175,20,12352
+3121,Roger Williams University,Private,1645,77.1,14.5,78,4391,63,18935
+788,Hood College,Private,1600,77.1,19.7,77,1434,54,24575
+851,Montserrat College of Art,Private,1585,77.1,34.8,68,384,66,
+1775,Muskingum University,Private,1525,77.0,25.2,67,1738,68,21404
+848,Merrimack College,Private,1565,77.0,16.0,80,2429,71,21045
+987,University of Arizona,Public,1670,76.9,36.5,80,31565,21,12180
+3562,University of Rhode Island,Public,1635,76.9,20.5,81,13398,44,15701
+4134,Pace University,Private,1635,76.8,18.7,76,8336,40,30563
+680,University of Mary Washington,Public,1685,76.8,25.6,83,4515,60,7700
+329,College of St. Benedict,Private,1650,76.7,33.0,89,2070,85,30885
+1224,Clarion University of Pennsylvania,Public,1465,76.7,43.3,70,5518,25,7680
+1315,Mercyhurst University,Private,1600,76.7,29.6,80,2790,68,
+3563,University of Vermont,Public,1790,76.7,14.2,85,11211,50,21526
+1621,Hilbert College,Private,1440,76.6,22.6,67,1033,23,
+2156,Michigan Technological University,Public,1800,76.6,33.3,83,5625,45,14114
+1256,Husson University,Private,1420,76.5,31.9,72,2409,35,13576
+871,Plymouth State University,Public,1460,76.5,24.6,74,4239,53,8874
+767,Waynesburg University,Private,1520,76.4,25.4,83,1630,64,16041
+2089,Radford University,Public,1510,76.4,32.8,74,8610,36,8601
+2364,Northern Arizona University,Public,1585,76.3,16.2,76,21774,33,9835
+1194,University of Louisville,Public,1710,76.3,42.0,77,15727,27,
+3198,Sacred Heart University,Private,1650,76.3,13.8,83,4092,51,18087
+1361,University of Wisconsin-Eau Claire,Public,1730,76.3,41.0,83,10499,38,8707
+1712,University of Tennessee: Chattanooga,Public,1540,76.3,39.1,67,10159,31,8631
+2460,Louisiana State University and Agricultural and Mechanical College,Public,1710,76.2,46.4,83,24626,27,12600
+2400,Point Park University,Private,1530,76.2,18.7,74,3225,30,21053
+2812,Lawrence University,Private,1940,76.2,20.8,90,1525,98,31608
+3123,Castleton State College,Public,1490,76.1,23.4,70,2059,54,
+1312,Clarkson University,Private,1775,76.1,24.4,86,3072,83,39187
+2477,Concordia University,Private,1615,76.1,30.2,79,1481,73,18987
+2770,Franciscan University of Steubenville,Private,1735,76.0,32.0,87,2097,75,12213
+3388,Washington State University,Public,1585,76.0,39.0,82,23136,26,16695
+3815,Tennessee Wesleyan College,Private,1440,75.8,34.1,62,1106,30,15700
+4429,Samford University,Private,1715,75.6,29.1,87,2965,68,17254
+3975,University of Alaska Anchorage,Public,1515,75.6,60.8,73,17129,,7681
+3676,Keuka College,Private,1405,75.6,38.6,74,1874,82,
+3980,University of Montana: Western,Public,1420,75.5,62.6,77,1483,28,3035
+1267,Susquehanna University,Private,1670,75.5,24.2,84,2197,77,28548
+2012,Otterbein University,Private,1645,75.5,23.2,75,,58,
+2930,George Fox University,Private,1680,75.5,25.5,82,2184,52,27240
+3962,University of Alaska Fairbanks,Public,1570,75.5,76.4,74,8131,24,8812
+4453,Calvin College,Private,1825,75.5,39.4,86,3930,61,21083
+2799,Southern Connecticut State University,Public,1410,75.5,36.8,73,8525,31,13274
+1575,Cedarville University,Private,1780,75.4,33.0,85,3220,76,23288
+774,Assumption College,Private,1660,75.3,16.7,81,2056,87,25676
+1226,Edinboro University of Pennsylvania,Public,1405,75.3,41.7,74,6090,32,7780
+2514,Midwestern State University,Public,1530,75.3,39.6,71,5238,23,9990
+3964,University of Hawaii at Hilo,Public,1520,75.2,36.7,70,3568,26,
+2917,Roosevelt University,Private,1595,75.2,23.2,68,3795,25,
+1708,Union University,Private,1790,75.0,30.6,92,2829,63,22414
+1584,Earlham College,Private,1815,74.9,27.3,83,1087,96,37079
+1612,Capital University,Private,1605,74.9,23.3,75,2720,57,23883
+1648,Drexel University,Private,1850,74.9,10.3,85,15876,28,
+2580,St. John's University,Private,1605,74.8,37.6,89,1854,84,28318
+1293,Notre Dame de Namur University,Private,1440,74.8,11.0,81,1183,39,25031
+1369,Saint Anselm College,Private,1685,74.7,17.2,88,1954,90,24629
+1651,Duquesne University,Private,1690,74.7,30.7,89,5832,59,22813
+1366,University of Wisconsin-Stevens Point,Public,1620,74.7,44.6,82,9296,38,6571
+14,Colorado State University,Public,1720,74.7,34.2,84,23479,25,16131
+4143,Polytechnic Institute of New York University,Private,1960,74.7,20.2,85,2071,25,29625
+841,Biola University,Private,1660,74.7,35.3,86,4337,64,16773
+450,Harding University,Private,1615,74.6,60.4,81,4293,72,13461
+1898,Aurora University,Private,1460,74.6,31.7,70,3015,23,18824
+901,Delaware Valley College,Private,1490,74.4,35.2,74,1945,59,
+3222,Indiana University Bloomington,Public,1765,74.4,29.0,88,32371,38,11693
+1049,Walla Walla University,Private,1575,74.4,34.9,83,1710,,19242
+3185,American International College,Private,1335,74.3,27.3,61,1492,48,23030
+2372,Shimer College,Private,1725,74.2,34.8,94,127,5,17741
+2892,SUNY College of Agriculture and Technology at Cobleskill,Public,1335,74.2,38.9,,2519,55,8727
+1505,St. Francis University,Private,1555,74.1,35.5,78,1772,88,22404
+3971,University of Colorado Denver,Public,1645,74.1,43.4,76,12674,5,8120
+553,University of South Carolina: Beaufort,Public,1395,74.0,40.7,54,1828,20,
+2675,Coastal Carolina University,Public,1500,74.0,27.1,60,8746,38,9363
+1387,Champlain College,Private,1630,73.9,18.3,79,2793,49,16847
+3179,York College of Pennsylvania,Private,1630,73.9,16.6,73,5182,41,11676
+3692,Canisius College,Private,1640,73.9,22.1,82,3280,49,29373
+1069,Maranatha Baptist Bible College,Private,1545,73.9,63.9,76,888,70,
+4039,University of Michigan: Flint,Public,1710,73.8,32.2,74,6984,4,9947
+3596,Penn State New Kensington,Public,1490,73.8,43.8,71,715,,9208
+1319,Molloy College,Private,1605,73.7,26.8,88,3444,5,16610
+3554,Truman State University,Public,1830,73.7,38.8,89,5872,45,11431
+2009,Ohio Wesleyan University,Private,1725,73.6,19.2,83,1821,90,28940
+2681,Pacific Lutheran University,Private,1645,73.6,24.2,83,3166,46,34768
+2591,Northwestern College,Private,1575,73.6,34.4,77,1241,89,20417
+4410,Greenville College,Private,1510,73.6,34.1,62,1224,83,18590
+2969,Bowling Green State University,Public,1515,73.6,30.6,70,14815,44,13592
+1306,Cazenovia College,Private,1460,73.5,15.7,68,991,82,27421
+1566,Bethel College,Private,1565,73.4,33.2,75,1801,45,20242
+1160,Houghton College,Private,1715,73.4,38.4,88,1147,87,24585
+1260,Bridgewater State University,Public,1520,73.3,32.1,81,9684,29,8632
+1781,Mount Vernon Nazarene University,Private,1575,73.3,39.6,76,1756,56,19942
+2491,Dakota Wesleyan University,Private,1510,73.3,42.4,66,705,56,
+2369,California Baptist University,Private,1450,73.3,42.5,77,4953,41,16593
+470,University of Texas at San Antonio,Public,1590,73.3,40.2,63,25979,12,10434
+1593,Edgewood College,Private,1745,73.2,33.8,79,2028,28,20477
+78,Emporia State University,Public,1565,73.2,49.1,70,3773,19,5879
+3682,La Salle University,Private,1480,73.1,20.8,80,4516,56,26648
+911,Eugene Lang College The New School for Liberal Arts,Private,1715,73.0,25.5,80,1457,27,29230
+2155,Miami University: Oxford,Public,1790,72.8,25.3,89,15081,48,10537
+3116,Regis College,Private,1395,72.7,18.7,77,1149,57,29462
+3732,Florida College,Private,1560,72.7,82.5,,532,82,10384
+156,University of Minnesota: Crookston,Public,1525,72.6,51.1,73,2764,34,13370
+3922,Prescott College,Private,1615,72.6,17.5,73,673,17,22273
+4446,Ohio Christian University,Private,1315,72.5,73.1,53,2806,,
+421,West Liberty University,Public,1335,72.4,39.0,71,2718,47,
+4148,St. Joseph's College New York: Suffolk Campus,Private,1640,72.4,32.4,85,3522,,12118
+1451,Geneva College,Private,1590,72.3,29.6,79,1342,71,16044
+1772,University of Mount Union,Private,1565,72.3,32.3,76,2175,78,20028
+1340,Concordia College,Private,1375,72.3,21.8,67,867,58,
+3092,Clearwater Christian College,Private,1560,72.2,45.1,68,485,72,12795
+616,University of North Georgia,Public,1655,72.2,59.9,78,5541,37,8021
+3893,Tusculum College,Private,1470,72.2,15.4,59,,28,
+3319,King College,Private,1500,72.2,27.2,75,1963,42,20662
+3477,Hawaii Pacific University,Private,1460,72.2,16.5,69,6168,3,19037
+4050,Valley Forge Christian College,Private,1450,72.2,47.1,70,1001,83,11348
+3464,California State University: Stanislaus,Public,1385,72.1,26.7,83,7621,8,14711
+537,Emory & Henry College,Private,1490,72.1,27.9,72,875,77,26482
+3720,Rider University,Private,1550,72.1,16.1,77,4549,57,
+3199,University of Massachusetts Dartmouth,Public,1600,72.1,24.8,74,7562,55,14665
+938,Purdue University North Central,Public,1425,72.1,57.4,62,5982,,
+1303,Fitchburg State University,Public,1490,72.1,29.8,74,4162,41,9154
+4138,Cairn University,Private,1515,72.1,54.8,78,952,55,17659
+3076,University of North Carolina at Pembroke,Public,1395,72.0,45.9,64,5504,21,9076
+1005,St. Mary's College of Maryland,Public,1810,72.0,29.3,87,1901,86,13646
+2324,Northwestern Oklahoma State University,Public,1370,72.0,67.2,63,2135,57,
+2055,Indiana University South Bend,Public,1430,71.9,56.4,63,7860,,7279
+764,Wagner College,Private,1740,71.9,22.3,83,1821,67,26233
+4141,Philadelphia University,Private,1595,71.9,23.3,79,2888,49,24833
+2526,Westminster College,Private,1550,71.9,25.5,83,1084,85,20155
+1834,Alma College,Private,1665,71.9,26.6,80,1464,90,28721
+2851,Marymount Manhattan College,Private,1725,71.8,16.8,67,1908,39,13068
+3234,University of Southern Indiana,Public,1505,71.7,41.6,67,9498,27,8226
+3819,Goucher College,Private,1675,71.7,15.8,84,1484,86,30410
+1012,Old Dominion University,Public,1530,71.7,35.4,80,19612,24,9925
+1669,DeSales University,Private,1625,71.6,23.1,83,2468,67,23660
+1628,Lycoming College,Private,1570,71.6,26.0,81,1365,85,27893
+2800,University of New Haven,Private,1580,71.5,15.7,76,4693,51,
+116,Seattle University,Private,1765,71.5,18.4,87,4589,41,
+1129,Arizona Christian University,Private,1545,71.3,43.4,68,683,,
+3544,MidAmerica Nazarene University,Private,1490,71.3,44.8,70,1507,63,
+4132,Neumann University,Private,1300,71.3,22.6,74,2674,34,20250
+3195,Mount St. Mary's College,Private,1370,71.2,33.5,79,2458,20,32894
+716,Metropolitan State University of Denver,Public,1605,71.2,47.7,62,23019,,6367
+1394,Fairfield University,Private,1755,71.2,15.0,87,3879,82,27725
+902,Nazareth College,Private,1700,71.1,21.3,82,2095,56,
+1320,Monmouth University,Private,1585,71.1,23.1,79,4738,46,21636
+1577,Cleveland Institute of Art,Private,1650,71.1,33.3,79,556,22,25354
+4404,Cornerstone University,Private,1625,71.0,23.0,74,2238,55,19152
+631,Eckerd College,Private,1675,71.0,19.2,81,1893,81,29923
+1550,Heidelberg University,Private,1495,71.0,28.6,61,1096,71,21520
+2459,Louisiana Tech University,Public,1660,70.8,40.3,77,8958,15,8821
+4027,Bennett College for Women,Private,1125,70.7,15.4,58,707,70,12746
+362,Winthrop University,Public,1560,70.7,37.5,73,5029,47,12639
+3293,College of the Atlantic,Private,1870,70.6,27.3,83,330,44,33696
+2157,Michigan State University,Public,1730,70.6,39.2,91,37454,42,11718
+568,Arkansas State University,Public,1495,70.6,44.8,70,10168,27,10100
+1845,Ashland University,Private,1565,70.5,24.1,71,3240,64,26270
+4016,Armstrong Atlantic State University,Public,1495,70.4,52.3,69,6731,20,5720
+3235,Indiana University Kokomo,Public,1425,70.4,62.5,63,3581,,6720
+2265,Southwest Minnesota State University,Public,1445,70.4,35.4,68,6388,34,6317
+4013,Anderson University,Private,1580,70.4,46.4,77,2630,54,19896
+3220,Alfred University,Private,1630,70.3,22.9,68,1935,76,25728
+1610,Albion College,Private,1660,70.2,21.5,73,1382,90,26742
+1567,Concordia University Wisconsin,Private,1540,70.2,34.5,74,4419,41,20828
+2498,Eastern Mennonite University,Private,1565,70.2,33.6,78,1124,60,
+2143,Luther College,Private,1645,70.2,25.9,88,2473,85,29605
+3208,Clark University,Private,1755,70.0,19.7,92,2352,71,32364
+2967,Baldwin Wallace University,Private,1625,70.0,28.5,82,3512,60,24089
+2402,Massachusetts College of Art and Design,Public,1635,70.0,36.6,88,2172,38,10580
+4334,Madonna University,Private,1470,70.0,42.6,83,3205,7,9880
+448,Hamline University,Private,1735,70.0,23.6,81,2140,41,27841
+4066,Lasell College,Private,1465,70.0,19.9,72,1655,78,21097
+414,Stephens College,Private,1515,70.0,32.6,74,673,68,22765
+2767,College of Mount St. Joseph,Private,1445,69.8,32.6,77,1840,23,84
+1413,Ursinus College,Private,1795,69.8,18.6,90,1680,95,
+2601,Oklahoma City University,Private,1655,69.8,34.8,80,2075,58,20593
+3784,Eastern University,Private,1565,69.7,35.9,80,2701,72,
+3684,Le Moyne College,Private,1630,69.7,17.4,85,2749,59,22089
+944,California State University: Sacramento,Public,1435,69.7,23.0,81,25541,6,10804
+3301,Dean College,Private,1270,69.7,29.1,62,1235,89,21832
+403,Lyon College,Private,1575,69.7,24.7,72,599,77,22627
+1374,Salve Regina University,Private,1675,69.7,16.5,82,2053,60,23289
+3786,Elizabethtown College,Private,1670,69.6,19.4,86,1885,88,26065
+1253,University of Hartford,Private,1525,69.6,14.1,72,5284,62,16846
+3687,Manhattan College,Private,1610,69.6,18.5,88,3351,65,22566
+4335,Malone University,Private,1540,69.5,32.8,63,1897,55,21790
+4054,Westminster College,Private,1675,69.5,19.2,78,2526,27,23150
+2224,Emmaus Bible College,Private,1530,69.5,95.1,,,,
+1296,Concordia University,Private,1555,69.5,24.0,78,1738,48,19085
+3178,Yeshiva University,Private,1840,69.5,69.0,92,2869,78,
+581,Roanoke College,Private,1625,69.3,18.4,81,2060,74,28401
+1508,"St. Joseph's College, New York",Private,1485,69.3,19.4,84,1299,1,15145
+4360,Mississippi State University,Public,1650,69.3,39.9,81,16390,27,13045
+2365,Salem State University,Public,1485,69.3,32.6,74,7741,28,
+4140,University of the Arts,Private,1490,69.3,36.8,80,1909,33,
+3474,Sierra Nevada College,Private,1485,69.3,14.3,79,536,52,21200
+4116,Wheelock College,Private,1465,69.2,18.6,68,904,70,20524
+3339,University of San Francisco,Private,1725,69.2,17.4,90,6344,32,
+3118,Rhode Island College,Public,1395,69.1,34.5,75,7553,15,9402
+2587,Ouachita Baptist University,Private,1580,69.1,28.8,76,1532,96,19418
+1645,Dominican College of Blauvelt,Private,1320,69.0,22.9,64,1595,52,17762
+1572,University of the Cumberlands,Private,1435,69.0,27.0,63,1864,74,19519
+3241,Kalamazoo College,Private,1785,69.0,21.2,94,1379,75,32931
+2273,Webber International University,Private,1385,68.9,45.3,52,654,52,18697
+473,Wartburg College,Private,1550,68.9,27.9,76,1747,83,26249
+3266,University of Redlands,Private,1720,68.9,23.5,91,3360,69,33263
+3141,Augustana College,Private,1860,68.8,22.5,84,2551,73,25327
+2207,Indiana University Northwest,Public,1360,68.8,63.9,67,5636,,7106
+3060,Columbia College,Private,1545,68.8,37.7,67,953,34,13801
+1481,University of Scranton,Private,1705,68.8,14.6,87,4041,64,21694
+1324,Mount Aloysius College,Private,1365,68.8,35.7,66,1706,33,14670
+1353,Wheaton College,Private,1970,68.7,44.4,95,2508,90,22466
+1445,Niagara University,Private,1565,68.7,25.2,81,3175,50,25251
+3111,Quinnipiac University,Private,1640,68.7,13.8,85,6430,77,23867
+2351,Mars Hill College,Private,1425,68.7,21.4,55,1351,68,18039
+3049,Wright State University,Public,1510,68.7,41.5,56,13143,19,9693
+3730,St. Andrews University,Private,1415,68.5,25.8,64,460,85,19247
+3085,Clark Atlanta University,Private,1315,68.5,16.0,61,2632,55,7258
+3080,University of North Carolina at Charlotte,Public,1620,68.5,37.6,77,21179,25,8679
+4345,Midway College,Private,1550,68.5,21.2,55,1423,15,
+1877,University of Findlay,Private,1585,68.3,32.1,74,3898,45,20822
+847,Worcester State University,Public,1500,68.1,33.5,78,5307,25,11983
+1171,Campbell University,Private,1595,67.8,10.0,72,4589,64,20748
+854,Mount Ida College,Private,1295,67.8,21.7,68,1379,63,
+3788,Xavier University,Private,1650,67.7,14.0,80,4485,50,19115
+3075,William Peace University,Private,1365,67.7,31.0,65,791,51,23939
+3088,College of Charleston,Public,1810,67.6,26.4,82,10506,31,12487
+4101,Northwood University: Michigan,Private,1525,67.6,38.7,77,1536,41,21185
+4342,Marietta College,Private,1645,67.6,14.1,75,1487,76,27091
+629,Florida Gulf Coast University,Public,1540,67.6,40.8,76,12155,34,8926
+995,University of Denver,Private,1815,67.6,15.7,86,5394,42,30905
+1221,Bloomsburg University of Pennsylvania,Public,1495,67.6,27.4,78,9201,42,7274
+73,University of Missouri: Kansas City,Public,1825,67.6,37.4,69,10626,8,10463
+1228,Kutztown University of Pennsylvania,Public,1440,67.5,30.4,71,9135,45,7326
+4119,Eastern Connecticut State University,Public,1525,67.4,34.3,76,5258,52,8586
+4344,Marion Military Institute,Public,1620,67.4,50.7,,382,100,
+3439,Lynchburg College,Private,1500,67.3,17.2,73,2211,77,25181
+1199,University of Tennessee: Knoxville,Public,1765,67.3,43.4,85,20916,37,12866
+4347,Milligan College,Private,1595,67.3,42.0,80,957,73,20479
+1193,University of Kentucky,Public,1700,67.3,36.7,81,20827,26,
+2104,McKendree University,Private,1535,67.3,33.2,81,2235,70,21550
+2695,Norfolk State University,Public,1305,67.3,38.3,73,6367,38,
+488,Thomas College,Private,1360,67.3,34.9,66,1201,65,21435
+1409,Temple University,Public,1670,67.2,32.8,87,27567,17,15332
+1305,Massachusetts College of Liberal Arts,Public,1530,67.2,27.6,75,1600,63,14397
+2891,SUNY College of Technology at Canton,Public,1375,67.2,30.6,,3780,37,9278
+3284,Northwest Nazarene University,Private,1625,67.2,38.8,,1477,67,22123
+1158,Holy Family University,Private,1415,67.1,32.9,76,2139,13,
+397,Texas A&M; University,Public,1810,67.1,43.6,92,40103,23,16478
+674,Lenoir-Rhyne University,Private,1495,67.1,10.2,,1544,,24153
+1907,Beloit College,Private,1880,67.1,21.1,91,1359,94,28742
+3223,Indiana University-Purdue University Indianapolis,Public,1515,67.1,44.1,72,22271,6,9507
+4035,University of Cincinnati,Public,1725,67.1,36.3,85,23096,19,8656
+3385,Vanguard University of Southern California,Private,1480,67.0,43.0,73,,68,
+3938,Wabash College,Private,1755,67.0,28.3,86,906,87,31769
+1278,Eastern Oregon University,Public,1400,67.0,42.3,64,3845,11,9590
+4501,Middle Tennessee State University,Public,1565,66.9,49.6,,22371,17,10541
+2819,Lincoln Christian University,Private,1500,66.9,67.4,75,679,51,10023
+3065,Coe College,Private,1700,66.7,21.7,81,1364,84,29271
+1666,Albany College of Pharmacy and Health Sciences,Private,1785,66.7,24.7,86,1072,65,15372
+2221,Campbellsville University,Private,1515,66.7,35.1,63,3132,46,20332
+2605,Evangel University,Private,1570,66.6,45.8,74,1879,68,15263
+181,Dickinson State University,Public,1370,66.5,63.2,53,1837,70,8869
+3937,Penn State Shenango,Public,1340,66.5,56.6,56,578,,11264
+3006,Gonzaga University,Private,1790,66.5,23.6,94,4906,57,24204
+3184,Albertus Magnus College,Private,1360,66.5,27.9,76,,45,18688
+3217,Adelphi University,Private,1680,66.5,16.4,82,5103,24,19000
+601,Morehouse College,Private,1540,66.4,33.3,82,2363,66,22078
+213,John Brown University,Private,1705,66.4,40.9,84,1779,74,20817
+221,Juniata College,Private,1780,66.4,25.0,85,1565,71,29241
+2269,Washington College,Private,1735,66.4,13.5,85,1512,85,31111
+1152,Gwynedd-Mercy College,Private,1410,66.4,24.2,77,2223,24,19663
+3740,Georgia Southwestern State University,Public,1475,66.4,46.0,63,2749,29,9003
+3283,Northwest Christian University,Private,1495,66.3,37.6,71,456,31,19140
+4096,Northland College,Private,1635,66.3,29.2,78,590,77,32590
+4343,Indiana Wesleyan University,Private,1600,66.3,31.9,75,2999,81,21516
+1262,Seton Hill University,Private,1515,66.2,24.4,78,1675,46,24590
+4124,Adams State College,Public,1460,66.2,31.5,55,2679,47,
+1334,College of Saint Rose,Private,1565,66.2,16.6,81,2881,47,17580
+1277,Eastern New Mexico University,Public,1410,66.1,46.8,63,4586,25,10356
+2241,Texas State University: San Marcos,Public,1580,66.1,61.7,77,29458,20,12599
+4028,Berry College,Private,1715,66.1,26.8,75,2041,86,24755
+2769,Ohio Dominican University,Private,1515,66.0,20.6,66,2127,45,
+3011,Westmont College,Private,1795,66.0,23.8,88,1346,84,26504
+2718,North Carolina Agricultural and Technical State University,Public,1345,66.0,42.0,74,8923,,14094
+787,Hollins University,Private,1625,66.0,23.8,70,613,77,29987
+542,Erskine College,Private,1535,66.0,24.0,77,,89,
+1447,New York Institute of Technology,Private,1710,65.9,20.8,70,4796,15,19254
+1563,Butler University,Private,1770,65.9,17.3,91,4020,69,23604
+2485,Cottey College,Private,1535,65.9,45.0,,292,99,17988
+548,Drake University,Private,1785,65.9,20.2,88,3365,71,21359
+489,University of Massachusetts Lowell,Public,1700,65.8,28.2,81,12287,33,13872
+2843,St. Vincent College,Private,1595,65.8,30.5,81,1566,67,26837
+3683,Lebanon Valley College,Private,1665,65.8,20.4,86,1744,78,25471
+2454,Lindenwood University,Private,1540,65.8,60.8,72,8296,52,9488
+665,George Mason University,Public,1730,65.7,27.9,86,20653,28,11987
+106,University of Idaho,Public,1625,65.7,33.0,77,9928,39,13554
+2102,Maryville College,Private,1490,65.7,22.6,72,1093,66,30575
+3727,Fairmont State University,Public,1435,65.6,41.7,64,4112,21,2727
+2461,Loyola University New Orleans,Private,1720,65.6,20.6,74,3200,65,30148
+946,St. Mary's College of California,Private,1660,65.6,18.1,88,3035,55,25905
+1615,Carson-Newman University,Private,1510,65.6,23.7,60,1646,61,23283
+1219,Widener University,Private,1530,65.5,22.5,71,3298,49,28530
+2922,Rose-Hulman Institute of Technology,Private,1975,65.5,21.2,94,2121,62,28031
+204,Faith Baptist Bible College and Theological Seminary,Private,1670,65.4,56.0,75,261,69,
+514,Central College,Private,1545,65.4,19.8,83,1486,94,26013
+1492,California State University: Los Angeles,Public,1330,65.3,16.3,81,18074,5,12384
+5,Lincoln Memorial University,Private,1475,65.2,39.4,66,1851,37,21243
+1592,Eastern Michigan University,Public,1540,65.1,34.5,75,18914,12,9399
+1911,Birmingham-Southern College,Private,1675,65.1,27.2,81,1231,85,26675
+2506,Texas A&M; University-Commerce,Public,1475,65.0,35.7,67,6768,21,11774
+2588,Our Lady of the Lake University of San Antonio,Private,1335,65.0,30.0,59,1511,33,
+346,Sam Houston State University,Public,1515,65.0,39.9,75,15611,,10152
+1880,Franklin College,Private,1495,65.0,24.3,76,1053,69,18468
+1289,College of Idaho,Private,1630,64.9,32.4,83,1042,62,24707
+1453,Ithaca College,Private,1745,64.9,17.6,84,6281,68,31780
+2635,Bethel College,Private,1620,64.9,29.9,62,472,72,21548
+4046,VanderCook College of Music,Private,1860,64.8,77.1,90,139,18,15289
+2804,Norwich University,Private,1630,64.8,31.3,,2321,83,27661
+4359,University of Southern Mississippi,Public,1545,64.7,42.5,75,13658,,10446
+2384,Columbia College,Private,1520,64.7,37.7,60,1088,45,21284
+3360,Loyola University Maryland,Private,1755,64.6,13.1,88,3917,82,26745
+559,University of South Carolina: Upstate,Public,1455,64.6,41.4,66,5427,17,11940
+1014,Christopher Newport University,Public,1730,64.6,31.2,85,5046,68,8126
+3262,University of New Mexico,Public,1610,64.6,46.2,77,,,
+2235,Southern Arkansas University,Public,1445,64.6,35.3,60,2918,46,11897
+2795,New England College,Private,1350,64.6,13.6,63,1127,45,26502
+3091,Columbia International University,Private,1645,64.4,52.4,80,534,72,16544
+2315,University of Nebraska - Lincoln,Public,1805,64.4,59.1,84,19103,41,12466
+4115,Wheaton College,Private,1825,64.3,17.9,86,1616,95,33378
+4025,Belmont Abbey College,Private,1510,64.3,25.6,63,1706,43,20368
+2287,Trinity University,Private,1875,64.3,21.1,89,2353,75,29216
+2283,Texas Tech University,Public,1685,64.3,39.3,81,26481,25,9907
+661,Spartanburg Methodist College,Private,1320,64.3,56.6,,811,67,10000
+1316,Messiah College,Private,1705,64.2,35.0,87,2798,87,21772
+846,Westfield State University,Public,1535,64.2,31.4,80,5368,54,7807
+1506,St. John Fisher College,Private,1615,64.2,23.9,84,2960,49,20440
+786,High Point University,Private,1665,64.2,25.6,75,4070,93,
+510,Centenary College of Louisiana,Private,1765,64.2,26.4,69,698,56,24104
+2150,McDaniel College,Private,1660,64.1,19.1,82,1650,84,29516
+4336,Manchester University,Private,1555,64.1,14.8,68,1257,75,24401
+1483,Lewis & Clark College,Private,1910,64.0,13.4,88,2141,,
+2895,SUNY College of Agriculture and Technology at Morrisville,Public,1300,64.0,34.4,,3095,,
+817,Shorter University,Private,1470,64.0,27.0,68,,48,
+2007,Ohio State University: Columbus Campus,Public,1915,64.0,43.7,92,43058,25,12201
+676,Livingstone College,Private,1120,64.0,26.0,,1150,65,
+4038,University of Illinois at Chicago,Public,1700,63.9,34.0,78,16678,18,14065
+1548,Hanover College,Private,1650,63.9,16.0,83,1123,95,23768
+4067,Lesley University,Private,1600,63.9,19.3,79,1568,54,19921
+1395,Fisher College,Private,1260,63.9,24.2,64,2037,,
+1560,Indiana Institute of Technology,Private,1375,63.9,21.5,55,5216,,
+952,San Francisco State University,Public,1500,63.8,19.0,80,26449,12,11932
+4018,University of North Carolina at Asheville,Public,1790,63.8,28.7,78,3693,38,11229
+1258,Hampshire College,Private,1840,63.8,20.1,82,1461,82,34143
+812,St. Mary-of-the-Woods College,Private,1390,63.7,26.3,59,795,,24813
+904,New Jersey Institute of Technology,Public,1685,63.7,38.0,82,7111,23,
+295,Saint Louis University,Private,1805,63.7,19.5,88,8806,51,26900
+3451,Whittier College,Private,1595,63.6,15.9,86,1670,49,30802
+3268,Multnomah University,Private,1600,63.6,42.7,60,503,34,9774
+3934,Rocky Mountain College,Private,1490,63.5,30.6,67,1007,49,19420
+3448,James Madison University,Public,1730,63.5,30.1,91,18107,36,7604
+2468,Xavier University of Louisiana,Private,1485,63.5,26.1,65,2525,47,18622
+4135,Parsons The New School for Design,Private,1650,63.5,42.9,85,4260,21,25252
+491,University of Bridgeport,Private,1360,63.5,16.4,62,2688,48,25200
+4007,San Jose State University,Public,1565,63.5,21.2,83,25157,8,16334
+146,University of Arkansas,Public,1705,63.5,43.0,81,20350,33,9730
+3473,William Jessup University,Private,1530,63.4,53.3,82,991,53,20164
+349,Schreiner University,Private,1490,63.4,37.2,71,1068,66,17390
+3308,Endicott College,Private,1605,63.4,28.0,83,2762,83,18969
+1192,University of Illinois at Urbana-Champaign,Public,2085,63.3,34.8,94,32281,50,14647
+1843,Asbury University,Private,1660,63.3,40.4,84,1529,85,17625
+3221,Allegheny College,Private,1805,63.3,19.3,89,2140,90,31387
+4015,Appalachian State University,Public,1730,63.2,39.1,88,15712,37,8217
+1232,Slippery Rock University of Pennsylvania,Public,1515,63.2,39.0,81,7860,36,8152
+1010,Kuyper College,Private,1545,63.2,55.1,72,300,51,
+4,Lake Erie College,Private,1490,63.2,28.9,64,1032,56,22233
+2129,Cleveland State University,Public,1535,63.2,42.3,65,12038,8,9344
+3002,Catholic University of America,Private,1670,63.2,22.0,84,3694,59,25293
+266,Life Pacific College,Private,1450,63.1,77.7,,586,52,
+691,Mercer University,Private,1760,63.1,29.1,82,2382,67,30748
+711,Bennington College,Private,1890,63.0,25.3,83,688,95,36238
+1231,Millersville University of Pennsylvania,Public,1535,62.9,31.4,79,7424,30,7570
+2578,St. Edward's University,Private,1685,62.8,29.4,79,4238,38,25537
+4216,San Francisco Art Institute,Private,1510,62.8,25.5,63,453,29,16960
+427,Wheeling Jesuit University,Private,1535,62.8,31.7,72,1173,65,21386
+3570,Vermont Technical College,Public,1420,62.8,49.4,69,1645,,10617
+3654,Dixie State College,Public,1370,62.8,60.9,54,8863,,6379
+363,Wofford College,Private,1870,62.7,21.9,89,1588,93,27554
+993,University of California: Riverside,Public,1655,62.7,21.2,88,18539,31,23705
+504,Briar Cliff University,Private,1445,62.7,19.5,69,1030,32,21124
+1502,Mills College,Private,1730,62.7,16.3,77,937,58,38795
+2274,Wesley College,Private,1255,62.6,30.3,,1574,64,
+3560,University of Massachusetts Amherst,Public,1800,62.5,21.4,88,21928,61,13920
+3043,DePauw University,Private,1820,62.5,19.1,89,2336,95,31834
+2106,University of Memphis,Public,1535,62.4,53.1,76,17647,14,9433
+710,Becker College,Private,1490,62.3,18.2,65,1826,39,20625
+3042,DePaul University,Private,1725,62.3,22.9,85,16498,17,21917
+3039,Defiance College,Private,1365,62.3,24.1,50,932,50,23288
+4220,Carroll College,Private,1660,62.2,24.3,86,1464,59,18801
+769,Wells College,Private,1600,62.2,15.7,70,538,84,34198
+282,University of Texas-Pan American,Public,1440,62.2,53.6,75,16966,4,10125
+2497,East Carolina University,Public,1580,62.2,34.5,78,21298,,9614
+692,Meredith College,Private,1525,62.1,38.2,77,1665,61,
+3747,Bryant University,Private,1735,62.0,20.8,88,3180,81,23109
+2717,Agnes Scott College,Private,1725,62.0,24.1,82,885,85,32686
+2599,Oklahoma Baptist University,Private,1605,62.0,16.6,75,1903,64,10905
+3380,Simpson University,Private,1505,61.9,43.6,74,1033,63,19748
+4421,Hiram College,Private,1510,61.9,20.5,75,1293,77,26443
+2254,California State University: San Marcos,Public,1450,61.9,26.5,83,9928,,
+810,Saint Joseph's College,Private,1470,61.8,22.1,67,1074,61,24409
+132,AIB College of Business,Private,1425,61.7,66.2,,921,36,15616
+3346,Savannah College of Art and Design,Private,1580,61.7,32.4,81,9182,41,28283
+3551,University of North Texas,Public,1650,61.7,41.5,80,28956,19,12113
+4144,Pratt Institute,Private,1780,61.6,23.6,83,3076,51,20160
+1535,Kettering University,Private,1760,61.6,28.2,92,1724,58,22475
+332,Culver-Stockton College,Private,1335,61.5,30.3,68,769,77,21281
+96,Gallaudet University,Private,1320,61.5,68.1,77,1117,76,18747
+1191,University of Detroit Mercy,Private,1685,61.5,21.4,79,2868,21,
+3691,Caldwell College,Private,1385,61.4,18.1,82,1591,32,23857
+283,Oklahoma Panhandle State University,Public,1265,61.4,50.3,,1382,40,
+4168,The Master's College,Private,1635,61.4,40.1,77,1134,82,21678
+709,Bay Path College,Private,1475,61.3,25.8,74,1558,23,26570
+935,Purdue University,Public,1795,61.3,33.2,91,30147,35,12668
+227,Minneapolis College of Art and Design,Private,1610,61.3,41.2,78,623,39,
+2535,Upper Iowa University,Private,1640,61.3,25.5,68,4645,8,9041
+1307,Cedar Crest College,Private,1490,61.2,20.5,70,1359,23,26840
+2339,Newberry College,Private,1440,61.2,42.1,68,1042,72,20509
+1325,Carlow University,Private,1410,61.2,31.3,70,1955,27,21212
+2060,Ball State University,Public,1590,61.2,34.4,77,16652,42,10271
+2649,Henderson State University,Public,1525,61.1,37.8,59,3363,41,12199
+1196,University of Mississippi,Public,1620,61.1,39.6,81,16060,31,9347
+873,Providence College,Private,1745,61.0,17.0,90,3810,78,28357
+2669,Benedictine College,Private,1685,61.0,23.9,78,2086,85,18948
+608,Methodist University,Private,1475,61.0,22.0,,2157,47,
+1009,Salem College,Private,1645,61.0,34.1,74,940,52,
+1093,Wentworth Institute of Technology,Private,1660,60.9,29.8,82,4003,51,13719
+2530,William Jewell College,Private,1685,60.9,16.7,73,1052,84,25089
+3958,University of California: Santa Cruz,Public,1660,60.9,19.0,91,15978,48,24719
+2673,University of West Florida,Public,1490,60.8,21.7,71,10332,20,
+1859,Judson University,Private,1590,60.7,48.9,79,,65,16287
+2511,McNeese State University,Public,1530,60.7,61.1,68,7711,,
+2734,Baylor University,Private,1845,60.7,19.3,87,12918,39,
+2338,University of South Carolina: Columbia,Public,1800,60.6,32.6,87,23363,36,12340
+2839,Saint Peter's University,Private,1390,60.6,19.9,76,2317,36,28057
+4431,Huntingdon College,Private,1385,60.5,24.8,55,1118,47,17145
+406,Southwestern University,Private,1795,60.5,21.1,86,1394,78,30816
+617,North Greenville University,Private,1735,60.5,62.5,69,2215,68,
+2883,Faulkner University,Private,1385,60.4,49.2,57,2763,19,4950
+299,St. Olaf College,Private,1920,60.4,36.3,93,3176,91,35190
+2674,University of Maryland: Baltimore County,Public,1850,60.3,30.4,85,10953,34,10657
+107,Stetson University,Private,1730,60.3,27.9,79,2516,67,33011
+2721,Augsburg College,Private,1630,60.3,29.6,79,2882,51,
+580,Virginia Commonwealth University,Public,1655,60.2,38.1,85,23951,22,11277
+2434,Tarleton State University,Public,1480,60.2,46.5,67,8917,30,
+1538,Goshen College,Private,1690,60.0,46.0,83,884,67,23399
+961,Appalachian Bible College,Private,1535,60.0,90.1,,,76,
+155,University of Minnesota: Morris,Public,1790,60.0,29.3,78,1896,46,15592
+1326,Medaille College,Private,1315,59.8,44.7,68,1844,20,19409
+1583,Indiana University East,Public,1390,59.7,52.0,67,4052,,8200
+2238,Southwest Baptist University,Private,1495,59.6,40.4,68,3009,62,17296
+621,New College of Florida,Public,1920,59.6,27.8,83,832,75,
+1309,Chatham University,Private,1590,59.6,27.0,76,922,48,29723
+1557,Illinois Wesleyan University,Private,1865,59.5,25.0,89,2013,71,27634
+2470,Avila University,Private,1515,59.4,24.0,66,1325,28,18887
+563,Valdosta State University,Public,1540,59.2,53.1,67,10290,28,14611
+684,Frostburg State University,Public,1465,59.2,35.0,72,4631,32,8783
+3879,University of Washington,Public,1865,59.1,39.1,93,28933,13,17000
+2723,Austin College,Private,1850,59.1,17.4,84,1242,77,34793
+1184,Florida Institute of Technology,Private,1735,59.0,17.2,79,2978,47,32855
+3131,Franklin College Switzerland,Private,1800,58.9,27.7,72,413,89,23555
+3638,Francis Marion University,Public,1430,58.9,35.4,65,3780,40,11035
+1198,Sewanee: The University of the South,Private,1880,58.8,22.9,86,1478,96,30966
+564,Stevenson University,Private,1480,58.7,25.6,69,3904,47,16803
+3260,Hofstra University,Private,1750,58.7,11.1,78,6893,46,24628
+2590,Northwestern College,Private,1670,58.7,34.1,80,1739,65,19602
+2586,Northwood University: Texas,Private,1385,58.6,64.9,58,534,27,23720
+91,University of Texas at Arlington,Public,1640,58.5,41.1,72,25761,13,12058
+4485,Bluffton University,Private,1600,58.5,22.6,68,1077,72,26015
+4105,Rochester Institute of Technology,Private,1845,58.5,28.6,89,13711,53,24000
+722,Marymount California University,Private,1370,58.4,28.7,69,1001,43,30434
+1330,Misericordia University,Private,1550,58.4,34.6,86,2427,45,19765
+835,California State University: East Bay,Public,1370,58.3,23.2,75,11450,,11086
+914,California State University: San Bernardino,Public,1350,58.3,34.3,88,15885,,11157
+2505,East Texas Baptist University,Private,1440,58.2,41.1,52,1241,84,16107
+1702,Tennessee State University,Public,1310,58.2,34.2,55,6780,39,
+1863,Kentucky Christian University,Private,1440,58.2,42.4,57,574,82,12859
+1623,Jewish Theological Seminary of America,Private,1965,58.2,64.9,98,169,72,
+1286,California State University: Fresno,Public,1395,58.1,33.2,84,19719,5,11194
+4358,Mississippi College,Private,1590,58.1,38.1,73,3042,49,14430
+36,Ursuline College,Private,1330,58.1,33.0,71,879,18,23278
+2940,College of Wooster,Private,1800,58.1,18.9,90,2080,99,36045
+2639,Friends University,Private,1365,58.0,43.0,60,1769,46,13717
+2823,Loyola University Chicago,Private,1790,58.0,17.6,87,9723,41,30940
+3086,Clemson University,Public,1880,57.9,32.3,91,16562,41,12173
+3082,Chowan University,Private,1205,57.9,21.4,43,1308,72,
+524,Presbyterian College,Private,1635,57.8,33.9,86,1172,97,32031
+3546,Missouri Baptist University,Private,1500,57.8,46.7,60,3850,,
+2679,Warner Pacific College,Private,1465,57.8,16.8,66,551,50,16122
+3087,Coker College,Private,1450,57.8,38.0,72,1155,73,20903
+2345,Averett University,Private,1435,57.7,18.0,62,902,57,18993
+3505,SUNY Maritime College,Public,1650,57.6,44.1,81,1614,82,
+602,Morgan State University,Public,1325,57.6,31.9,73,6591,31,
+3190,Montana State University,Public,1605,57.6,39.0,74,12772,25,11860
+682,University of Maryland: Eastern Shore,Public,1305,57.5,35.8,69,3758,60,9534
+464,University of Mary Hardin-Baylor,Private,1535,57.5,11.5,68,2926,50,17362
+1263,Siena College,Private,1690,57.5,13.3,89,3214,77,21000
+3741,Georgia State University,Public,1610,57.4,43.7,83,24665,17,11196
+1302,Southern Utah University,Public,1540,57.3,34.6,66,7633,11,8008
+3801,Richard Stockton College of New Jersey,Public,1620,57.3,28.2,84,7517,35,16163
+663,Elizabeth City State University,Public,1290,57.1,23.5,77,2760,55,
+2918,Dominican University,Private,1635,57.1,23.3,80,1995,29,23856
+333,Covenant College,Private,1760,57.0,41.6,87,1065,83,22324
+1604,Adrian College,Private,1500,57.0,26.0,,1755,,25275
+4354,Milwaukee School of Engineering,Private,1810,57.0,42.7,81,2378,33,23772
+4238,Lake Forest College,Private,1775,56.9,21.0,83,1552,72,32000
+1463,SUNY University at Buffalo,Public,1750,56.9,29.1,87,19505,35,9505
+1396,University of Maine at Fort Kent,Public,1355,56.7,56.9,64,1169,26,9865
+3401,Arcadia University,Private,1650,56.6,13.3,79,2359,54,
+3101,Westminster College,Private,1620,56.6,14.3,86,,73,
+3000,University of Delaware,Public,1815,56.5,25.7,92,17427,44,14427
+669,Kennesaw State University,Public,1615,56.5,59.6,76,22684,14,7590
+522,Piedmont College,Private,1545,56.5,41.3,75,1294,44,18996
+371,Hope International University,Private,1425,56.5,52.9,72,1167,60,16750
+4139,University of the Sciences in Philadelphia,Private,1780,56.3,19.9,84,2436,29,31526
+2620,Jamestown College,Private,1420,56.3,38.4,73,939,69,14192
+2614,Iowa Wesleyan College,Private,1490,56.2,15.6,43,650,65,24822
+149,University of Houston,Public,1715,56.2,36.5,83,32639,15,13387
+958,Point University,Private,1360,56.2,62.7,50,1483,75,
+1465,University of Pittsburgh,Public,1895,56.1,26.3,93,18429,44,12882
+3632,University of Georgia,Public,1860,56.1,47.7,94,26259,28,12058
+1229,Lock Haven University of Pennsylvania,Public,1410,56.1,45.8,71,4969,31,8662
+605,University of Charleston,Private,1460,56.0,26.2,70,1026,61,
+2817,Lewis University,Private,1685,55.9,21.6,82,4579,28,20668
+2690,Point Loma Nazarene University,Private,1735,55.9,30.3,83,2415,68,19970
+3655,Dominican University of California,Private,1580,55.8,15.0,81,1628,33,28526
+420,University of West Georgia,Public,1420,55.8,57.7,70,9963,27,9228
+583,Rollins College,Private,1775,55.8,20.5,84,1884,68,33676
+2340,Florida Southern College,Private,1645,55.7,21.7,76,2040,70,
+361,Winston-Salem State University,Public,1360,55.7,23.8,78,5245,58,
+784,Hampden-Sydney College,Private,1675,55.6,23.4,78,1080,95,29766
+413,Stephen F. Austin State University,Public,1495,55.6,36.9,63,11298,42,10747
+625,Nova Southeastern University,Private,1585,55.5,29.4,72,5739,,24280
+4109,The Sage Colleges,Private,1405,55.5,24.9,74,1741,50,
+606,Mount St. Mary's University,Private,1655,55.5,15.3,80,1842,82,23790
+3501,SUNY University at Albany,Public,1665,55.5,21.9,83,12875,58,9925
+4348,Millikin University,Private,1540,55.5,24.0,78,2264,61,24330
+1568,Concordia University Chicago,Private,1515,55.4,16.4,63,1515,55,19151
+2152,Texas A&M; University-Galveston,Public,1675,55.3,60.4,45,1905,52,12862
+2075,Marquette University,Private,1775,55.2,15.2,88,8293,54,22661
+2397,University of Dayton,Private,1705,55.2,24.5,88,8042,74,22850
+2764,O'More College of Design,Private,1445,55.1,76.3,,205,,20000
+2284,Texas Wesleyan University,Private,1540,55.1,51.0,65,1794,25,13598
+4337,Marian University,Private,1525,55.0,27.0,72,2264,43,
+3728,Fayetteville State University,Public,1285,55.0,27.8,76,5287,29,11180
+1555,Illinois Institute of Technology,Private,1890,54.9,28.6,92,2801,59,34526
+3738,Georgia Institute of Technology,Public,2070,54.9,37.8,95,14527,56,19073
+1488,Otis College of Art and Design,Private,1555,54.9,22.3,77,1105,8,22594
+2463,McMurry University,Private,1480,54.9,35.2,60,1365,47,21519
+843,Brigham Young University,Private,1915,54.9,80.1,89,31060,19,6486
+4349,Millsaps College,Private,1680,54.8,17.1,78,849,84,27094
+675,Limestone College,Private,1535,54.7,32.2,53,902,52,16942
+1436,Rhodes College,Private,1890,54.6,24.5,90,1915,71,34271
+1203,University of Wisconsin-Madison,Public,1970,54.6,39.6,95,30863,25,12279
+814,Shaw University,Private,1110,54.5,15.0,51,2031,40,
+1606,Alabama Agricultural and Mechanical University,Public,1245,54.4,17.5,68,4169,,9364
+1321,Moore College of Art and Design,Private,1445,54.4,33.0,73,482,,
+3734,Gardner-Webb University,Private,1520,54.3,17.4,67,2677,48,18923
+969,Bridgewater College,Private,1565,54.3,16.7,77,1760,84,25979
+1617,Case Western Reserve University,Private,2080,54.3,17.1,92,4386,77,34152
+4136,Penn State University Park,Public,1810,54.2,29.7,92,39193,36,9481
+359,University of North Carolina at Wilmington,Public,1770,54.2,41.6,86,12348,33,8220
+2657,Huston-Tillotson University,Private,1215,54.1,29.9,51,,39,
+1840,Anderson University,Private,1560,54.0,32.1,57,2034,62,
+1721,Northwood University: Florida,Private,1460,54.0,31.3,60,497,41,22610
+679,Mary Baldwin College,Private,1395,54.0,9.2,69,1526,52,24373
+576,Randolph-Macon College,Private,1635,54.0,18.3,80,1312,78,25209
+3760,Concordia University,Private,1500,53.8,23.4,70,1369,36,17175
+2234,Southern Methodist University,Private,1925,53.8,23.6,91,6249,33,35683
+3763,California State Polytechnic University: Pomona,Public,1620,53.8,14.3,92,20542,12,10157
+2346,Brevard College,Private,1475,53.7,25.7,52,633,76,20145
+627,Florida State University,Public,1800,53.7,35.6,91,32171,20,
+451,Hardin-Simmons University,Private,1565,53.6,40.4,66,1853,44,26698
+3549,Minot State University,Public,1495,53.6,74.2,70,3298,20,7694
+2532,William Penn University,Private,1290,53.5,53.1,,,30,
+3160,Bluefield College,Private,1385,53.2,25.3,61,828,65,14416
+1055,St. John's University,Private,1645,53.2,10.2,76,15840,31,27045
+2442,Texas Southern University,Public,1240,53.1,27.0,61,7021,24,
+1711,University of Alabama,Public,1700,53.1,45.4,85,28026,27,11479
+3259,Hobart and William Smith Colleges,Private,1840,53.1,25.4,88,2289,90,29793
+3089,Notre Dame of Maryland University,Private,1515,53.1,28.4,72,1229,54,
+2484,Cornell College,Private,1835,52.9,21.1,84,1180,92,31900
+2090,Salisbury University,Public,1730,52.7,26.3,84,7969,29,7143
+572,Queens University of Charlotte,Private,1580,52.7,19.8,69,1869,67,22314
+3891,Trinity International University,Private,1470,52.7,40.5,,,70,
+2894,SUNY Farmingdale State College,Public,1540,52.6,41.9,80,7889,8,8587
+2441,Texas Lutheran University,Private,1530,52.6,36.4,67,1311,56,22417
+532,Piedmont International University,Private,1315,52.6,72.5,,240,,
+3084,Claflin University,Private,1325,52.6,18.8,74,1883,71,14881
+1177,Columbus State University,Public,1465,52.6,60.1,67,7025,20,9017
+4120,Worcester Polytechnic Institute,Private,1975,52.6,23.8,96,3952,50,31426
+1332,College of New Rochelle,Private,1410,52.3,24.9,73,868,24,
+3452,Whitworth University,Private,1805,52.3,17.4,85,2348,62,29994
+3035,Lipscomb University,Private,1685,52.2,42.8,76,2753,52,19642
+685,Towson University,Public,1635,52.2,26.0,86,17988,25,9227
+2561,Oral Roberts University,Private,1565,52.1,59.2,82,2782,72,15320
+33,SUNY College at Old Westbury,Public,1505,52.0,20.8,80,4217,22,9981
+3648,University of North Florida,Public,1735,52.0,29.7,83,14398,20,8650
+3718,Georgia Southern University,Public,1665,52.0,65.9,77,17993,28,8548
+1632,La Roche College,Private,1410,52.0,30.2,66,1345,40,26024
+2516,Missouri Valley College,Private,1350,52.0,41.1,,1734,73,9598
+2518,University of Texas at Dallas,Public,1930,52.0,42.0,85,12029,25,14694
+4476,Cabarrus College of Health Sciences,Private,1490,51.9,78.0,,481,,
+4023,Barry University,Private,1410,51.9,15.8,62,4619,,23891
+1609,Alabama State University,Public,1280,51.8,26.6,62,5132,33,14611
+2331,Elon University,Private,1835,51.7,26.9,90,5357,60,16094
+1304,Framingham State University,Public,1565,51.7,29.4,74,4490,52,11740
+2768,University of St. Francis,Private,1465,51.6,24.8,79,1423,26,22081
+3579,SUNY College at Fredonia,Public,1570,51.5,33.2,78,5231,45,10354
+415,Sterling College,Private,1405,51.5,33.5,55,652,76,21669
+753,Southern Illinois University Carbondale,Public,1515,51.4,31.1,61,14130,29,14205
+1269,Syracuse University,Private,1755,51.3,25.6,92,14798,75,35120
+1175,Converse College,Private,1565,51.3,25.8,76,690,85,23916
+422,West Virginia University Institute of Technology,Public,1500,51.3,37.5,45,1107,,6970
+607,Montreat College,Private,1445,51.3,21.9,50,701,72,21818
+2676,University of South Carolina: Aiken,Public,1465,51.2,39.1,68,3123,27,10817
+3340,Santa Clara University,Private,1945,51.2,17.4,95,5250,53,26310
+937,Purdue University Calumet,Public,1450,51.0,49.6,69,8912,7,4052
+832,University of St. Francis,Private,1445,51.0,41.6,71,1978,20,18909
+536,Emmanuel College,Private,1460,50.9,32.3,67,806,56,13595
+3499,SUNY College of Environmental Science and Forestry,Public,1785,50.7,39.6,87,1819,35,13000
+469,University of Houston-Victoria,Public,1360,50.7,20.9,,,,10377
+472,Waldorf College,Private,1280,50.6,29.1,49,878,59,13048
+340,Oklahoma Wesleyan University,Private,1405,50.6,14.7,80,1028,28,16448
+613,North Carolina Central University,Public,1295,50.3,31.5,72,6658,42,11865
+2655,Howard Payne University,Private,1450,50.3,38.3,61,1086,57,17289
+2275,Wesleyan College,Private,1475,50.2,35.0,83,648,82,18360
+4158,Loyola Marymount University,Private,1815,50.2,21.4,89,6085,52,23356
+1174,Concord University,Public,1450,50.1,53.2,71,2611,38,
+3307,Emmanuel College,Private,1655,50.0,14.1,81,2198,72,26384
+2962,Aquinas College,Private,1595,50.0,44.4,58,553,2,
+2981,University of the Southwest,Private,1340,50.0,56.8,62,325,73,11000
+4108,Rosemont College,Private,1420,49.9,16.0,80,524,70,29622
+611,Mount Olive College,Private,1395,49.8,31.6,58,3714,16,14333
+614,North Carolina State University,Public,1840,49.6,41.2,92,24833,32,12846
+2312,University of Minnesota: Twin Cities,Public,1975,49.5,29.2,91,34469,21,12910
+3041,Denison University,Private,1940,49.5,26.7,92,2336,99,37445
+3583,Manor College,Private,1370,49.4,39.9,,930,4,19621
+657,University of New Orleans,Public,1665,49.2,55.5,65,7689,8,9030
+1552,Hillsdale College,Private,1945,49.1,40.7,98,1434,85,12300
+671,LaGrange College,Private,1530,49.1,31.3,60,834,64,19515
+821,Southeastern University,Private,1490,49.0,83.7,64,2448,51,15078
+3731,Florida Agricultural and Mechanical University,Public,1425,48.6,48.8,80,10053,27,
+3450,Whitman College,Private,1985,48.6,27.5,94,1539,67,31278
+1292,La Sierra University,Private,1420,48.5,32.5,77,2048,31,21378
+3306,Emerson College,Private,1845,48.4,24.0,88,3675,57,19193
+1848,SUNY College at Oswego,Public,1695,48.4,27.0,80,7151,57,7044
+1375,Simmons College,Private,1715,48.3,18.7,85,,51,25593
+2838,St. Lawrence University,Private,1835,48.2,32.8,93,2398,97,39811
+2245,Southwestern Adventist University,Private,1380,48.2,49.2,61,795,29,
+394,Young Harris College,Private,1475,48.2,41.0,,1034,90,19593
+683,Bowie State University,Public,1335,48.1,38.2,,4283,50,8415
+2001,Oakland City University,Private,1385,47.9,48.4,75,2301,50,
+2622,Kansas Wesleyan University,Private,1520,47.9,44.8,47,711,58,
+3506,SUNY College at Brockport,Public,1600,47.7,26.5,81,7133,38,9739
+139,Texas A&M; International University,Public,1380,47.7,47.0,69,,,11379
+1438,Spring Hill College,Private,1630,47.5,22.4,74,1202,80,30933
+2684,Pacific Union College,Private,1515,47.3,29.2,78,1564,71,22470
+3842,California Lutheran University,Private,1680,47.3,17.5,83,2804,53,23880
+1573,Cumberland University,Private,1385,47.1,56.3,67,1237,39,
+2410,Alcorn State University,Public,1330,47.1,33.7,69,3208,52,14958
+126,SUNY College of Technology at Alfred,Public,1455,47.0,43.3,,3527,74,
+97,Greensboro College,Private,1395,47.0,22.0,64,1160,48,
+599,University of Tampa,Private,1615,46.9,22.0,74,6143,59,15712
+3161,Bluefield State College,Public,1405,46.8,62.9,53,1935,,3234
+618,North Carolina Wesleyan College,Private,1320,46.8,29.2,56,1520,32,21500
+2321,University of Texas at Austin,Public,1900,46.7,48.9,93,39955,19,13669
+3218,Albright College,Private,1595,46.7,14.4,74,2199,65,
+4174,Northern Kentucky University,Public,1470,46.7,63.9,67,13318,14,8544
+296,University of St. Mary,Private,1450,46.7,34.2,64,886,30,19354
+4104,Roberts Wesleyan College,Private,1595,46.5,23.7,73,1323,57,23673
+566,Virginia Military Institute,Public,1720,46.3,51.4,82,1664,100,14050
+3462,California State University: Northridge,Public,1385,46.2,30.6,75,31119,,11411
+636,University of Central Florida,Public,1780,46.2,39.5,88,50968,17,6816
+909,The College of New Jersey,Public,1860,46.1,28.7,94,6545,48,10062
+1328,Muhlenberg College,Private,1860,46.1,25.1,90,2422,92,26110
+1902,Belhaven University,Private,1545,46.0,38.2,72,2551,24,12252
+521,Pfeiffer University,Private,1470,46.0,27.5,71,975,50,
+3132,McGill University,Public,2040,45.8,43.4,,,12,
+705,California State University: Fullerton,Public,1550,45.8,25.4,88,32379,6,10983
+761,Villanova University,Private,1955,45.7,24.1,94,7100,70,33169
+974,Saint Thomas University,Private,1360,45.7,63.3,70,1111,26,
+3580,SUNY College at Geneseo,Public,1935,45.7,23.8,90,5388,54,6006
+989,University of California: Davis,Public,1840,45.7,23.1,93,25759,25,21420
+1849,SUNY College at Plattsburgh,Public,1620,45.6,26.8,78,5706,46,11727
+39,Boston University,Private,1950,45.6,19.3,92,18306,60,37655
+3152,Dalton State College,Public,1415,45.6,81.3,62,5047,4,6225
+395,Abilene Christian University,Private,1630,45.5,24.9,75,3626,44,18199
+1878,Fisk University,Private,1445,45.5,15.1,85,580,64,14181
+3216,Bryn Athyn College,Private,1490,45.4,26.6,80,242,73,16900
+807,Jacksonville University,Private,1530,45.3,33.0,61,3319,42,24934
+623,University of North Carolina School of the Arts,Public,1665,45.2,54.4,85,760,58,
+3748,Bentley University,Private,1835,45.1,30.8,95,4237,78,31077
+2483,Central Baptist College,Private,1335,45.0,85.7,50,832,25,
+4031,Catawba College,Private,1485,44.9,19.1,71,1279,66,22102
+513,Oklahoma Christian University,Private,1640,44.7,47.3,78,1910,80,20495
+492,University of Connecticut,Public,1860,44.7,23.2,93,17528,72,12086
+3244,Kentucky State University,Public,1210,44.5,25.2,46,2296,37,10097
+3507,SUNY College at Cortland,Public,1665,44.5,23.3,85,6345,50,13122
+4020,Barton College,Private,1440,44.4,15.1,73,1103,51,18479
+1664,California State University: Monterey Bay,Public,1455,44.4,16.2,80,5194,60,10967
+2574,Newman University,Private,1585,44.3,17.6,70,2384,26,18984
+393,American University,Private,1880,44.2,21.2,90,7299,,30402
+2994,Toccoa Falls College,Private,1480,44.2,39.7,67,807,75,17210
+3001,University of Florida,Public,1905,44.1,52.0,96,32776,,13093
+990,University of California: Santa Barbara,Public,1860,44.0,19.6,91,18977,37,23506
+1882,Freed-Hardeman University,Private,1635,43.7,72.8,71,1449,82,16126
+3581,SUNY College at New Paltz,Public,1690,43.6,19.9,88,6685,42,9383
+3665,Chapman University,Private,1820,43.6,28.0,91,5677,34,31324
+3483,Rensselaer Polytechnic Institute,Private,2075,43.6,20.0,94,5391,57,34436
+1478,North Park University,Private,1550,43.4,17.7,71,2203,46,13276
+2633,LeTourneau University,Private,1795,43.3,49.6,78,2450,72,22004
+666,University of South Florida,Public,1760,43.2,30.4,87,30289,18,10143
+2411,SUNY College at Oneonta,Public,1660,43.1,22.1,84,5863,59,8818
+4029,Bethany College,Private,1330,43.0,40.6,59,812,94,
+3582,Fordham University,Private,1890,42.9,12.9,,8325,56,27856
+3504,SUNY University at Binghamton,Public,1975,42.9,22.0,91,12356,61,10590
+1509,San Diego Christian College,Private,1380,42.6,39.8,66,739,42,15300
+3267,University of San Diego,Private,1840,42.6,15.2,90,5457,45,29600
+2634,Lincoln University,Public,1345,42.6,42.4,36,3013,22,9447
+3818,Gordon College,Public,1295,42.6,81.7,,4171,26,
+1376,Smith College,Private,1975,42.4,35.3,93,2664,95,39440
+672,Lander University,Public,1475,42.3,40.2,61,2969,33,
+440,Grambling State University,Public,1190,42.1,34.8,,4431,,3229
+853,Mount Holyoke College,Private,1975,42.1,31.0,92,2322,95,31846
+1182,Jefferson College of Health Sciences,Private,1445,41.9,33.9,53,863,8,
+1264,Skidmore College,Private,1845,41.9,27.1,92,2660,86,37067
+3163,Delaware State University,Public,1345,41.7,28.1,60,3955,56,
+95,Ohio Valley University,Private,1525,41.5,32.1,46,436,53,13814
+638,Flagler College,Private,1670,41.5,29.1,69,2848,36,11554
+290,Prairie View A&M; University,Public,1285,41.4,39.9,64,6757,25,14745
+3408,Bryn Mawr College,Private,1965,41.4,33.6,90,1322,93,41074
+2494,Dallas Baptist University,Private,1680,41.3,44.3,71,3513,51,16121
+515,Central Christian College of Kansas,Private,1370,41.3,39.8,49,819,72,
+1424,Baptist Bible College of Pennsylvania,Private,1535,41.2,33.0,47,604,79,
+1003,Mid-Atlantic Christian University,Private,1295,41.1,53.6,57,165,55,8962
+3489,Stillman College,Private,1335,41.0,20.0,,,,
+2438,Texas Christian University,Private,1780,40.9,23.5,90,8456,47,21669
+765,Washington & Jefferson College,Private,1705,40.8,14.2,,1429,91,28300
+2322,University of Tulsa,Private,1930,40.7,28.3,88,3160,74,28906
+2720,Alderson-Broaddus College,Private,1425,40.6,26.0,66,826,76,21708
+2489,Dallas Christian College,Private,1400,40.5,84.8,42,329,,
+3724,Florida International University,Public,1710,40.5,41.1,82,37468,7,6926
+1266,Stevens Institute of Technology,Private,1905,40.4,37.1,92,,85,
+1400,Gordon College,Private,1730,40.3,28.9,80,1580,90,21299
+1641,Dickinson College,Private,1930,40.2,25.7,91,2386,95,34269
+2916,Rockford College,Private,1350,40.1,18.2,61,1022,41,17322
+2091,SUNY University at Stony Brook,Public,1885,40.1,24.3,90,16003,61,11214
+4014,Andrew College,Private,1240,39.9,41.7,,292,,
+3634,University of Miami,Private,2000,39.7,18.3,91,10590,39,34845
+298,St. Mary's University,Private,1560,39.6,19.1,76,2459,59,
+977,Clayton State University,Public,1410,39.4,60.8,68,6808,5,9431
+2898,Occidental College,Private,1950,39.4,21.9,94,2176,80,38084
+3587,Franklin & Marshall College,Private,1965,39.3,29.5,92,2365,97,
+3745,Brandeis University,Private,2020,39.1,25.0,95,3588,74,37391
+633,Florida Atlantic University,Public,1595,39.0,29.8,78,24823,6,9954
+2403,University of La Verne,Private,1555,38.9,22.8,85,2499,33,28210
+3393,SUNY Institute of Technology at Utica/Rome,Public,1610,38.9,27.0,70,1688,30,4770
+3901,Tiffin University,Private,1440,38.6,65.1,66,5728,20,17482
+324,University of Science and Arts of Oklahoma,Public,1425,38.5,81.3,60,983,46,9174
+1459,Union College,Private,1955,38.2,27.8,94,2241,89,36912
+809,Johnson C. Smith University,Private,1270,38.1,20.0,72,1669,61,16757
+662,Spelman College,Private,1520,38.0,22.6,90,2145,65,13904
+1611,Alice Lloyd College,Private,1445,37.8,18.2,,608,79,12035
+2133,New York School of Interior Design,Private,1555,37.8,67.8,93,556,1,9557
+1294,University of the Pacific,Private,1825,37.8,9.8,82,3867,46,26896
+991,University of California: San Diego,Public,1860,37.8,19.9,94,22676,40,
+2277,Western Carolina University,Public,1560,37.7,27.2,74,7979,49,8551
+2881,Andrews University,Private,1595,37.5,40.5,78,1917,63,25487
+1300,Colorado School of Mines,Public,1970,37.4,21.7,89,4169,43,12239
+3888,Tougaloo College,Private,1260,37.4,19.9,80,972,60,11650
+1619,Central State University,Public,1185,36.7,18.0,43,2116,52,
+480,Macalester College,Private,2055,36.7,24.1,94,2070,62,37945
+1058,The College of Saints John Fisher & Thomas More,Private,1710,36.6,86.7,2,21,90,15800
+1195,University of Michigan,Public,2065,36.5,39.6,97,27979,34,21255
+3447,Baptist College of Florida,Private,1475,36.3,65.2,82,538,39,6618
+442,Grinnell College,Private,2090,36.3,30.5,95,1674,82,38718
+3315,Kenyon College,Private,1970,36.0,31.4,91,1667,98,37805
+3928,Reed College,Private,2070,35.9,28.4,91,1432,63,36132
+1382,Connecticut College,Private,1985,35.8,29.0,92,1926,99,34688
+2395,University of Rochester,Private,2030,35.8,23.0,96,5785,83,37988
+3894,Tuskegee University,Private,1375,35.1,18.5,73,2606,55,
+2659,Houston Baptist University,Private,1645,35.0,12.6,68,2052,37,23701
+3186,New York University,Private,2035,35.0,34.3,92,22498,50,28920
+1166,Florida Christian College,Private,1370,34.6,45.6,55,374,62,
+3681,Lafayette College,Private,1950,34.5,27.4,95,2488,92,37641
+2002,Oakwood University,Private,1370,34.3,43.5,,2728,68,
+3455,Corban University,Private,1575,34.0,23.8,68,947,66,19626
+2266,Wake Forest University,Private,2000,34.0,31.8,94,4815,68,34647
+1244,Trinity College,Private,1940,33.7,22.7,88,2301,89,41912
+1380,College of the Holy Cross,Private,1950,33.5,31.5,95,2926,91,33492
+3311,SUNY College at Purchase,Public,1605,33.4,23.3,83,4155,66,9124
+3737,George Washington University,Private,1945,33.1,33.2,93,10464,67,38163
+3813,Calumet College of St. Joseph,Private,1225,32.8,79.4,,856,,11764
+398,University of Arkansas at Pine Bluff,Public,1225,32.8,38.6,57,2724,45,
+226,Lehigh University,Private,1980,32.6,32.4,94,4883,69,36189
+4012,Scripps College,Private,2005,32.4,30.6,92,945,95,36473
+3090,College of William and Mary,Public,2025,32.2,33.4,96,6171,72,14812
+2802,Northeastern University,Private,2065,31.9,18.9,96,16685,54,29409
+1908,Berea College,Private,1760,31.8,72.5,82,1658,84,28239
+1913,Blue Mountain College,Private,1480,31.5,52.7,85,502,52,7420
+2579,St. Gregory's University,Private,1395,31.4,82.3,41,628,,
+2849,Marist College,Private,1765,31.4,30.5,89,5560,67,16794
+2003,Oberlin College,Private,2030,31.3,34.0,93,2930,88,31983
+951,San Diego State University,Public,1645,31.3,26.3,89,26624,14,9000
+4217,California Polytechnic State University: San Luis Obispo,Public,1855,31.3,32.1,93,17680,36,9543
+3272,New Mexico Institute of Mining and Technology,Public,1900,31.1,94.3,74,1565,53,11261
+1486,California State University: Long Beach,Public,1545,30.8,25.2,89,30931,7,12507
+579,University of Richmond,Private,1980,30.3,25.2,93,3074,89,41347
+1092,Wellesley College,Private,2075,30.1,43.4,97,2481,93,39937
+707,Babson College,Private,1905,29.9,28.5,94,2015,85,37261
+3162,Brenau University,Private,1445,29.8,13.5,66,773,,22665
+2350,University of Virginia,Public,2050,29.6,42.2,97,15822,41,22702
+1314,Colgate University,Private,2040,29.4,33.0,95,2871,92,42313
+1475,Spalding University,Private,1410,29.3,77.2,72,,,
+3921,Pepperdine University,Private,1850,29.2,31.5,91,3488,58,34617
+2392,Colby College,Private,2010,29.0,32.5,95,1863,94,40178
+712,Boston College,Private,2045,28.8,24.5,95,9110,85,34302
+3693,Carnegie Mellon University,Private,2160,27.8,29.3,95,6279,,31612
+3635,University of North Carolina at Chapel Hill,Public,1960,27.6,49.9,97,18503,46,15939
+2291,Tulane University,Private,2005,27.3,20.0,89,8423,44,31130
+3251,Hamilton College,Private,2085,27.2,33.8,96,1884,98,36725
+539,Emory University,Private,2085,27.0,30.0,95,7656,70,35945
+3409,Bucknell University,Private,1960,27.0,41.0,95,3536,86,28500
+708,Bates College,Private,2015,26.6,38.6,95,1753,92,38185
+509,Carleton College,Private,2145,25.5,35.3,98,2055,94,35113
+3119,Rhode Island School of Design,Private,1870,25.4,55.4,93,1971,,19549
+2519,Trinity College of Florida,Private,1400,25.3,65.9,45,213,24,9883
+982,Davidson College,Private,2035,24.8,41.4,97,1790,92,
+1197,University of Notre Dame,Private,2155,23.3,51.0,97,8475,80,35326
+1299,Colorado College,Private,1995,23.2,39.9,95,2008,78,40524
+3254,Haverford College,Private,2125,22.9,38.9,96,1205,99,41352
+760,Vassar College,Private,2095,22.8,36.5,96,2406,94,45236
+34,Barnard College,Private,2010,22.5,48.9,97,2509,91,40899
+992,University of California: Los Angeles,Public,1980,22.0,35.2,96,27941,35,
+1245,Tufts University,Private,2155,21.4,37.4,97,5255,64,35033
+3314,Kentucky Wesleyan College,Private,1490,21.2,81.9,54,678,45,15146
+122,Wesleyan University,Private,2090,20.9,35.8,95,2940,99,42088
+3341,University of Southern California,Private,2080,19.9,32.9,97,18316,38,41758
+2268,Washington and Lee University,Private,2085,19.5,41.2,95,1838,59,44349
+484,Harvey Mudd College,Private,2265,19.2,30.8,98,782,98,36841
+3805,Franklin W. Olin College of Engineering,Private,2260,19.2,54.0,99,355,99,31258
+1461,United States Merchant Marine Academy,Public,1915,18.5,66.7,,1008,100,
+988,University of California: Berkeley,Public,2055,18.0,36.5,97,25774,26,21767
+4099,Northwestern University,Private,2200,18.0,38.0,97,8475,65,
+313,Washington University in St. Louis,Private,2245,17.9,33.6,96,7259,79,35508
+808,Johns Hopkins University,Private,2130,17.7,36.7,97,5192,54,37917
+850,Middlebury College,Private,2065,17.2,39.4,97,2516,97,38670
+4118,Williams College,Private,2165,17.0,45.5,96,2052,94,44508
+3736,Georgetown University,Private,2110,17.0,46.0,96,7552,67,34238
+2569,Rice University,Private,2185,16.7,37.0,97,,72,35549
+15,Cornell University,Private,2140,16.6,51.4,96,14261,57,42248
+2997,United States Coast Guard Academy,Public,1885,15.9,71.4,94,967,100,
+3744,Bowdoin College,Private,2145,15.8,46.4,97,1839,92,39145
+2931,Maria College,Private,1335,15.7,65.0,,886,,
+376,Pitzer College,Private,1915,15.7,37.9,90,1084,74,41456
+4045,Vanderbilt University,Private,2230,14.2,39.9,96,6796,83,44416
+1268,Swarthmore College,Private,2170,14.2,40.4,97,1552,93,39427
+3670,Claremont McKenna College,Private,2120,13.6,42.3,95,1264,94,39953
+535,Duke University,Private,2195,13.4,42.0,97,6655,81,40561
+1713,University of Chicago,Private,2245,13.2,45.7,99,5590,55,42128
+2354,Amherst College,Private,2150,13.0,41.7,98,1817,99,45438
+757,Pomona College,Private,2165,13.0,41.3,97,1607,98,40107
+1464,University of Pennsylvania,Private,2180,12.6,62.5,98,9841,63,40582
+4214,California Institute of Technology,Private,2320,11.8,40.6,96,997,85,37984
+986,United States Air Force Academy,Public,1995,9.9,84.3,93,4120,100,0
+3300,Dartmouth College,Private,2185,9.8,48.6,97,4193,86,42419
+3746,Brown University,Private,2140,9.6,55.8,97,6435,,40523
+61,College of the Ozarks,Private,1560,9.5,85.1,87,1376,76,15302
+1462,United States Military Academy,Public,1915,9.0,85.7,96,4592,100,
+4075,Massachusetts Institute of Technology,Private,2260,8.9,70.1,97,4503,90,37979
+4221,Princeton University,Private,2255,7.9,64.8,98,5336,98,
+3853,Columbia University,Private,2225,7.4,59.9,99,6068,94,43087
+4123,Yale University,Private,2250,7.1,66.4,99,5405,88,43571
+1341,Cooper Union for the Advancement of Science and Art,Private,2045,7.0,76.1,90,880,20,37500
+2998,United States Naval Academy,Public,1915,6.8,86.7,97,4536,100,0
+3387,Stanford University,Private,2220,6.6,72.8,98,7063,91,41894
+1251,Harvard College,Private,2250,6.1,80.2,97,6658,99,46794
+423,West Virginia State University,Public,1305,0.0,,,2589,,

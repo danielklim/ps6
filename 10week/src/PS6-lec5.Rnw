@@ -1,0 +1,803 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 5]{PS6 Lecture 5}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{4/14/2014}
+
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+library(ggplot2)
+library(plotrix)
+options(width = 60)
+load('../../data/gdp.rdata') #preload data
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item t-distribution
+  \item test of differences in mean
+  \item New data set: GDP/capita
+  \item Transforming variables
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\section{Other Univariate Distributions}
+\subsection{Intro to the t-distribution}
+
+\begin{frame}[fragile]
+\frametitle{Road so Far}
+\begin{enumerate}
+  \item Learned stats essentials: summary statistics, histograms, boxplots,
+  density\vspace{0.1in}
+  \item Studied normal distribution in theory\vspace{0.1in}
+  \item Applied (1) and (2) to study turnout data
+\end{enumerate}
+\vspace{0.1in}
+
+However, normal distribution is not the only one you'll encounter
+while doing data analysis.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{A few other univariate distributions}
+
+\textbf{discrete}\vspace{0.1in}
+
+\begin{description}
+  \item[poisson:] count data parameterized by single mean/variance (e.g. \# of
+  emails per unit time)\vspace{0.1in}
+  \item[binomial:] number of successes in a sequence of N independent yes/no
+  experiments (e.g. coin flips)\vspace{0.1in}
+  \item[uniform:] equal probability of getting each of N values (e.g. roll of a 
+  fair die, single fair coin flip)
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{A few other univariate distributions}
+
+\textbf{continuous}\vspace{0.1in}
+\begin{description}
+  \item[uniform:] equal probability of getting any value within its range  (e.g.
+  probability)\vspace{0.1in}
+  \item[beta:] rate of success given past successes and failures (e.g. coin
+  that is unknown whether fair or not)\vspace{0.1in}
+  \item[student's T:] standard normal with heavier tails (e.g. black swan events)
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The t-distribution}
+We're going to look a bit more closely at the t-distribution because it is used
+for a common statistical test that we will find useful.
+\vspace{0.1in}
+
+Characteristics:
+\begin{itemize}
+  \item single parameter: degrees of freedom (df)\vspace{0.1in}
+  \item looks normal, but has thicker tails\vspace{0.1in}
+  \item approaches normality as $df \rightarrow \infty$
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The following code lets us visually compare the PDFs of t distributions with
+varying df with that of the normal
+
+\footnotesize
+<<tdist, eval=F>>=
+x = seq(-4, 4, 0.1)
+y1 = dnorm(x, 0, 1)
+y2 = dt(x, 1)
+y3 = dt(x, 2)
+y4 = dt(x, 5)
+
+cols=c('black', 'red', 'green', 'blue')
+plot(x, y1, col=cols[1], type='l', 
+		lwd=2, main='t-dist with varying df')
+lines(x, y2, col=cols[2], lwd=2)
+lines(x, y3, col=cols[3], lwd=2)
+lines(x, y4, col=cols[4], lwd=2)
+legend('topright', c('normal', 'df=1', 'df=2', 'df=5'), 
+		col=cols, lwd=rep(2, 5))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\setkeys{Gin}{width=0.8\textwidth}
+<<fig=T, echo=F>>=
+<<tdist>>
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Our Specific Question}
+Where we left off: Is turnout in Southern states different from that of
+non-Southern states in a way that substantively matters?
+\vspace{0.2in}
+
+Previous approach:
+\begin{enumerate}
+  \item visually compare theoretical and empirical density of data
+  \item give hand-wavy justification
+\end{enumerate}
+\vspace{0.1in}
+\pause
+
+New approach:
+\begin{enumerate}
+  \item statistically test hypothesis that they are different
+  \item make an actual probabilistic statement
+\end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Question in More General Terms}
+
+More generally, given 2 normally distributed samples with\ldots
+\vspace{0.1in}
+
+\begin{itemize}
+  \item parameters $\mu_1, \mu_2, \sigma_1, \sigma_2$\vspace{0.1in}
+  \item sample sizes $N_1, N_2$
+  \end{itemize}
+\vspace{0.1in}
+
+\textbf{are these samples from the same population?}
+
+\end{frame}
+%%%%%%%%%%%%%
+\subsection{Test of difference in means}
+
+\begin{frame}[fragile]
+\frametitle{Test of difference in means}
+To answer the question, we will use a \textbf{2 tailed t-test} (AKA test of
+difference in means)
+\vspace{0.2in}
+
+Given some hypothesis we want to test\ldots
+\begin{enumerate}
+  \item if some basic assumptions met\ldots
+  \item probability of hypothesis being supported is t-distributed\ldots
+  \item \ldots allowing us to make probabilistic statement about hypothesis
+  \end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Test of difference in means}
+
+\textbf{Step 1:} define null and alternate hypotheses\vspace{0.1in}
+\begin{description}
+  \item[null:] the samples are drawn from populations with the same
+  mean\vspace{0.1in}
+  \item[alternate:] they are from different populations
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Test of difference in means}
+
+\textbf{Step 2:} calculate $t$, $df$, $P_{|t|, \nu}$ and the p-value for the
+test\vspace{0.1in}
+\begin{itemize}
+  \item $P_{|t|, \nu}$ is the value of the CDF at $abs(t)$ for a t-dist.
+  $df=\nu$ \vspace{0.1in}
+  \item The \textit{p-value} for the null hypothesis is $2(1-P_{|t|, \nu})$
+  \end{itemize}
+  \vspace{0.1in}
+ 
+\textbf{The p-value is the probability of obtaining the test statistic ($t$)
+assuming the null hypothesis is true.}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Test of difference in means}
+
+\textbf{Step 3:} draw conclusion about hypothesis \vspace{0.1in}
+\begin{itemize}
+  \item If calculated p-value lower than $\alpha$, the significance 
+  level of the test\footnote{typically, 0.05}, ``reject the (null)
+  hypothesis that the samples are from a population with the same mean at the $\alpha$
+  level.'' \vspace{0.1in}
+  \item  Else, data are insufficient to distinguish the population of one
+  sample from the other.
+  \end{itemize}
+
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To do the calculations\ldots  
+\vspace{0.1in}
+
+\begin{enumerate}
+\item calculate:
+  \begin{columns}
+    \column{0.1\textwidth}
+    
+    \column{0.35\textwidth}
+    $$t = \frac{\bar{X_1} - \bar{X_2}}{\sqrt{\frac{\sigma_1^2}{N_1} +
+    \frac{\sigma_2^2}{N_2}}}$$
+    
+    \column{0.35\textwidth}
+    $$\nu = \frac{(\sigma_1^2 + \sigma_2^2)^2 }{ \frac{\sigma_1^4}{N_1 - 1} +
+    \frac{\sigma_2^4}{N_2 - 1}}$$
+    
+  \end{columns}
+  \vspace{0.1in}
+   
+  \item calculate $P_{|t|, \nu}$. In R, `pt(abs(t), $\nu$)'\vspace{0.1in}
+  \item calculate p-value: $2(1-P_{|t|, \nu})$\vspace{0.1in}
+  \item If $\text{p-value} < \alpha$, reject null hypothesis
+  \end{enumerate}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+
+Suppose we have 2 samples with the following params:
+$$\mu_1 = 6, \sigma_1 = 1, N_1 = 20$$
+$$\mu_2 = 3, \sigma_2 = 2, N_2 = 30$$
+\vspace{0.05in}
+
+\footnotesize
+<<>>=
+mu1 = 6; sig1 = 1; n1 = 20
+mu2 = 3; sig2 = 2; n2 = 30
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{center}
+\setkeys{Gin}{width=0.7\textwidth}
+<<echo=F, fig=T>>=
+x1 = rnorm(n1, mu1, sig1)
+x2 = rnorm(n2, mu2, sig2)
+sam = c(rep('sample 1', n1), rep('sample 2', n2))
+dats = data.frame(x=c(x1, x2), sample = sam)
+ggplot(dats) + geom_density(aes(x, fill=sample), alpha=0.5)
+#ggplot(dats) + geom_histogram(aes(x, fill=sample), position='stack', alpha=0.5, binwidth=1)
+@
+\end{center}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+Can we reject the null hypothesis that these samples are drawn from populations
+with the same mean?
+\vspace{0.2in}
+
+Complete the test by running the following code:
+\footnotesize
+<<>>=
+T = (mu1 - mu2)/sqrt(sig1^2/n1 + sig2^2/n2)
+nu = (sig1^2 + sig2^2)^2/(sig1^4/(n1-1)+sig2^4/(n2-1))
+pval = 2*(1-pt(abs(T), nu))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+And the result\ldots 
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+pval
+@
+\normalsize
+\vspace{0.1in}
+
+Since `pval' is less than 0.05, we can say that these two samples are
+probably not drawn from the same population.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{A note on phrasing}
+
+These are accurate and essentially equivalent statements.
+\begin{itemize}
+  \item ``if I were to redo this test over and over again with new samples, 
+  $1-\alpha$\% of those would show [some number] to be non-zero.''
+  \item ``Because the p-value is below $\alpha$, I reject the null hypothesis at
+  the $\alpha$ level.''
+  \end{itemize}
+\vspace{0.1in}\pause
+
+This statement is NOT the same, nor correct.
+\begin{itemize}
+  \item ``Because the p-value is below $\alpha$, the alternate hypothesis
+  \textbf{is/must} be true''
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{A note on phrasing}
+
+So what's the logic behind the phrasing?\vspace{0.1in}
+
+\begin{itemize}
+  \item These tests are set up to tell us what CANNOT be.
+  \item They do not directly tell us what MUST be.
+  \item We get to what is LIKELY to be true by eliminating as many possible alternate
+explanations as possible.
+  \end{itemize}
+\vspace{0.2in}\pause
+
+This is not the way we are accustomed to thinking nor the easiest way to make
+arguments. However, given the tools we do have, you must understand these
+disctinctions.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Shortcomings of example 1}
+If you play around with example 1, what you'd eventually find is that it's not a
+terribly interesting test. 
+\vspace{0.1in}
+
+\begin{itemize}
+  \item the null hypothesis is that samples are from populations with the
+  \textit{exact same mean}\vspace{0.1in}
+  \item even if population means were different by a tiny amount, the
+  test \textit{could} give you a statistically significant result\vspace{0.1in}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Shortcomings of example 1}
+
+\begin{itemize}
+  \item \textit{More interesting:} 'sample 1 is from a population
+  that is at least X units different from that of sample 2.'\vspace{0.1in}
+  \item We can modify the test slightly to test whether the means of the
+populations that the samples are drawn from differ by at least $\Delta$
+  \end{itemize}
+  
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\textbf{(new) null hypothesis:} the 2 samples are drawn from populations with
+means that are at least $\Delta$ apart.
+\vspace{0.2in}
+
+\begin{center}
+The only difference is in the numerator of T:
+    $$t = \frac{\bar{X_1} - \bar{X_2} \textcolor{red}{- \Delta}}{\sqrt{\frac{\sigma_1^2}{N_1} +
+    \frac{\sigma_2^2}{N_2}}}$$
+\vspace{0.05in}
+
+Everything else is the same.
+\end{center}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 2}
+Let's see whether the two samples from example 1 are drawn from populations
+with a difference in means of at least 2.5:
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+delta = 2.5
+T = (mu1 - mu2 - delta)/sqrt(sig1^2/n1 + sig2^2/n2)
+nu = (sig1^2 + sig2^2)^2/(sig1^4/(n1-1)+sig2^4/(n2-1))
+pval = 2*(1-pt(abs(T), nu))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 2}
+Resulting p-value:
+\footnotesize
+<<>>=
+pval
+@
+\normalsize
+\vspace{0.1in}
+
+\begin{itemize}
+  \item because we generated these fake data, we \textbf{know} samples
+  drawn from populations with means 3 apart ($\mu_1=6, \mu_2=3$)\vspace{0.1in}
+  \item however, test \textbf{suggests} we \textit{cannot} tell whether they are
+  from populations with means even 2.5 apart\vspace{0.1in}
+  \item due to randomness of the data and the small sample sizes
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+How might we analyze turnout data with this test?
+\vspace{0.1in}
+
+One way:
+\begin{itemize}
+  \item calculate $\Delta_{max}$ across time\vspace{0.1in}
+  \item see how that figure changes across time\vspace{0.1in}
+  \item What would we say if\ldots
+  \begin{itemize}
+    \item \ldots increasing?
+    \item \ldots decreasing?
+    \item \ldots stable?
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We can answer many social science questions using this test.
+\vspace{0.1in}
+
+\begin{itemize}
+  \item How has the distribution of income changed?
+  \item Is group A of similar partisanship as group B?
+  \item What is the effect of policy X on characteristic Y?
+\end{itemize}
+\vspace{0.1in}
+
+Test of differences in means is not always the best way to answer such
+questions, but it certainly provides one way.
+\end{frame}
+%%%%%%%%%%%%%
+
+\section{Skew \& Transforms}
+\subsection{New Data Set: World GDP}
+
+\begin{frame}[fragile]
+\frametitle{New Dataset: GDP/capita}
+Let's introduce a new data set.
+\vspace{0.1in}
+
+\textbf{GDP per capita by country, 1966-1997}
+\vspace{0.1in}
+
+\begin{itemize}
+  \item Download `World\_GDP\_1966\_97.csv' from the course
+  website.\vspace{0.1in}
+  \item Refer to lecture notes 1 for loading instructions.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{New Dataset: GDP/capita}
+In case you're feeling lazy\ldots
+\vspace{0.1in}
+
+\footnotesize
+<<eval = F>>=
+library(foreign)
+f = '../../data/World_GDP_1966_97.csv'
+gdp = read.csv(f, stringsAsFactors = F)
+@
+\normalsize
+\vspace{0.1in}
+
+Once loaded, you should do all the basic exercises from lecture 1 to acquaint
+yourself with these data.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Shape of data}
+One of the first things you will notice is that the `gdp' data have a different
+shape from the `turnout' data.
+\vspace{0.1in}
+
+\begin{itemize}
+  \item `turnout' has 1 row for each state, with 1 column for each election year
+  \item `gdp' has N rows each country, where N is the number of years. Each row
+  represents a country-year.
+  \end{itemize}
+\vspace{0.1in}
+
+`turnout' is in \textbf{wide form}, while `gdp' is in \textbf{long form}. Each
+configuration has pros/cons, which we'll encounter.
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Skew}
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.3\textwidth}
+
+Let's take a look at the column `GDPcapImp'. These are GDP/cap vals for all
+countries '66-'97.
+  
+  \column{0.7\textwidth}
+  
+  \setkeys{Gin}{width=0.9\textwidth}
+  \scriptsize
+<<fig=T>>=
+hist(gdp$GDPcapImp)
+@
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Skew}
+Such data are described as \textbf{skewed}
+
+\begin{itemize}
+  \item We say the data are skewed to the side with the longer tail
+  \item `GDPcapImp' is skewed to the right
+  \end{itemize}
+\vspace{0.2in}
+
+The histogram is not as helpful as it can be because most of the observations
+are clustered on the left, but we can't see what's going on there.
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Log transform}
+
+\begin{frame}[fragile]
+\frametitle{The log transform}
+In many cases, we can fix \textbf{right skew} through the use of a \textbf{log
+transform}
+\vspace{0.2in}
+
+\begin{itemize}
+  \item Take the natural log of the data.
+  \item Has the effect of decompressing smaller numbers and compressing larger ones.
+  \item If resulting data are approx. normal, we say the original data are
+  \textbf{log-normal}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The log transform}
+We'll transform `GDPcapImp', then take a look at it.
+\vspace{0.1in}
+\footnotesize
+<<tr1, eval=F>>=
+xt = log(gdp$GDPcapImp)
+xlims = round( range(xt), 0)
+xs = seq(xlims[1], xlims[2], 0.1)
+ys = dnorm(xs, mean(xt), sd(xt))
+
+hist(xt, xlim=xlims, main='GDP/cap, all values', xlab='log($)')
+par(new=T)
+plot(xs, ys, xlim=xlims, type='l', xaxt='n', yaxt='n',
+		main='', xlab='', ylab='', col='red', lwd=2, lty=2)
+lines(density(xt), col='black', lwd=2, lty=1 )
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The log transform}
+\begin{columns}[c] 
+  \column{0.65\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+<<tr1>>
+@
+  
+  \column{0.35\textwidth}
+  
+  Looks pretty normal. Depending on our purpose, it's probably safe to call
+  these data log-normal.
+  
+  \end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The log transform}
+Why does the log transform work?
+\vspace{0.2in}
+
+Let's experiment with some easy numbers.
+\footnotesize
+<<logex, eval=F>>=
+Xs = 1:10
+LXs = log(Xs)
+plot(Xs, Xs, type='l', ylim=c(0, 10), ylab='Ys', lwd=2)
+lines(Xs, LXs, col='red', lwd=2)
+legend('topleft', c('raw', 'logged'), 
+		col=c('black', 'red'), lwd=c(2, 2))
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The log transform}
+\begin{columns}[c] 
+  \column{0.65\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+<<logex>>
+@
+  
+  \column{0.35\textwidth}
+  
+  Numbers that were small are shrunk less than numbers that were large
+  \vspace{0.1in}
+  
+  So, we get a decompressing/compressing effect.  
+  \end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{The log transform}
+Looks like it can make our graphs look normal -- so what? 
+\vspace{0.2in}
+
+2 major scenarios in which to use the log transform
+\vspace{0.1in}
+
+\begin{itemize}
+  \item examine percent change
+  \item reduce leverage of particular observations in statistical regression
+  \end{itemize}
+\vspace{0.2in}
+
+We'll talk about point 2 in lectures re: regression. For now, let's look at
+percent change.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+What do log units mean on a normal scale?
+\vspace{0.2in}
+
+To illustrate: define a vector 1:4, and say these are the on the
+log scale. To get normal scale numbers, we take their exponent (because
+$exp(log(x)) = x$).
+\footnotesize
+<<>>=
+logXs = 1:4
+Xs = exp(logXs)
+Xs
+log(Xs)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Log units transform back to normal units in a nonlinear form.
+\vspace{0.2in}
+\begin{columns}[c] 
+  \column{0.4\textwidth}
+  Log scale: difference between all elements is simply 1
+  
+  \begin{itemize}
+  \item  $2-1=1$
+  \item  $3-2=1$
+  \item  $4-3=1$
+  \end{itemize}
+  
+  \column{0.4\textwidth}
+  Regular scale: difference between elements changes
+  
+  \begin{itemize}
+  \item  $ \Sexpr{round(Xs[2],2)} - \Sexpr{round(Xs[1],2)} = \Sexpr{round(Xs[2]-Xs[1],2)}$
+  \item  $ \Sexpr{round(Xs[3],2)} - \Sexpr{round(Xs[2],2)} = \Sexpr{round(Xs[3]-Xs[2],2)}$
+  \item  $ \Sexpr{round(Xs[4],2)} - \Sexpr{round(Xs[3],2)} = \Sexpr{round(Xs[4]-Xs[3],2)}$
+  \end{itemize}
+  
+  \end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+No obvious pattern to increases of \Sexpr{round(Xs[2]-Xs[1],2)},
+\Sexpr{round(Xs[3]-Xs[2],2)}, \Sexpr{round(Xs[4]-Xs[3],2)}. However, there is
+more than meets the eye.\vspace{0.1in}
+\footnotesize
+<<>>=
+(Xs[2] - Xs[1])/Xs[1]
+(Xs[3] - Xs[2])/Xs[2]
+(Xs[4] - Xs[3])/Xs[3]
+@
+\normalsize
+\vspace{0.1in}
+
+\textbf{Percent change remains constant!}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The log scale can be interpreted as a measure of \textbf{percent
+change}\vspace{0.1in}
+\begin{itemize}
+  \item a change of 1 log unit is the same percent change whether moving
+  from 1 to 2, or 101 to 102.\vspace{0.1in}
+  \item magnitude matters (obviously) -- moving from 0.1 to 0.2 is the same \%
+  change as 4.5 to 4.6, but not as 1 to 2.\vspace{0.1in}
+  \item e.g. a country with log(GDP/cap) of 8 (i.e. \$\Sexpr{round(exp(8),2)})
+  is the same percent bigger than one with 7 (i.e.
+  \$\Sexpr{round(exp(7),2)}), as 9 (i.e.
+  \$\Sexpr{round(exp(9),2)}) versus 8.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+A few more thoughts on transformation\vspace{0.1in}
+
+\begin{itemize}
+  \item Can't log numbers less than 0. If raw data don't
+  meet that criteria, you can modify them so that they do.\vspace{0.1in}
+  \item For data that are \textbf{left-skewed}, unskew by taking the square root
+  (instead of logging)\vspace{0.1in}
+  \item When you want to describe data in writing, you still need to use the
+  original scale (i.e. log(\$) is not an intuitive unit)
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\end{document}

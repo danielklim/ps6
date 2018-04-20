@@ -1,0 +1,740 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 1]{PS6 Lecture 1}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{3/31/2014}
+\setbeamercovered{transparent}
+
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+options(width = 60)
+load('../../data/turnout.rdata') #preload data
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item Intro to R \& RStudio
+  \item Loading/viewing data in CSV format
+  \item Viewing the data
+  \item Measures of central tendency
+  \end{itemize}
+\end{frame}
+
+\section{Getting Started in R}
+
+\subsection{Getting started}
+
+\begin{frame}{Intro to R}
+\textbf{What is R?}\vspace{0.1in}
+``R is... a freely available language and environment for
+  statistical computing and graphics''\footnote{http://cran.us.r-project.org/}
+\vspace{0.2in}
+
+\textbf{Why use R?}\vspace{0.1in}
+\begin{itemize}
+  \item Highly extensible
+  \item Large, growing user base
+  \item Free!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Installing R}
+\begin{itemize}
+  \item \textbf{Download R core:} http://www.cran.r-project.org/
+    \begin{itemize}
+    \item This is the underlying engine and is fully functional, but\ldots
+    \item \ldots the working environment is a simple command prompt with few/no
+    visual cues, so not very user-friendly
+    \end{itemize}
+    \vspace{0.2in}
+    
+  \item \textbf{Download RStudio:} http://www.rstudio.org/
+    \begin{itemize}
+      \item This is a graphical user interface (GUI) that keeps track of
+      your work and adds graphical means of completing mundane tasks.
+      \item We'll be using the RStudio interface in this class.
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{The RStudio Interface}
+
+\begin{frame}{The RStudio Interface}
+\includegraphics[scale=0.5]{rstudio_base}
+\end{frame}
+
+\begin{frame}{Console} \vspace{0.1in}
+The \textbf{Console} (bottom left) is where most of the action happens.
+\begin{itemize}
+  \item Everything you do in R is typed in as a command
+  \item Type/copy-paste a command into the console and hit `enter' to execute
+  \item Text output from your commands appear in the console
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Console Examples}
+Try entering the following commands into the console.
+
+\footnotesize
+<<chunk1>>=
+print('hello world')
+1:10
+rnorm(10)
+@
+\normalsize
+
+We'll go over each of the above commands later, but for now, this should give
+you a sense of what interacting with R is like.
+\end{frame}
+
+\begin{frame}{Script}
+The \textbf{Script} panel (top left) is where you can edit and save sequences of
+commands. \vspace{0.1in}
+\begin{itemize}
+  \item Since doing things in R requires a series of commands, we often save
+  these commands into \textbf{scripts}.
+  \item Scripts can be easily run at any time, so all of our work is
+  \textbf{replicable}.
+  \item As you work, you can either enter commands directly into the console, or
+  enter them into a script, then run the script.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Script Example}
+There are a couple of ways to integrate scripts into your work
+process. Try the following.
+
+\begin{itemize}
+  \item Type the following into the script panel
+
+\footnotesize
+<<eval=FALSE>>=
+print('Experimenting with the script panel')
+x = 1:5
+y = 2*x
+print(x)
+print(y)
+@
+\normalsize
+  \item Hit the \textbf{source} button to run all of the commands at once
+  \item Highlight 1 or several lines, then hit the \textbf{run} button to
+  execute only those lines.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{History}
+The \textbf{History} panel (top right) shows all of the commands you've run
+thus far in this session. \vspace{0.1in}
+\begin{itemize}
+  \item If you followed the past few slides, you should have several entries in
+  this panel.
+  \item Right click a command and hit `Reload' to rerun it.
+  \item Highlight 1 or several lines, then hit the \textbf{To Console} button to
+  execute those lines.
+  \item Hit the \textbf{broom} icon to clear your history.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Plots}
+The \textbf{Plots} panel (bottom right) is where \textit{graphical} output
+appears. \vspace{0.1in}
+
+\begin{itemize}
+  \item Graphs (aka plots, figures) are used to present data and analytic
+  results (more on this later).
+  \item R core features a good set of graphing commands.
+  \item There are also add-ons to R (i.e. libraries) that extend its graphing
+  abilities in very powerful ways.
+  \item In this course, we'll work on mastering the basic commands.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Plotting Example}
+\begin{columns}[c] 
+  \column{0.5\textwidth}
+  To see R's graphing capability, type the following into the console. The
+graph (a density plot) should appear in the `plots' panel.
+
+\footnotesize
+<<plotex, eval=F>>=
+x = rnorm(20)
+plot(density(x))
+@
+\normalsize
+
+  \column{0.5\textwidth}
+
+\setkeys{Gin}{width=1\textwidth}
+<<fig=T, echo=F>>=
+<<plotex>>
+@
+
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Plots}
+To export plots you create in R to an outside document (e.g. Word), use the
+`export' button.\vspace{0.1in}
+
+\begin{itemize}
+  \item `Save plot as image'
+  \item import the image that you saved into the other program
+  \end{itemize}
+  \vspace{0.2in}
+  
+Use your plots to support arguments you make in writing.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Before moving on\ldots}
+\begin{itemize}
+  \item There are several other panels (e.g. workspace, packages, etc.). Don't
+  worry about those for now.\vspace{0.2in}
+  \item R can be difficult to learn but is extremely rewarding -- you can use it
+  to analyze data for other coursework as well as in the workplace
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Before moving on\ldots}
+\begin{itemize}
+  \item Everything we learn in the course will be interlaced with
+  implementation in R. Don't be afraid to experiment with the code that is
+  supplied to you.\vspace{0.2in}
+  \item I will not be teaching R in an abstract fashion; rather, I will give
+  code which serves some other purpose, then explain what I'm doing.
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Before moving on\ldots}
+There are many resources that can help you learn R, supplementing the material
+we cover together in class. Here are a few:\vspace{0.1in}
+\begin{itemize}
+  \item Putting ? before any command in the console will take you to its
+  detailed help page.
+  \item UCLA statistical consulting (ATS): \url{http://www.ats.ucla.edu/stat/r/}
+  \item Google.
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Getting started}
+We will use state-by-state turnout data for US presidential elections to learn
+about basic summary statistics.
+\vspace{0.2in}
+\begin{itemize}
+  \item Loading/viewing data in CSV format
+  \item Viewing the data
+  \item Measures of central tendency
+  \item Histograms
+\end{itemize}
+\end{frame}
+
+\section{Loading and viewing data}
+\subsection{Loading data from CSVs}
+\begin{frame}[fragile]
+\frametitle{The CSV format}
+One of the most common and basic formats for data is the \textbf{comma
+separated value} format (aka CSV). It looks like this:
+
+\begin{verbatim}
+   state,p1960,p1964,p1968,p1972,p1976,p1980
+   AL,30.8,35.9,52.7,43.4,47.2,47.5
+   AK,43.7,44,50,48.3,48.3,41.2
+   AZ,52.4,54.8,49.9,48.1,48.6,47.3
+   AR,40.9,50.6,54.2,48.1,52.2,52.6
+\end{verbatim}
+
+See where it gets its name? It is a ubiquitous format and one in which we will
+get most of the data for this class.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Loading data from CSV files}
+  
+In order to do analysis on the data in a CSV file, we need to load it into
+R.\vspace{0.1in}
+  
+\begin{itemize}
+\item One of R's strengths is that it is designed to be extended (i.e. have new capabilities added to it) by users.
+\item These additional functions are bundled into \textbf{libraries}
+\item R comes with a library that lets you read in CSV files. It's a part of the
+`foreign' library. Load it as follows:
+\end{itemize}
+\vspace{0.1in}
+    
+\footnotesize
+<<eval = F>>=
+library(foreign)
+@
+\normalsize
+\end{frame}
+%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+\frametitle{Loading data from CSV files}
+
+Now we need to get the actual file into R.\vspace{0.1in}
+
+\begin{itemize}
+\item Go to our Classes website and download the file
+`Turnouts1960\_2008.csv'\vspace{0.1in}
+\item Define the \textbf{variable} `f' telling R where the file is
+located.
+\end{itemize}
+\vspace{0.1in}
+  
+\footnotesize
+<<eval = F, results = hide>>=
+f = '../../data/Turnouts1960_2008.csv'
+@
+\normalsize
+
+\end{frame}
+
+%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+\frametitle{Loading data from CSV files}
+
+Let's take a closer look at the previous statement:\vspace{0.1in}
+
+\footnotesize
+<<eval = F, results = hide>>=
+f = '../../data/Turnouts1960_2008.csv'
+@
+\normalsize
+\vspace{0.1in}
+
+\begin{itemize}
+\item The name of the variable (f in this example) is arbitrary.\vspace{0.05in}
+\item Everything up to the last backslash on the right hand side is known as the
+\textbf{path}.\vspace{0.05in}
+\item Your path will differ depending on where you saved the
+file.\vspace{0.05in}
+\item On linux and OSX systems, you will \emph{not} have the `C:' on the right
+hand side.
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Loading data from CSV files}
+Finally, open the file using the command `read.csv' and save the contents into
+the variable `turnout.'
+\vspace{0.1in}
+
+\footnotesize
+<<eval = F>>=
+turnout = read.csv( f , stringsAsFactors = FALSE )
+@
+\normalsize
+\vspace{0.1in}
+
+Note that the above is equivalent to:
+
+\footnotesize
+<<eval = F>>=
+turnout = read.csv( 'C:/Users/.../Turnouts1960_2008.csv', stringsAsFactors = FALSE )
+@
+\normalsize
+\vspace{0.1in}
+
+Do you understand why?
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+
+\subsection{Viewing data}
+
+\begin{frame}[fragile]
+\frametitle{Viewing the data}
+You can view the data in a nicely formatted manner using `View'\footnote{Note
+that even though it looks like a spreadsheet editor, you can't actually modify the data
+using `View.'}.
+
+\footnotesize
+<<eval = F>>=
+View(turnout)
+@
+\normalsize
+
+You can just echo the data out to the console by typing the name of the
+variable you want to view. 
+
+\footnotesize
+<<eval = F>>=
+turnout
+@
+\normalsize
+
+Or you can view just the top few lines using `head'
+
+\footnotesize
+<<eval = F>>=
+head(turnout)
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Toplines of the turnout data:
+
+\footnotesize
+<<>>=
+head(turnout)
+@
+\normalsize
+  
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+A note on terminology:\vspace{0.1in}
+
+\begin{itemize}
+  \item Each row of a dataset is called an \textbf{observation}\vspace{0.1in}
+  \item Each column is called a \textbf{variable}\vspace{0.1in}
+  \item In these data, there is an observation for each state, with variables
+  for turnout in each presidential election 1960--2000. There is also a variable
+  for whether the state is in the South.
+  \end{itemize}
+  
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Regarding R syntax}
+A few observations about R syntax: most things we do in R are of the following
+form:
+\vspace{0.2in}
+
+\textbf{functionName} ( \textit{argument1}, \textit{argument2} \ldots )
+\vspace{0.2in}
+
+Most functions take multiple arguments and we use commas to demarcate different
+arguments.
+\vspace{0.2in}
+
+Example: the command we used to read the turnout data.
+\footnotesize
+<<eval = F>>=
+turnout = read.csv( f, TRUE, stringsAsFactors = FALSE )
+@
+\normalsize
+\end{frame}
+%%%%
+
+\begin{frame}
+\frametitle{Regarding R syntax}
+How do we know what each argument is doing?\vspace{0.1in}
+
+\begin{itemize}
+  \item Type `?read.csv' to get the help file on this function.\vspace{0.1in}
+  \item See that first two entries are for the `file' and the `header'. R
+  assigns the first 2 things we passed (`f' and `TRUE') to those arguments based
+  on order.
+  \end{itemize}
+
+\end{frame}
+%%%%
+
+\begin{frame}{Regarding R syntax}
+  What about the third argument?
+  \vspace{0.1in}
+
+\begin{itemize}
+  \item We prefaced the argument with `stringsAsFactors = '.\vspace{0.1in}
+  \item This overrides the default ordering and says we are passing the value
+  `TRUE' specifically to the argument `stringsAsFactors'.
+  \end{itemize}
+
+\end{frame}
+%%%%
+
+\begin{frame}[fragile]
+\frametitle{Digging into the data}
+We can view the \textbf{structure} of the `turnout' variable as follows.
+<<eval=F>>=
+str(turnout)
+@
+\vspace{0.2in}
+
+Each line of the `str' output can be read as follows:
+
+\$ [name of column] : [data type] [first 10 entries in the column]
+\vspace{0.4in}
+
+View the \textbf{dimensions} of the data using `dim'
+<<eval=F>>=
+dim(turnout)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Digging into the data}
+When we have a table of data like `turnout,' we use matrix notation to get at
+rows, columns, or individual elements:
+\vspace{0.2in}
+
+\textbf{matrix notation:} [\textit{row number}, \textit{column number}]
+
+\vspace{0.2in}
+
+The following gives you the entire 1st row:
+<<eval=F>>=
+turnout[1, ]
+@
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Digging into the data}
+This gives you the 3rd column:
+<<eval=F>>=
+turnout[ , 3]
+@
+\vspace{0.2in}
+
+4th row, 5th column:
+<<eval=F>>=
+turnout[4, 5]
+@
+\vspace{0.2in}
+
+Notice the comma placement. When we want an entire row or column, we leave an
+empty space as a placeholder and place commas around it.
+
+\end{frame}
+%%%%%%%%%%
+
+\section{Summary Statistics}
+
+\begin{frame}[fragile]
+\frametitle{Motivation for summary statistics}
+``Tell me about turnout in the 1972 election''
+\footnotesize
+<<>>=
+turnout$p1972
+@
+\vspace{0.2in}
+\normalsize
+
+Not so helpful...
+\end{frame}
+%%%%%%%%%%%
+
+\subsection{Measures of central tendency}
+
+\begin{frame}{Measures of central tendency}
+Measures of central tendency: 
+\begin{itemize}
+  \item mean
+  \item median
+  \item mode
+  \end{itemize}
+  
+\vspace{0.2in}
+Called ``measures of central tendency'' since they tell us something about where
+the ``center(s)'' of the data are
+\end{frame}
+%%%%%%%%%
+
+\begin{frame}{Mean}
+
+\textbf{Definition:} $\bar{x} = \frac{1}{n} \Sigma_{i=1}^{n}x_i$
+\vspace{0.1in}
+
+x is some set of values, $\bar{x}$ is the mean of x, n is the length of x, and
+$i$ is an index on x.
+\vspace{0.2in}
+
+\textbf{Pros:}
+\begin{itemize}
+  \item easy formula
+  \item central to lots of statistical formulae
+  \end{itemize}
+
+\textbf{Cons:}
+\begin{itemize}
+  \item \textit{very} sensitive to extreme values
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%
+
+\begin{frame}{Median}
+
+\textbf{Definition:} the value in the middle of some set of values.
+\begin{itemize}
+    \item if odd \# of elements, just count from either end until at center
+    \item if even \# of elements, impute between middle 2 values
+    \item AKA 50th percentile (we'll return to this in lecture 2)
+  \end{itemize}
+\vspace{0.2in}
+
+\textbf{Pros:}
+\begin{itemize}
+  \item robust (i.e. not sensitive) to outliers 
+  \end{itemize}
+
+\textbf{Cons:}
+\begin{itemize}
+  \item no easy formula (as obvious from above)
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%
+
+\begin{frame}{Mode}
+
+\textbf{Definition:} the value(s) of which there are the most observations
+\vspace{0.2in}
+
+\textbf{Pros:}
+\begin{itemize}
+  \item Can give us better descriptions of the data than mean and median in
+  certain situations
+  \end{itemize}
+
+\textbf{Cons:}
+\begin{itemize}
+  \item No easy formula
+  \item Can be extremely misleading in certain situations
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+We'll try these out using a simple set of data, then return to turnout\vspace{0.2in}
+
+Let's create some fake height data. Assume there are 5 people with varying
+heights. In R, we can create as follows:
+
+<<>>=
+x = c(5.9 , 5.1 , 5.1 , 6.0 , 5.7)
+@
+\vspace{0.2in}
+
+The function `c' stands for concatenate, and lets us create vectors (i.e. 1
+dimensional arrays of values)
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+The following commands allow us to view the mean, median and mode in R.
+\vspace{0.05in}
+
+\footnotesize
+<<>>=
+mean(x)
+median(x)
+sort(table(x))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+Let's think about the issue of robustness. Let's add some really tall people
+to the list.
+\vspace{0.05in}
+
+\footnotesize
+<<>>=
+x1 = c(x, 6.8, 6.8, 8)
+sort(x1)
+mean(x1)
+median(x1)
+@
+\normalsize
+\vspace{0.1in}
+
+The median has shifted over a little bit, but the mean has done so drastically.
+Why?
+\end{frame}
+%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 1}
+The mean is pulled upward by the large values of 6.8, 6.8 and 8.
+\vspace{0.05in}
+
+$$5.9 + 5.1 + 5.1 + 6.0 + 5.7 = \Sexpr{sum(x)} $$
+$$ \Sexpr{sum(x)} / \Sexpr{length(x)} = \Sexpr{mean(x)} $$
+
+$$ 5.9 + 5.1 + 5.1 + 6.0 + 5.7 + 6.8 + 6.8 + 8 = \Sexpr{sum(x1)} $$
+$$ \Sexpr{sum(x1)} / \Sexpr{length(x1)} = \Sexpr{mean(x1)} $$
+\vspace{0.05in}
+
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The median, on the other hand, just moves 1.5 spaces to the right:\vspace{0.05in}
+
+$$\frac{5.9+6}{2} = 5.95$$
+\vspace{0.05in}
+
+The median is more robust (i.e. resistant) than the mean to changes in the values it is computed on.
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 2}
+Let's apply these ideas to the turnout data, using just 1972 values.
+\vspace{0.2in}
+
+We can pick the data for 1972 by selecting the 11th column and assigning that
+data to the variable `t1972.'
+<<eval = F>>=
+t1972 = turnout[ ,11]
+@
+\vspace{0.2in}
+
+Obviously, this is not intuitive since we first have to figure out which column
+corresponds to 1972. Instead, we can use a feature of data.frames of selecting a
+column by its column name.
+<<>>=
+t1972 = turnout$p1972
+@
+\end{frame}
+%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Example 2}
+The following are the mean and median of turnout in 1972
+<<>>=
+mean(t1972)
+median(t1972)
+@
+\vspace{0.2in}
+
+The median is greater than the mean, the reverse of what we saw for the longer,
+fake height data. Based on that experience, we can guess that there are more,
+lower values of turnout.
+\end{frame}
+
+\end{document}

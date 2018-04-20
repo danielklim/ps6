@@ -1,0 +1,831 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 7]{PS6 Lecture 7}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{8/26/2013}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+library(MASS)
+library(plotrix)
+options(width = 60)
+load('../../data/gdp.rdata') #preload data
+bah = subset(gdp, Country=='Bahrain')
+r1 = function(x) return(round(x, 1))
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item OLS
+  \begin{itemize}
+    \item Definition \& description
+    \item Residuals
+    \item Fitting the Model
+    \end{itemize}
+    \vspace{0.2in}
+  \item Regression tables
+  \begin{itemize}
+    \item R-squared
+    \item Standard error
+    \item Statistical significance
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Intro to OLS}
+\subsection{Motivation, definition \& description}
+\begin{frame}[fragile]
+Correlation and covariance provide a useful starting point to think about the
+relationships between different variables
+\vspace{0.2in}
+
+Their usefulness, however, is limited
+\begin{itemize}
+  \item can only explore bivariate relationships
+  \item more or less limited to linear relationships
+  \item can't be used to predict
+\end{itemize}
+\vspace{0.2in}
+
+To overcome these limitations, we need statistical regression
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{What is statistical regression?}
+Statistical regression is a way to model the relationship between an outcome
+variable and 1 or more explanatory variables.
+\vspace{0.2in}
+
+Use it when we have\ldots
+\begin{itemize}
+  \item a response (aka dependent) variable (DV)
+  \item 1 or more explanatory (aka independent) variables (IVs)
+  \item some idea about the relationship between the DV and IVs
+  \end{itemize}
+  \vspace{0.2in}
+  
+\ldots and we wish to \textbf{model} (i.e. fit a line to) the data
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+When you read about regression, you may see a phrase like
+``[model type/name] regression, estimated using [method]''
+\vspace{0.1in}
+
+\begin{description}
+  \item[model type/name:] what kind of relationship is \textit{assumed} to
+  exist between the variables. (e.g. linear, nonlinear, generalized linear,
+  multi-level, Poisson, logistic) \vspace{0.1in}
+  \item[method:] how the relationship is estimated. (e.g. OLS, MLE, WLS,
+  hierarchical Bayesian)
+  \end{description}
+\vspace{0.1in}
+
+We will study the most fundamental: \textbf{linear regression} estimated using
+\textbf{ordinary least squares (OLS)}.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's first see the end result of an OLS regression. \vspace{0.1in}
+
+Try \textbf{modeling} the linear relationship between year and GDP/cap for
+Bahrain. Line 1 runs the model and the next line gives us our model estimates.\vspace{0.1in}
+
+\small
+<<mod1, eval=F>>=
+mod1 = lm(GDPcapImp ~ Year, data=bah)
+summary(mod1)
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\scriptsize
+<<echo=F>>=
+<<mod1>>
+@
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.65\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+<<fit1, echo=F, fig=T>>=
+p1 = predict(mod1, se.fit=T)
+with(bah, plot(Year, GDPcapImp, type='n', main='Bahrain GDP/cap, w/ OLS fit'))
+polygon(c(bah$Year, rev(bah$Year)), with(p1, c(fit+1.96*se.fit, rev(fit-1.96*se.fit))), col='lightblue', lty=2)
+with(bah, lines(Year, GDPcapImp))
+lines(bah$Year, p1$fit, lwd=3)
+legend('bottomright', c('data', 'OLS fit', '95% CI'), col=c('black', 'black', 'lightblue'), lwd=c(1, 4, 10))
+@
+  
+  \column{0.35\textwidth}
+  This is our estimate of the relationship between year and GDP/cap
+  for Bahrain.\vspace{0.2in}
+  
+  Nice, but how do we get here?
+  
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Basics of the OLS regression framework}
+One of the ways to write the equation for a line is in slope-intercept form: $$y
+= mx + b$$\vspace{0.05in}
+
+OLS regression assumes that the relationship between the DV and IVs is of this
+form, written with different letters.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The OLS model: 
+$$y_i = \beta_0 + \beta_1 x_i + \ldots $$ 
+
+\begin{itemize}
+  \item $y_i$ is the $i^{th}$ observation of the DV
+  \item $x_i$ is the $i^{th}$ observation of the IV
+  \item $\beta_1$ is the \textbf{effect size} of the $1^{st}$ IV
+  \item $\beta_0$ is the \textbf{intercept}
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Effect (size)}
+\begin{itemize}
+  \item The amount that Y changes per unit change in X
+  \item Positive effect indicates increasing X increases Y
+  \item Negative effect indicates increasing X decreases Y
+  \item AKA coefficient
+\end{itemize}
+
+\vspace{0.1in}
+
+E.g.: In the Bahraini data, effect of \Sexpr{r1(coef(mod1)[2])} on `Year' (the
+X) means that each unit year changes GDP/cap (the Y) by \$\Sexpr{r1(coef(mod1)[2])}.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+And here, we see the relationship in the raw Bahrani data\vspace{0.1in}
+
+\footnotesize
+<<>>=
+head(mod1$model)
+@
+\normalsize
+\vspace{0.1in}
+
+Each row of this data is fit to the $i^{th}$ slot. Since we `GDPcapImp ~ Year'
+specified OLS assumes that each value of the first column ($y_i$) is a linear function
+of the second column ($x_i$).
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+  Of course, real data seldom fit this relationship perfectly because of\ldots
+  \begin{itemize}
+    \item randomness/noise in the data
+    \item the effect of \textbf{omitted} variables
+  \end{itemize}
+  
+  \column{0.65\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+tmp = cbind(bah$Year, p1$fit - bah$GDPcapImp, p1$fit, bah$GDPcapImp)
+tmp = tmp[order(abs(tmp[,1]), decreasing=F),]
+
+with(bah, {
+	plot(Year, GDPcapImp, type='n', main='Bahrain GDP/cap, w/ OLS fit')
+	for(i in 1:dim(tmp)[1])
+		lines(c(tmp[i,1], tmp[i,1]), c(tmp[i,3], tmp[i,4]), 
+				lwd=2, col='red', lty=2 )
+	lines(Year, GDPcapImp)
+	lines(Year, p1$fit, lwd=2)
+	})
+legend('bottomright', c('data', 'OLS fit', 'residuals'), 
+		col=c('black', 'black', 'red'), lwd=c(1, 2, 2), lty=c(1,1,2))
+@
+\end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Residuals}
+\begin{frame}[fragile]
+This difference between the \textbf{fit} of the model and the \textbf{data} is
+called the \textbf{residual}. To put it another way: 
+
+$$Data = Fit + Residuals$$
+
+\vspace{0.05in}
+
+Recall, the OLS model assumes the relationship between Y and X is: 
+$$Y = \beta_0 + \beta_1 X + \ldots $$ 
+
+\vspace{0.05in}
+
+Taking into account the residuals ($E$), the equation becomes:
+$$Y = \hat{Y} + E$$
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We read $\hat{Y}$ as ``y-hat.'' The hat symbol indicates that $\hat{Y}$ is an
+\textbf{estimate} of the \textit{true} $Y$. \vspace{0.1in}
+
+\begin{itemize}
+  \item $\hat{Y}$ is an estimate of the true $Y$ because it
+is calculated using a sample drawn from the population.\vspace{0.1in}
+  \item As a result, when we fit a regression model, we are \textbf{not} finding
+the true $\beta$, but rather $b$, which are approximations of $\beta$, subject to
+uncertainty.\vspace{0.1in}
+\item This affects how accurate/confident we are about our estimates. We'll
+see why/how in a few slides.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+A note on notation: we use capital letters to refer to \textif{all}
+observations.
+
+$$Y = \beta_0 + \beta_1 X + \ldots $$ 
+
+is the same as saying 
+
+$$y_i = \beta_0 + \beta_1 x_i +\ldots \forall i$$.\vspace{0.1in}
+
+I.e., small letters indicate individual observations, capital letters
+indicate entire vectors (all values for a variable)
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Fitting the Model}
+\begin{frame}[fragile]
+\frametitle{How is the line fit?}
+
+\begin{itemize}
+  \item OLS gets its name from the fact that the line is fit to \textbf{minimize the sum
+of squared residuals} (RSS).\vspace{0.1in}
+  \item Recall the slide with the dotted red lines between the real data and the line
+that was fit? The line is fit so that RSS is the smallest possible given this
+line.\vspace{0.1in}
+  \item Let's see what this means.
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+$RSS=(\Sexpr{round(tmp[1,2],1)})^2 + (\Sexpr{round(tmp[2,2],1)})^2 + \ldots +
+(\Sexpr{round(tmp[length(tmp[,1]),2],1)})^2$ \vspace{0.2in}
+
+The line you see here gives the smallest possible value of RSS given this data.
+  
+  \column{0.65\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+with(bah, {
+	plot(Year, GDPcapImp, type='n', main='Bahrain GDP/cap, w/ OLS fit')
+	for(i in 1:dim(tmp)[1]){ 
+		lines(c(tmp[i,1], tmp[i,1]), c(tmp[i,3], tmp[i,4]), 
+				lwd=2, col='red', lty=2 )
+		}
+	text(tmp[,1]+0.4, (tmp[,3]+tmp[,4])/2, round(tmp[,2],1), srt=-90, cex=0.9)
+	lines(Year, GDPcapImp)
+	lines(Year, p1$fit, lwd=2)
+	})
+legend('bottomright', c('data', 'OLS fit', 'residuals'), 
+		col=c('black', 'black', 'red'), lwd=c(1, 2, 2), lty=c(1,1,2))
+@
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+This is the Bahrani data, alongside predictions made by the model (col 3),
+and the residuals from the model we fit earlier (col 4).\vspace{0.1in}
+\footnotesize
+<<>>=
+head(cbind(mod1$model, p1$fit, mod1$residuals))
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+By fitting the model\ldots
+\begin{itemize}
+  \item \ldots we are finding estimates of $\beta_0$ and
+  $\beta_1$
+  \item These estimates satisfy the following relationship: 
+  \end{itemize}
+
+$$\beta_0 + \beta_1 \times \text{column 2} + \text{column 4} = \text{column 1}$$
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\section{Regression tables}
+
+\begin{frame}[fragile]
+This is called a \textbf{regression table}.\vspace{0.1in}
+\scriptsize
+<<>>=
+summary(mod1)
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's start deciphering this table.
+\vspace{0.2in}
+
+\begin{itemize}
+  \item column labeled `estimate' contains $\beta$ estimates
+  \item the `estimate' next to `(Intercept)' is $b_0$
+  \item the `estimate' next to `Year' is $b_1$
+  \item $b_1$ can be interpreted as the change in the DV per unit change in
+  the IV. i.e. every year, GDP/cap changes by \Sexpr{round(coef(mod1)[2],1)}
+  \item here the sign on $b_1$ is positive so the \textbf{effect direction}
+  is positive (i.e. GDP/cap increases with year). If the sign were reversed, it
+  would mean that the GDP/cap decreases with year
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+\subsection{R-squared}
+\begin{frame}[fragile]
+The `(multiple) R-squared' is basically a measure of how well the fitted line
+fits the actual data. 
+\vspace{0.05in}
+
+$$R^2 \equiv \frac{RegSS}{TSS}$$
+$$RegSS \equiv \Sigma(\hat{Y_i}-\bar{Y})^2$$
+$$TSS \equiv \Sigma(Y_i-\bar{Y})^2$$
+
+\begin{itemize}
+  \item R-squared is the ratio of the \textbf{regression sum of squares} (RegSS)
+  to the \textbf{total sum of squares} (TSS) \vspace{0.05in}
+  \item TSS measures how much variance there is in the DV.\vspace{0.05in}
+  \item RegSS is the amount of variance explained by the model.
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item R-quared ranges 0 to 1, where 1 indicates all the variance in
+the data explained (i.e. a perfect fit) and 0 means no variance
+explained.\vspace{0.1in}
+  \item In the context of this course, don't worry too much about the specifics
+  of the equation.\vspace{0.1in}
+  \item Basically, bigger is better.\vspace{0.1in}
+  
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Standard error}
+\begin{frame}[fragile]
+The column labeled `std. error' tells us how much uncertainty there is that the
+$b$s we estimated are in fact the \textit{real} $\beta$s. \vspace{0.2in}
+
+\textbf{Why is there uncertainty?} 
+\vspace{0.1in}
+\begin{itemize}
+  \item The data that we have (both DV and IVs) are samples of a larger
+  population, subject to sampling error.\vspace{0.1in}
+  \item This means that their values, as  well as \textit{any statistics that
+  are calculated from them} can/will vary if you were to remeasure.
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Assuming no systematic biases, we expect our $b$s to be distributed
+normally around the true $\beta$s with standard deviation equal the values in
+the `std. error' column.\vspace{0.2in}
+
+Recall from lecture 4 that 
+\begin{itemize}
+  \item std. dev. is a measure of spread in data
+  \item std. error is S.D. of statistics calculated from data
+  \item Operationally, you measure them in the same way
+  \item Conceptually, they apply to different things -- data versus statistics.
+\end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+<<echo=F>>=
+sds = sqrt(diag(vcov(mod1)))
+@
+
+\begin{frame}[fragile]
+Based on our regression table, we see that $b_0$ will vary around $\beta_0$ with
+std. dev. \Sexpr{r1(sds[1])}, and $b_1$ will do so around $\beta_1$
+with std. dev. \Sexpr{r1(sds[2])}. In more compact notation: \vspace{0.05in}
+$$se_{b_0} = \Sexpr{r1(sds[1])}$$
+$$se_{b_1} = \Sexpr{r1(sds[2])}$$
+\vspace{0.1in}
+
+This has implications for the fit line we've been looking at.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+<<fit2plot, eval=F, echo=F>>=
+with(bah, {	plot(Year, GDPcapImp, type='n', main='Bahrain GDP/cap, w/ OLS fit')	})
+@
+
+<<fit2ci, eval=F, echo=F>>=
+polygon(c(bah$Year, rev(bah$Year)), with(p1, c(fit+1.96*se.fit, rev(fit-1.96*se.fit))), col='lightblue', lty=2)
+@
+
+<<fit2, eval=F, echo=F>>=
+with(bah, {	lines(Year, p1$fit, lwd=2)	})
+@
+
+<<updown, eval=F, echo=F>>=
+for(i in 1:2) arrows(tmp1[i, 1], tmp1[i, 3] + Offset, tmp1[i, 1], tmp1[i, 3] + 4*Offset, lwd=3, col='red')
+for(i in 1:2) arrows(tmp1[i, 1], tmp1[i, 3] - Offset, tmp1[i, 1], tmp1[i, 3] - 4*Offset, lwd=3, col='red')
+@
+
+<<circ, eval=F, echo=F>>=
+draw.arc(1985, 10000, 3, deg1=220, deg2=390, col='blue', lwd=3)
+draw.arc(1985, 10000, 3, deg1=190, deg2=60, col='blue', lwd=3)
+lines(c(1987.6, 1988.5), c(10900, 10500), col='blue', lwd=3)
+lines(c(1987.6, 1987.3), c(10900, 10300), col='blue', lwd=3)
+lines(c(1982, 1982.9), c(9700, 10200), col='blue', lwd=3)
+lines(c(1982, 1981.4), c(9700, 10200), col='blue', lwd=3)
+@
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+  Since $b_0$ is the intercept, uncertainty in $b_0$ moves the line up and down.\vspace{0.1in}
+  
+  \textcolor{white}{Changes and therefore uncertainty in $b_1$ changes the slope of the line}\vspace{0.1in}
+  
+  \textcolor{white}{The end result is that the actual relationship is somewhere in this shaded region}
+  \column{0.65\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+
+<<fig=T, echo=F>>=
+nobs <- length(tmp[,1])
+half <- floor(nobs/2)
+tmp1 <-  tmp[c(5, nobs-5),]
+tmp2 <-  tmp[c(half+2, half-2),]
+Offset <- 500
+
+<<fit2plot>>
+<<fit2>>
+<<updown>>
+legend('bottomright', c('OLS fit', 'impact of changes in b_0'), 
+		col=c('black', 'red'), lwd=c(2, 3), lty=c(1,1))
+@
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+  Since $b_0$ is the intercept, uncertainty in $b_0$ moves the line up and down.\vspace{0.1in}
+  
+  Changes and therefore uncertainty in $b_1$ changes the slope of the line\vspace{0.1in}
+  
+  \textcolor{white}{The end result is that the actual relationship is somewhere in this shaded region}
+  \column{0.65\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+  
+<<fig=T, echo=F>>=
+<<fit2plot>>
+<<fit2>>
+<<updown>>
+<<circ>>
+legend('bottomright', c('OLS fit', 'impact of changes in b_0', 'impact of changes in b_1'), 
+		col=c('black', 'red', 'blue'), lwd=c(2, 3, 3), lty=c(1,1,1))
+@
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+  Since $b_0$ is the intercept, uncertainty in $b_0$ moves the line up and down.\vspace{0.1in}
+  
+  Changes and therefore uncertainty in $b_1$ changes the slope of the line\vspace{0.1in}
+  
+  The end result is that the actual relationship is somewhere in this shaded region
+  \column{0.65\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+  
+<<fig=T, echo=F>>=
+<<fit2plot>>
+<<fit2ci>>
+<<fit2>>
+<<updown>>
+<<circ>>
+legend('bottomright', c('OLS fit', 'impact of changes in b_0', 'impact of changes in b_1', '95% CI'), 
+		col=c('black', 'red', 'blue', 'lightblue'), lwd=c(2, 3, 3, 10), lty=rep(1,4))
+@
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{Statistical significance}
+\begin{frame}[fragile]
+
+\begin{itemize}
+  \item Often we care about whether the effect size of some IV (e.g. $\beta_1$) is
+significantly different from 0 -- does it have an impact on our
+DV?\vspace{0.1in}
+  \item The regression framework provides an easy way to answer this
+question.\vspace{0.1in}
+  \item Recall the difference of mean tests from lecture X? We use a similar test to see
+whether the effect of some IV is significantly different from 0.
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+<<echo=F>>=
+coefs = coef(mod1)
+ses = sqrt(diag(vcov(mod1)))
+mu = coefs[2]
+sig = ses[2] 
+
+plotSigTest = function(mu, sig, length.out=100, leg2='coef 1', ...){
+	xrange = c(mu - 3*sig, mu + 3*sig)
+	if(mu >= 0) xs = seq(min(0, xrange[1]), xrange[2], length.out=length.out)
+	else xs = seq(xrange[1], max(0, xrange[2]), length.out=length.out)
+	ys = dnorm(xs, mu, sig)
+	plot(xs, ys, type='l', ...)
+	abline(v = 0, col='black', lty=2)
+	abline(v = mu, col='red', lwd=2)
+	legend('top', c('0 effect', leg2), 
+			col=c('black', 'red'), lwd=c(1, 2), lty=c(2,1))
+}
+@
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+  First, a visual to illustrate the situation.
+
+\column{0.65\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+  
+<<fig=T, echo=F>>=
+plotSigTest(mu, sig, main='estimated effect size of beta_1', leg2='b_1, best estimate of beta_1')
+@
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+
+\begin{itemize}
+  \item Given the results of our regression, our best guess at the
+  effect size of `year' is \Sexpr{r1(mu)}, with possible values distributed normally around with
+standard deviation \Sexpr{r1(sig)}.\vspace{0.1in}
+  \item For this scenario, it's visually very clear that even with uncertainty about the
+true value of $\beta_1$, it's likely not 0. \vspace{0.1in}
+  \item Of course, many relationships are
+not so clear cut so we need a rigorous way of testing the proposition.
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We want to be able to say something like ``if we were to redo this
+regression over and over again with new samples, X\% of those would show the
+effect to be non-zero.''\vspace{0.2in}
+
+The standard test for such situations uses these hypotheses:\vspace{0.1in}
+\begin{description}
+  \item[null:] the IV has 0 effect on the DV
+  \item[alternate:] the IV has a non-zero effect on the DV
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The procedure for this test:\vspace{0.1in}
+
+\begin{enumerate}
+  \item calculate the t-value (aka t-statistic, sometimes erroneously
+  the z-score)
+  \item find the degrees of freedom (\textit{dof}) for your regression
+  \item calculate 2 times the value of the t-distribution CDF at abs(t-value)
+  for \textit{dof}. This is called the p-value.
+  \item the p-value is the probability of observing the null
+  hypothesis across repeated tests. If the p-value is below some arbitrary
+  threshhold $\alpha$, reject the null hypothesis at the $\alpha$ level.
+  \end{enumerate}
+\vspace{0.2in}
+
+This should look very familiar to you since it's very similar to the difference
+of means test from a few lectures ago.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Before proceeding, a short recap on phrasing:\vspace{0.1in}
+
+Good:
+\begin{itemize}
+  \item ``if I were to redo this regression over and over again with new samples, 
+  $1-\alpha$\% of those would show the effect to be non-zero.'' (typically you
+  wouldn't say this, though the thought is correct)
+  \item ``Because the p-value is below $\alpha$, I reject the null hypothesis at
+  the $\alpha$ level.'' (what you actually say)
+  \end{itemize}
+\vspace{0.2in}
+
+Bad: ``Because the p-value is above $\alpha$\ldots
+\begin{itemize}
+  \item \ldots the alternate hypothesis \textit{is/must} be true''
+  \item \ldots the effect size \textit{is/must} be 0''
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+While you could do all of the p-value calculations by hand, the regression table
+has already done it for you.\vspace{0.1in}
+
+\begin{itemize}
+  \item column `t-value' contains (surprise!) the t-value\vspace{0.1in}
+  \item third row from bottom, starting `residual standard error...' ends with a
+  phrase stating the \textit{dof} for the regression. This number is simply
+  the number of observations minus the number of IVs (intercept and Year in this
+  case).\vspace{0.1in}
+  \item column `Pr(>|t|)' contains the p-values associated with the
+  `t-value' for each IV and the \textit{dof}.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We can verify that the table is indeed doing what I claim it does:\vspace{0.1in}
+
+\footnotesize
+<<>>=
+coefs = coef(mod1)
+ses = sqrt(diag(vcov(mod1)))
+mu = coefs[2]
+sig = ses[2] 
+pt(mu/sig, 20, lower.tail=F)*2
+@
+\normalsize
+\vspace{0.1in}
+
+The code above gets you the p-value for the IV `Year'. It is identical to the
+value shown in the regression table.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{itemize}
+  \item Based on these results, we'd reject the null hypothesis at the lowest
+  value we typically use (by convention); 0.001.\vspace{0.1in}
+  \item Substantively, we'd write this up as indicating that ``on average,
+  GDP/cap increases \Sexpr{r1(mu)} per annum for Bahrain in the period examined,
+  AND that this positive relationship is statistically significant at the 0.001
+  level.''\vspace{0.1in}
+  \item we could do a similar test for the intercept, but that is often not a
+  quantity of interest (can you think of why?)
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+As stated earlier, the Bahrain case is pretty clear cut. Let's look at an
+example that shows why we need the t-test.\vspace{0.2in}
+
+We will simulate some data to demonstrate:\vspace{0.1in}
+\footnotesize
+<<>>=
+x = rnorm(20)
+y = 0.25*x + rnorm(20)
+mod2 = lm(y~x)
+@
+\normalsize
+\vspace{0.1in}
+
+Here, $Y$ is a linear function of $X$, with effect size equal 0.25, plus random
+noise (a standard normal deviate).
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Here's the model summary. Note the p-value on $b_1$
+\scriptsize
+<<>>=
+summary(mod2)
+@
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+  Again, this distribution is simply our estimate of $\beta_1$ -- a normal
+  distribution with mean equal $b_1$ and std. dev. equal
+  $se_{\beta_1}$.
+\column{0.65\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+  
+<<fig=T, echo=F>>=
+coefs = coef(mod2)
+ses = sqrt(diag(vcov(mod2)))
+mu = coefs[2]
+sig = ses[2] 
+plotSigTest(mu, sig, main='estimated effect size of beta_1', leg2='b_1, best estimate of beta_1')
+@
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+So what do we observe here?\vspace{0.1in}
+
+\begin{itemize}
+  \item We know from our definition of `y' that the effect of `x' is
+  0.25\vspace{0.1in}
+  \item The OLS estimate of the effect of `x' is pretty good --
+  \Sexpr{round(coef(mod2)[2], 2)}\vspace{0.1in}
+  \item However, due to small sample size, the std. error. on $b_1$ is
+  relatively large -- \Sexpr{round(sqrt(diag(vcov(mod2)))[2], 2)}. Resultantly, we
+  cannot definitely conclude that the estimated effect size is statistically
+  significant.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+A few thoughts to close out the lecture\vspace{0.1in}
+
+\begin{itemize}
+  \item Whether an IV is statistically significant is a
+  function of estimated effect size and std. error\vspace{0.1in}
+  \item Because std. error decreases with sample size, even small
+  effects can appear to be important with big enough N\vspace{0.1in}
+  \item Whether an IV is important is determined not just by statistical
+  significance but also by (a) theory and (b) the range of the DV for plausible
+  values of IV.
+  \end{itemize}
+\vspace{0.1in}
+
+Don't worry if you don't fully understand these points -- we will discuss
+further next time.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}

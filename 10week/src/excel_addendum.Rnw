@@ -1,0 +1,81 @@
+% 
+\documentclass{beamer}
+\usepackage{Sweave}
+
+\title{}
+\author{Daniel}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\subsection{Loading data from Excel}
+\begin{frame}[fragile]
+\frametitle{Loading data from Excel (XLSX) files}
+Assuming you have a fresh copy of R, you need to install a library that lets R
+read Excel files.
+\footnotesize
+<<eval = F>>=
+turnout = read.csv('Turnouts1960_2008.csv', stringsAsFactors=FALSE)
+install.packages('xlsx', repos='http://cran.stat.ucla.edu')
+@
+\normalsize
+\vspace{0.2in}
+
+Next, load the newly downloaded library. You'll need to do this every time you
+start up R.
+\footnotesize
+<<eval = F>>=
+library(xlsx)
+@
+\normalsize
+\vspace{0.2in}
+
+Then, go to our Classes website and download the file named
+`Turnouts1960\_2008.xlsx'
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Loading data from Excel (XLSX) files}
+Next, we define the \textbf{variable} `f' telling R where the file is
+located.\vspace{0.1in}
+
+\footnotesize
+<<eval = T, results = hide>>=
+f = '../../data/Turnouts1960_2008.xlsx'
+@
+\normalsize
+\vspace{0.2in}
+
+The name of the variable is arbitrary. The first part of `f', the path, will 
+differ from below depending on where you saved the file.
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Loading data from Excel (XLSX) files}
+Finally, open the file using the command `read.xlsx2' and save the contents into the variable `turnout.'
+\vspace{0.1in}
+
+\footnotesize
+<<eval = F>>=
+cc = c('character', rep('numeric', 12))
+turnout = read.xlsx2(f, 1, colClasses = cc,  stringsAsFactors = F)
+@
+\normalsize
+\vspace{0.2in}
+
+Don't worry too much about the intricacies of the code - we'll come back to that
+in a moment.
+
+\end{frame}
+%%%%%%%%%%%%%%
+
+
+
+\end{document}

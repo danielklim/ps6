@@ -1,0 +1,1128 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 6]{PS6 Lecture 6}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{8/21/2013}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+options(width = 60)
+load('../../data/gdp.rdata') #preload data
+library(MASS)
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item line graphs
+  \begin{itemize}
+    \item reshaping
+    \item for loops
+    \end{itemize}
+  \item covariance/correlation
+  \begin{itemize}
+    \item interpretation
+    \item example 1
+    \item example 2
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+\section{Line graphs}
+\subsection{Definition \& description}
+
+\begin{frame}[fragile]
+\frametitle{Line graphs}
+
+Just a fancy name for any graph where X and Y coordinates have meaning and
+points are connected across X values by some organizing principle\vspace{0.1in}
+
+\begin{itemize}
+  \item basically a scatterplot with lines connecting points\vspace{0.1in}
+  \item density plot is a specialized line graph
+  \end{itemize}
+
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Line graphs}
+\begin{itemize}
+  \item For `gdp', we can use to see more clearly how particular countries fare over
+time. \vspace{0.1in}
+  \item By contrast, using the raw scatterplot, it was hard to see which
+country was which.\vspace{0.1in}
+  \item There is, however, a wrinkle in creating line graphs for long-form
+  data (like \textit{gdp}).
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Line graphs}
+
+To create line graphs by country with our current long form data, one has
+to\ldots
+\vspace{0.1in}
+\begin{itemize}
+  \item subset observations for a particular country\vspace{0.1in}
+  \item plot just those observations\vspace{0.1in}
+  \item repeat for all countries we wish to plot
+  \end{itemize}
+\vspace{0.1in}
+For a single country, not so bad. 
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Line graphs}
+For many countries, less than ideal because\ldots
+\vspace{0.1in}
+
+\begin{itemize}
+  \item doing `subset' over and over is computationally costly\vspace{0.1in}
+  \item the code for this process can be very messy
+  \end{itemize}
+\vspace{0.1in}
+
+As mentioned earlier, wide form data are preferable to long form depending on
+your task -- this is one case.
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Reshaping to wide-form}
+
+\begin{frame}[fragile]
+We can easily reshape our data using the `recast' function from the `reshape'
+library:
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+library(reshape)
+gdp.wide = recast(gdp, Country~Year, 
+		id.var=c('Country', 'Year'), measure.var='GDPcapImp')
+@
+\normalsize
+\vspace{0.1in}
+
+`recast' is complicated, so we won't delve into it.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Each row of `gdp.wide' is a single country with cols. 2 to 33
+containing GDP for a single year -- the shape that we want.
+\vspace{0.1in}
+\begin{itemize}
+  \item Confirm by typing `gdp.wide' into the console.\vspace{0.1in}
+  \item Let's reuse our criterion from lecture 5 for identifying high
+income countries : $GDP/cap \geq \$8000$ in 1981
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+For long-form, the following code identified high income countries.
+\vspace{0.1in}
+
+\scriptsize
+<<eval = F>>=
+h81 = subset(gdp, gdp$Year == 1981 & GDPcapImp > 8000)
+highCountries = h81$Country
+gdp.wide$high = ifelse(gdp.wide$Country %in% highCountries, 1, 0)
+@
+\normalsize
+\vspace{0.2in}
+
+The `\%in\%' operator was necessary because there were multiple duplicate
+entries in the country column
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+There is a much easier approach in wide-form data.
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+gdp.wide$high = ifelse(gdp.wide$'1981' >= 8000, 1, 0)
+@
+\normalsize
+\vspace{0.1in}
+
+\begin{itemize}
+  \item GDP/cap for each year is isolated, so we can easily look only at
+  values for 1981\vspace{0.1in}
+  \item The last column of `gdp.wide' (col. 34) now contains our indicator
+  variable `high'\vspace{0.1in}
+  \item You need single quotations around the column name `1981' because it's
+a column name that is numeric.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+Let's identify which countries were relatively well-off in 1981 but then went
+into decline as of 1990.
+
+\vspace{0.2in}
+Based on this plot, look for countries with `high==1' and GDP/cap $<
+\$15000$ in 1990
+
+\column{0.65\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+\footnotesize
+<<fig=T, echo=F>>= 
+h81 = subset(gdp, gdp$Year == 1981 & GDPcapImp > 8000)
+highCountries = h81$Country
+gdp$high = ifelse(gdp$Country %in% highCountries, 1, 0)
+gdpHigh = subset(gdp, gdp$high == 1)
+plot(gdpHigh$Year, gdpHigh$GDPcapImp)
+abline(h=15000, col='red', lty=2, lwd=2)
+@
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Subset out countries with `high==1', GDP/cap $< \$15000$ in 1990
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+declined = subset(gdp.wide, 
+		gdp.wide$'1990'<15000 & gdp.wide$high==1 )
+decCountries = declined$Country
+decCountries
+@
+\normalsize
+\vspace{0.1in}
+
+\begin{itemize}
+  \item We've got our culprits!
+  \item Let's use a line graph to see exactly what happened.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\vspace{0.2in}
+
+First, look only at the first row.
+\footnotesize
+<<csbro1, eval=F>>=
+Xs = 1966:1997
+Ys = declined[1, 2:33]
+cName = declined[1, 1]
+plot(Xs, Ys, type='l', main=cName)
+@
+\normalsize
+\vspace{0.1in}
+
+\begin{description}
+  \item[x coords:] integers from 1966 to 1997; we know this from looking at the
+  data
+  \item[y coords:] we want row 1, columns 2 to 33 (which we know contain GDP
+  numbers by looking at the data)
+  \item[`main' arg:] We set the plot title to row 1 of column 1,
+  which contains country names.
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+<<csbro1>>
+@
+  \column{0.3\textwidth}
+  
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+<<csbro1>>
+abline(v=1981, col='red', lwd=2)
+abline(v=1986, col='red', lwd=2, lty=2)
+abline(v=1990, col='red', lwd=2)
+@
+  \column{0.3\textwidth}
+  
+  There was a decline in living standards from 1981-1986, then a
+  recovery, but not to the point that it had caught up with other `high'
+  countries by 1990.
+  
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+%\begin{frame}[fragile]
+%You can do this exercise for each country in `declined' by simply changing the
+%row number.
+%\vspace{0.2in}
+%
+%Not knowing anything about \Sexpr{cName}, you could read up on its history to
+%see why we observe these patterns in the data.
+%\vspace{0.2in}
+%
+%We can also plot all the declined countries on a single plot\ldots we'll get to
+%that next lecture.
+%\end{frame}
+%%%%%%%%%%%%%%
+%
+%\begin{frame}[fragile]
+%\begin{columns}[c] 
+%  \column{0.3\textwidth}
+%  
+%  We left off looking at a line graph for just Bahrain.
+%  \vspace{0.2in}
+%  
+%  There were 4 other countries, and we wanted to figure out how to plot them all
+%  on a single plot, rather than one by one.
+%
+%  \column{0.7\textwidth}
+%  
+%  \setkeys{Gin}{width=\textwidth}
+%<<bah1, fig=T, echo=F>>=
+%decCountries = declined$Country
+%Xs = 1966:1997
+%Ys = declined[1, 2:33]
+%cName = declined[1, 1]
+%plot(Xs, Ys, type='l', main=cName)
+%@
+%  
+%  \end{columns}
+%\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To plot more than 1 country in the same plot, we'll first open an \textit{empty}
+plot area using `plot' with\ldots
+\vspace{0.1in}
+\begin{itemize}
+  \item NA (i.e. empty data) for both X and Y coordinates
+  \item `type=n' to indicate an empty plot window
+  \item `c(1966, 1997)' for the x limits of the plot
+  \item `c(0, 30000)' for the y limits
+  \end{itemize}
+\vspace{0.1in}
+  
+\footnotesize
+<<al0, eval = F>>=
+Title = 'countries that experienced GDP/cap declines by 1990'
+plot(NA, NA, type='n', main=Title,
+		xlim=c(1966, 1997), ylim=c(0, 30000))
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{For loops}
+
+\begin{frame}[fragile]
+To add each country, we can use the `lines' command by\ldots
+\vspace{0.1in}
+\begin{itemize}
+  \item creating a vector from 1966 to 1997 for x-coordinates\vspace{0.1in}
+  \item for y-coordinates, using line $i$, columns 2:33 from the `declined' wide
+  form GDP data
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The following will work\ldots
+\vspace{0.1in}
+
+\footnotesize
+<<eval = F>>=
+Xs = 1966:1997
+lines(Xs, declined[1, 2:33])
+lines(Xs, declined[2, 2:33])
+lines(Xs, declined[3, 2:33])
+lines(Xs, declined[4, 2:33])
+lines(Xs, declined[5, 2:33])
+@
+\vspace{0.1in}
+\normalsize
+
+\ldots but there is a more efficient way of doing this.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+We can use a `for' loop as follows:
+\vspace{0.1in}
+
+\footnotesize
+<<al1, eval = F>>=
+Xs = 1966:1997
+for(i in 1:5){ 
+	lines(Xs, declined[i, 2:33]) 
+	}
+@
+\small
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The syntax for a `for' loop is as follows:\vspace{0.1in}
+\begin{itemize}
+  \item a variable name specifying the \textbf{index} you will be looping with.
+  Here, it is $i$. The choice of variable name is arbitrary.\vspace{0.1in}
+  \item the index is followed by the word `in'\vspace{0.1in}
+  \item a vector of numbers to loop over. Here, we loop from 1 to 5 since there
+  are 5 rows in `declined'\vspace{0.1in}
+  \item we stick the index variable ($i$ here) in the thing we wish to vary.
+  Here, we wish to go through rows 1-5 of `declined' so we stick $i$ in the row
+  argument of `declined'
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+\subsection{Back to the analysis}
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+  
+\setkeys{Gin}{width=\textwidth}
+<<echo=F, fig=T>>=
+<<al0>>
+<<al1>>
+@
+
+  \column{0.3\textwidth}
+  Nice. But we can't tell which country is which.
+  
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's color the lines and add a legend.
+\vspace{0.1in}
+
+\footnotesize
+<<al2, eval = F>>=
+Cols = c('red', 'blue', 'green', 'orange', 'black')
+Xs = 1966:1997
+for(i in 1:5) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=2)
+legend('topleft', declined$Country, col=Cols, lwd=rep(2, 5))
+@
+\normalsize
+\vspace{0.1in}
+
+We'll go through each line.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The following adds lines to the empty plot.
+\footnotesize
+<<eval = F>>=
+for(i in 1:5) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=2)
+@
+\normalsize
+\vspace{0.1in}
+
+\begin{itemize}
+  \item define `Cols', a vector with 5 color names\vspace{0.1in}
+  \item set the `col' argument to `Cols[i]'. Since we are looping 1:5 with
+  index $i$, we can also loop through `Cols' with $i$\vspace{0.1in}
+  \item to make the line thicker, we set `lwd=2'
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{`legend' function}
+Add the legend as follows:
+\footnotesize
+<<eval = F>>=
+legend('topleft', declined$Country, col=Cols, lwd=rep(2, 5))
+@
+\normalsize
+\vspace{0.1in}
+
+\begin{description}
+  \item[arg 1:] location of the legend. Can take specific x,y coordinates
+  or phrases like 'topleft', 'right', etc.
+  \item[arg 2:] the text to use. Here, our text is country names
+  \item[arg `col':] use the same vector of colors as we used in `lines'
+  \item[arg `lwd':] since there are 5 lines, we need to feed 5 2's to `lwd'.
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{`rep' function}
+`rep' is like `seq' -- it lets us create repeated vectors of numbers
+<<eval = F>>=
+rep(2, 5)
+@
+\vspace{0.1in}
+
+\begin{description}
+  \item[arg 1:] the number to repeat
+  \item[arg 2:] how many times to repeat it
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+\setkeys{Gin}{width=\textwidth}
+<<echo=F, fig=T>>=
+<<al0>>
+<<al2>>
+@
+  \column{0.3\textwidth}
+  Much better.\vspace{0.1in}
+  
+  We can now do some analysis.
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+\setkeys{Gin}{width=\textwidth}
+<<echo=F, fig=T>>=
+<<al0>>
+legend('topleft', declined$Country, col=Cols, lwd=rep(2, 5))
+for(i in 1:5) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=2, lty=3)
+for(i in 2) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=3, lty=1)
+@
+  \column{0.3\textwidth}
+  Kuwait experienced a gigantic decline starting in 1980, then recovered
+  abruptly in 1991
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+\setkeys{Gin}{width=\textwidth}
+<<echo=F, fig=T>>=
+<<al0>>
+legend('topleft', declined$Country, col=Cols, lwd=rep(2, 5))
+for(i in 1:5) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=2, lty=3)
+for(i in c(1,4)) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=3, lty=1)
+@
+  \column{0.3\textwidth}
+  Saudi Arabia and Bahrain experienced similar patterns as Kuwait, though
+  in less extreme manners
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+\setkeys{Gin}{width=\textwidth}
+<<echo=F, fig=T>>=
+<<al0>>
+legend('topleft', declined$Country, col=Cols, lwd=rep(2, 5))
+for(i in 1:5) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=2, lty=3)
+for(i in 3) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=3, lty=1)
+@
+  \column{0.3\textwidth}
+  New Zealand, on the other hand, continued to improve GDP/cap but
+  at a slower rate than other `high=1' countries.
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.7\textwidth}
+\setkeys{Gin}{width=\textwidth}
+<<echo=F, fig=T>>=
+<<al0>>
+legend('topleft', declined$Country, col=Cols, lwd=rep(2, 5))
+for(i in 1:5) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=2, lty=3)
+for(i in 5) lines(Xs, declined[i, 2:33], col=Cols[i], lwd=3, lty=1)
+@
+  \column{0.3\textwidth}
+  T\&T flattened out, sharply dropped in '91 then stayed stagnant since
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Lessons to draw}
+\begin{itemize}
+  \item Even after filtering these out from the larger pack, there are
+  differences within this group of countries \vspace{0.1in}
+  \item What we consider similarities/differences within this group may
+  themselves be meaningful or just noise \vspace{0.1in}
+  \item \textbf{Always look at the data!}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\section{Covariance \& correlation}
+\begin{frame}[fragile]
+\frametitle{Covariance \& correlation}
+
+So far, we've looked at bivariate relationships using tables and graphs -- 
+comprehensive but complicated
+\vspace{0.2in} 
+
+Similar to summary statistics that describe univariate data, there are
+also statistics that summarize bivariate relationships.
+
+\begin{itemize}
+  \item covariance
+  \item correlation
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+\subsection{Definition \& description}
+
+\begin{frame}[fragile]
+\frametitle{Covariance \& correlation}
+Given two RVs (or vectors of data) X \& Y:
+\vspace{0.1in}
+
+\begin{description}
+  \item[covariance:] $Cov(X, Y) = \sigma_{XY} = E((X-\mu_X)(Y-\mu_Y))$ \vspace{0.1in}
+  \item[correlation:] $Cor(X, Y) = \rho_{XY} = \frac{\sigma_{XY}}{(\sigma_X\sigma_Y)}$
+  \end{description}
+\vspace{0.2in} 
+
+`E' is the expectation operator --  in this context, a fancy way of saying
+arithmetic mean.
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Covariance ($\sigma_{XY}$)}
+\begin{itemize}
+  \item can take any value
+  \item average amount that $X$ \& $Y$ deviate together
+  \item magnitude is not worth interpreting
+  \begin{itemize}
+    \item changes with unit of measurement for either $X$ or $Y$
+    \item is on scale of $X \times Y$
+    \end{itemize}
+  \item mainly used in formulas
+  \item $Cov(X, X) = Var(X)$
+  \item estimate in R using `cov'
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Correlation ($\rho_{XY}$)}
+\begin{itemize}
+  \item normalized covariance: bounded -1 to 1\vspace{0.1in} 
+  \item 1 or -1 means perfect linear relationship\vspace{0.1in} 
+  \item how we typically \textit{talk} about bivariate relationships
+  \item estimate in R using `cor'
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+<<echo=F>>=
+nDraws = 1000
+mus = c(0,0)
+rhos = c(0, 0.5, 0.75, 0.9, 0.95, 1)
+lims = c(-3,3)
+dats = list()
+for(i in 1:length(rhos)) dats[[i]] = mvrnorm(nDraws, mus, matrix(c(1, rhos[i], rhos[i], 1), 2, 2))
+@
+
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{What do various values of $\rho$ look like?}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+plot(dats[[1]], main=paste0('rho = ', rhos[1]), xlab='X', ylab='Y', xlim=lims, ylim=lims)
+@
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{What do various values of $\rho$ look like?}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+plot(dats[[2]], main=paste0('rho = ', rhos[2]), xlab='X', ylab='Y', xlim=lims, ylim=lims)
+@
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{What do various values of $\rho$ look like?}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+plot(dats[[3]], main=paste0('rho = ', rhos[3]), xlab='X', ylab='Y', xlim=lims, ylim=lims)
+@
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{What do various values of $\rho$ look like?}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+plot(dats[[4]], main=paste0('rho = ', rhos[4]), xlab='X', ylab='Y', xlim=lims, ylim=lims)
+@
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{What do various values of $\rho$ look like?}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+plot(dats[[5]], main=paste0('rho = ', rhos[5]), xlab='X', ylab='Y', xlim=lims, ylim=lims)
+@
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{What do various values of $\rho$ look like?}
+\setkeys{Gin}{width=0.7\textwidth}
+<<fig=T, echo=F>>=
+plot(dats[[6]], main=paste0('rho = ', rhos[6]), xlab='X', ylab='Y', xlim=lims, ylim=lims)
+@
+\end{frame}
+%%%%%%%%%%%%%
+\subsection{Interpreting Cor/Cov}
+
+\begin{frame}[fragile]
+\frametitle{Interpreting Cor/Cov}
+Correlation (\& covariance) are measures of \textbf{linear} relationships
+\vspace{0.1in} 
+\begin{itemize}
+  \item low $\rho$ only means no \textbf{linear} relationship -- \textbf{does
+  not} rule out other relationships\vspace{0.1in} 
+  \item on the other hand, two variables that are independent \textbf{will} have
+  $\rho=0$
+  \end{itemize}
+\vspace{0.2in} 
+ 
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Interpreting Cor/Cov}
+
+A \textbf{linear relationship} is one of the form:
+$$Y = mX + b$$
+where $m$ is the slope and $b$ is the intercept.
+\vspace{0.1in} 
+
+\textbf{(pefectly) linear relationship:} a straight line \textit{fully}
+summarizes the extent of the relationship between X and Y (noise and error notwithstanding). 
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Interpreting Cor/Cov}
+
+\begin{itemize}
+  \item Most real-world relationships are not perfectly linear. However, many
+  approximate a linear relationship.\vspace{0.1in} 
+  \item Strictly speaking, anything that is not fully described by a simple line
+  is \textbf{nonlinear}\vspace{0.1in} 
+  \item Correlation and covariance choke on nonlinear relationships.
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Interpreting Cor/Cov}
+The \textbf{sign} of $\sigma_{XY}$  \&  $\rho_{XY}$ can be interpreted the same
+way
+\vspace{0.1in}
+
+\begin{description}
+  \item[Positive:] $X$ \& $Y$ tend to move in the same direction\vspace{0.1in}
+  \item[Negative:] $X$ \& $Y$ tend to move in opposite directions
+  \end{description}
+\vspace{0.1in}
+  
+We typically do not interpret the \textbf{magnitude} of $\sigma_{XY}$ because it
+is a meaningless unit. On the other hand, $\rho_{XY}$ is always between -1 and
+1, so is interpretable.
+
+\end{frame}
+%%%%%%%%%%%%%
+\subsection{Example 1}
+\begin{frame}[fragile]
+\frametitle{Example 1: Simulated data}
+Let's illustrate this issue of linear versus nonlinear relationships using some
+simulated data
+\vspace{0.2in}
+
+Create Y to have a nonlinear relationship with X:
+\footnotesize
+<<>>=
+X = seq(-4, 4, 0.1)
+Y = X^2 + rnorm(length(X), 0, 2)
+@
+\normalsize
+\vspace{0.2in}
+
+\begin{itemize}
+  \item `Y' is the square of `X' --  a nonlinear relationship
+  \item we add some `rnorm' draws to Y as noise 
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.65\textwidth}
+\setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+plot(X, Y)
+@
+  \column{0.35\textwidth}
+We know from how Y was created that there is a strong, nonlinear relationship 
+with X.
+\vspace{0.1in}
+
+Even if we didn't know that, we'd intutively think of this graph as portraying a strong relationship.
+
+\end{columns} 
+
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+What does correlation have to say about X and Y?
+\small
+<<>>=
+cor(X, Y)
+@
+\normalsize
+\vspace{0.2in}
+
+$\rho_{XY} \approx \Sexpr{round(cor(X, Y), 3)} $. Basically 0, because the
+negative correlation on the left side of the parabola averages out against the positive correlation on the right side.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+On the other hand, we know that the relationship between X and Y is
+approximately linear if we separate $X < 0$ from $X > 0$
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+cor(X[X>0], Y[X>0])
+cor(X[X<0], Y[X<0])
+@
+\normalsize
+\vspace{0.1in}
+
+This is what we expect since Y increases with X for $X > 0$ and decreases for $X < 0$
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{A note on the code}
+\begin{itemize}
+  \item Read code like `Y[ X > 0 ]' as elements of the vector `Y' where the
+corresponding member of `X' is greater than 0.\vspace{0.1in}
+  \item X and Y need to be the same length.\vspace{0.1in}
+  \end{itemize}
+
+Example:
+\footnotesize
+<<>>=
+X = 1:4
+Y = c('item 1', 'item 2', 'item 3', 'item 4')
+Y[ X > 2 ]
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+What lessons to draw?
+\vspace{0.2in}
+\begin{itemize}
+  \item \textbf{DO NOT} rely only only on correlation/covariance\ldots always
+  look at your data to see what's really going on\vspace{0.1in}
+  \item once we identify domains where data behave in distinct ways, we
+  should analyze them separately, or use some method that accounts for the
+  difference(s)\vspace{0.1in}
+  \item with real data, we should think about the real-world reason(s) why patterns
+  may change.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Example 2}
+
+\begin{frame}[fragile]
+\frametitle{Example 2: Bahraini data}
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+    
+  Obvious that\ldots
+  \begin{itemize}
+    \item overall, GDP/cap correlates positively with time
+    \item 1981-1986, correlation is probably negative
+    \end{itemize}
+  \column{0.65\textwidth}
+  
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+#<<bah1>>
+#
+decCountries = declined$Country
+Xs = 1966:1997
+Ys = declined[1, 2:33]
+cName = declined[1, 1]
+plot(Xs, Ys, type='l', main=cName)
+#
+abline(v=1981, lwd=2, lty=2, col='red')
+abline(v=1986, lwd=2, lty=2, col='red')
+@
+  
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's quantify our observations by calculating the correlation between GDP/cap
+and time for 1975-1980, 1981-1986, and 1987-1996
+\vspace{0.1in}
+
+\begin{itemize}
+  \item Return to using the long-form data -- it's better for the present
+  task.\vspace{0.1in}
+  \item First subset out just the rows for Bahrain\vspace{0.1in}
+  \item Then create separate vectors for GDP/cap in each year-range we care
+  about.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Here's the code:
+\footnotesize
+<<>>=
+bah = subset(gdp, Country=='Bahrain')
+bah75_96 = bah$GDPcapImp
+bah75_80 = bah$GDPcapImp[bah$Year <= 1980]
+bah81_86 = bah$GDPcapImp[bah$Year > 1980 & bah$Year <= 1986]
+bah87_96 = bah$GDPcapImp[bah$Year > 1986]
+@
+\normalsize
+\vspace{0.1in}
+
+Note:
+\begin{itemize}
+  \item we only have '75-'96 data for Bahrain. In
+  wide-form, there were NAs for values outside that range. In long-form, there
+  are no rows for years where we don't have data.
+  \item see example 1 for a recap of the array/matrix notation
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Now, calculate the correlation between GDP/cap and corresponding time spans
+\vspace{0.1in}
+
+\footnotesize
+<<>>=
+cor(1975:1996, bah75_96)
+cor(1975:1980, bah75_80)
+cor(1981:1986, bah81_86)
+cor(1987:1996, bah87_96)
+@
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+What do we see? \vspace{0.1in}
+\begin{itemize}
+  \item even if we don't separate out '81-'86, there is a strong
+  overall correlation between GDP/cap and time (line 1) \vspace{0.1in}
+  \item during '81-'86 there is a strong negative correlation between time and
+  GDP/cap (line 3) \vspace{0.1in}
+  \item that negative value for '81-'86 attenuates the positive correlation
+  values in '75-'80 and -'87-'96, resulting in the slightly lower value for
+  the entire span ('75-'96) \vspace{0.1in}
+  \item the attenuation, however, is minor
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's contextualize this exercise \vspace{0.1in}
+\begin{itemize}
+  \item whether '81-'86 is special is a \texit{qualitative} judgement. All this
+  analysis reveals is that there is a considerable quantitative difference --
+  up to \textit{you} as the analyst to decide whether important \& explain
+  why\vspace{0.1in}
+  \item practically speaking, this exercise was unnecessary -- just by
+  looking at the graph, we could've easily predicted all of the observations
+  from the previous slide. \vspace{0.1in}
+  \item nonetheless, pedagogically valuable -- shows the
+  danger of relying just on correlation without looking at the data
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+%\section{Intro to OLS}
+%
+%\begin{frame}[fragile]
+%Correlation and covariance provide a useful starting point to think about the
+%relationships between different variables
+%\vspace{0.2in}
+%
+%Their usefulness, however, is limited
+%\begin{itemize}
+%  \item can only explore bivariate relationships
+%  \item more or less limited to linear relationships
+%  \item can't be used to model
+%\end{itemize}
+%\vspace{0.2in}
+%
+%To overcome these limitations, we need statistical regression
+%\end{frame}
+%%%%%%%%%%%%%%
+%
+%\begin{frame}[fragile]
+%\frametitle{What is statistical regression?}
+%Statistical regression is a way to model the relationship between an outcome
+%variable and 1 or more explanatory variables.
+%\vspace{0.2in}
+%
+%Use it when we have\ldots
+%\begin{itemize}
+%  \item a response variable (AKA dependent variable (DV))
+%  \item 1 or more explanatory variables (AKA independent variables (IVs))
+%  \item some idea about the relationship between the DV and IVs
+%  \end{itemize}
+%  \vspace{0.1in}
+%  
+%\ldots and we wish to \textbf{model} (i.e. fit a line to) the data
+%\end{frame}
+%%%%%%%%%%%%%%
+%
+%\begin{frame}[fragile]
+%When you read about regression, you may see a phrase like
+%``[model type/name] regression, estimated using [method]''
+%\vspace{0.1in}
+%
+%\begin{description}
+%  \item[model type/name:] what kind of relationship is \textit{assumed} to
+%  exist between the variables. (e.g. linear, nonlinear, generalized linear,
+%  multi-level, Poisson, logistic)
+%  \item[method:] how the relationship is estimated. (e.g. OLS, MLE, WLS,
+%  hierarchical Bayesian)
+%  \end{description}
+%\vspace{0.2in}
+%
+%We will study the most fundamental: \textbf{linear regression} estimated using
+%\textbf{ordinary least squares (OLS)}.
+%\end{frame}
+%%%%%%%%%%%%%%
+%
+%\begin{frame}[fragile]
+%Our approach (edit this slide later)
+%\begin{itemize}
+%  \item what it does
+%  \item how it works
+%  \item intricacies and caveats
+%  \end{itemize}
+%\vspace{0.2in}
+%
+%For today, just a simple example to whet the appetite -- a full intro will
+%come next lecture.
+%\end{frame}
+%%%%%%%%%%%%%%
+%
+%\begin{frame}[fragile]
+%Let's model the linear relationship between year and GDP/cap for Bahrain. Line
+%1 runs the model and the next line gives us our model estimates.
+%\footnotesize
+%<<>>=
+%mod1 = lm(GDPcapImp ~ Year, data=bah)
+%summary(mod1)
+%@
+%
+%\end{frame}
+%%%%%%%%%%%%%%
+%
+%\begin{frame}[fragile]
+%\begin{columns}[c] 
+%  \column{0.65\textwidth}
+%
+%\setkeys{Gin}{width=\textwidth}
+%<<echo=F, fig=T>>=
+%p1 = predict(mod1, se.fit=T)
+%with(bah, plot(Year, GDPcapImp, type='n', main='Bahrain GDP/cap, w/ OLS fit'))
+%polygon(c(bah$Year, rev(bah$Year)), with(p1, c(fit+1.96*se.fit, rev(fit-1.96*se.fit))), col='lightblue', lty=2)
+%with(bah, lines(Year, GDPcapImp))
+%lines(bah$Year, p1$fit, lwd=2)
+%legend('bottomright', c('data', 'OLS fit', '95% CI'), col=c('black', 'black', 'lightblue'), lwd=c(1, 2, 10))
+%@
+%  
+%  \column{0.35\textwidth}
+%  The regression table from the previous slide let's us model
+%  GDP/cap like so.\vspace{0.2in}
+%  
+%  We will discuss what all of this means next time.
+%  
+%\end{columns}
+%\end{frame}
+%%%%%%%%%%%%%
+
+\end{document}

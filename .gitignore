@@ -1,0 +1,19 @@
+# History files
+.Rhistory
+
+.Rproj.user/
+.Rproj.user
+
+*.aux
+*.bcf
+*.idx
+*.log
+*.out
+*.ptc
+*.run.xml
+*.toc
+*-concordance.tex
+*.tex
+*.synctex.gz
+*.ilg
+*.ind

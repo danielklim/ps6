@@ -1,0 +1,261 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings}
+\usetheme{Dresden}
+\title[Lecture 6]{PS6 Lecture 6}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{8/21/2013}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+library(MASS)
+options(width = 60)
+load('../../data/gdp.rdata') #preload data
+bah = subset(gdp, Country=='Bahrain')
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item OLS
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+\section{Causation}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Intro to OLS}
+
+\begin{frame}[fragile]
+Correlation and covariance provide a useful starting point to think about the
+relationships between different variables
+\vspace{0.2in}
+
+Their usefulness, however, is limited
+\begin{itemize}
+  \item can only explore bivariate relationships
+  \item more or less limited to linear relationships
+  \item can't be used to model
+\end{itemize}
+\vspace{0.2in}
+
+To overcome these limitations, we need statistical regression
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{What is statistical regression?}
+Statistical regression is a way to model the relationship between an outcome
+variable and 1 or more explanatory variables.
+\vspace{0.2in}
+
+Use it when we have\ldots
+\begin{itemize}
+  \item a response variable (AKA dependent variable (DV))
+  \item 1 or more explanatory variables (AKA independent variables (IVs))
+  \item some idea about the relationship between the DV and IVs
+  \end{itemize}
+  \vspace{0.1in}
+  
+\ldots and we wish to \textbf{model} (i.e. fit a line to) the data
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+When you read about regression, you may see a phrase like
+``[model type/name] regression, estimated using [method]''
+\vspace{0.1in}
+
+\begin{description}
+  \item[model type/name:] what kind of relationship is \textit{assumed} to
+  exist between the variables. (e.g. linear, nonlinear, generalized linear,
+  multi-level, Poisson, logistic)
+  \item[method:] how the relationship is estimated. (e.g. OLS, MLE, WLS,
+  hierarchical Bayesian)
+  \end{description}
+\vspace{0.2in}
+
+We will study the most fundamental: \textbf{linear regression} estimated using
+\textbf{ordinary least squares (OLS)}.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's first see what the end result of an OLS regression is.
+\vspace{0.2in}
+
+We will \textbf{model} the linear relationship between year and GDP/cap for
+Bahrain. Line 1 runs the model and the next line gives us our model estimates.
+\footnotesize
+<<mod1>>=
+mod1 = lm(GDPcapImp ~ Year, data=bah)
+summary(mod1)
+@
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.65\textwidth}
+
+\setkeys{Gin}{width=\textwidth}
+<<fit1, echo=F, fig=T>>=
+p1 = predict(mod1, se.fit=T)
+with(bah, plot(Year, GDPcapImp, type='n', main='Bahrain GDP/cap, w/ OLS fit'))
+polygon(c(bah$Year, rev(bah$Year)), with(p1, c(fit+1.96*se.fit, rev(fit-1.96*se.fit))), col='lightblue', lty=2)
+with(bah, lines(Year, GDPcapImp))
+lines(bah$Year, p1$fit, lwd=2)
+legend('bottomright', c('data', 'OLS fit', '95% CI'), col=c('black', 'black', 'lightblue'), lwd=c(1, 2, 10))
+@
+  
+  \column{0.35\textwidth}
+  The regression from the previous slide estimates the relationship between year
+  and GDP/cap like so.\vspace{0.2in}
+  
+  Nice, but how do we get here?
+  
+\end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+One of the ways to write the equation for a line is in slope-intercept form: $$y
+= mx + b$$
+
+OLS regression assumes that the relationship between the DV and IVs is of this
+form, written with different letters: $$y_i = \beta_0 + \beta_1 x_i + \ldots $$ 
+\begin{itemize}
+  \item $y_i$ is the $i^{th}$ observation of the DV
+  \item $x_i$ is the $i^{th}$ observation of the IV
+  \item $\beta_1$ is the \textbf{effect size} of the $1^{st}$ IV
+  \item $\beta_0$ is the intercept
+\end{itemize}
+\vspace{0.2in}
+
+An important piece is missing -- we'll get to that in a sec.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+To illustrate, this is part of the Bahrani data:
+\footnotesize
+<<>>=
+head(mod1$model)
+@
+\normalsize
+
+Each row in the top is fit to the $i$ slot. OLS assumes that each value of the
+first column is a linear function of the second column.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\begin{columns}[c] 
+  \column{0.35\textwidth}
+  Of course, real data seldom fit this relationship perfectly because of\ldots
+  \begin{itemize}
+    \item randomness/noise in the data
+    \item the effect of \textbf{omitted} variables
+  \end{itemize}
+  
+  \column{0.65\textwidth}
+  \setkeys{Gin}{width=\textwidth}
+<<fig=T, echo=F>>=
+tmp = cbind(bah$Year, p1$fit - bah$GDPcapImp, p1$fit, bah$GDPcapImp)
+tmp = tmp[order(abs(tmp[,2]), decreasing=T),]
+
+with(bah, {
+	plot(Year, GDPcapImp, type='n', main='Bahrain GDP/cap, w/ OLS fit')
+	for(i in 1:dim(tmp)[1]) 
+		lines(c(tmp[i,1], tmp[i,1]), c(tmp[i,3], tmp[i,4]), 
+				lwd=2, col='red', lty=2 )
+	lines(Year, GDPcapImp)
+	lines(Year, p1$fit, lwd=2)
+	})
+legend('bottomright', c('data', 'OLS fit', 'residuals'), 
+		col=c('black', 'black', 'red'), lwd=c(1, 2, 2), lty=c(1,1,2))
+@
+\end{columns}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+This difference between the \textbf{fit} of the model and the \textbf{data} is
+called the \textbf{residual}.\vspace{0.2in}
+
+To put it another way: $$Data = Fit + Residuals$$ \vspace{0.05in}
+
+Therefore, to make the OLS equation work, we need to include an error term.
+$$y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$ \vspace{0.05in}
+
+where $\epsilon$ is assumed to be distributed normally with mean 0.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Need to distinguish between residuals and error terms.
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+This is the Bahrani data, alongside predictions made by the model (col 3),
+and the residuals from the model we fit earlier (col 4).
+\footnotesize
+<<>>=
+head(cbind(mod1$model, p1$fit, mod1$residuals))
+@
+\normalsize
+
+By fitting the model, we find the $\beta_0$ and $\beta_1$ that satisfy the
+relationship: $\beta_0$ plus $\beta_1$ times the values in col 2 plus the
+values in col 4 equals the values in col 1 (row by row).
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Here again are the results of the Bahrani model.
+\footnotesize
+<<>>=
+summary(mod1)
+@
+\normalsize
+
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+Let's start deciphering this table.
+\vspace{0.2in}
+
+\begin{itemize}
+  \item column labeled `estimate' contains the $\beta$ values
+  \item the `estimate' next to `(Intercept)' is $\beta_0$
+  \item the `estimate' next to `Year' is $\beta_1$
+\end{itemize}
+\vspace{0.2in}
+
+These values satisfy the relationships stated 2 slides ago. 
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+The column labeled `std. error' tells us the certainty that the $b$s we
+estimated are in fact the \textit{real} $\beta$s 
+\vspace{0.2in}
+
+asd
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

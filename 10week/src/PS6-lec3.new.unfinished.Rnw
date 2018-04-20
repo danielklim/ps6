@@ -1,0 +1,238 @@
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{color, graphicx, hyperref, listings, setspace}
+
+%\let\oldframetitle\frametitle% Store \frametitle in \oldframetitle
+%\renewcommand{\frametitle}[1]{%
+%  \oldframetitle{#1}\setstretch{2}}
+%\setlength{\parskip}{0.1in}
+
+\usetheme{Dresden}
+\title[Lecture 3]{PS6 Lecture 3}
+\author{Daniel Lim}
+\institute{University of California, Los Angeles}
+\date{4/7/2014}
+\begin{document}
+
+\graphicspath{ {../../img/} }
+
+<<echo=F>>=
+library(ggplot2)
+options(width = 60)
+load('../../data/turnout.rdata') #preload data
+
+##
+t1972 = turnout$p1972
+t1972.South = subset(t1972, turnout$deepsouth == 1)
+t1972.Other = subset(t1972, turnout$deepsouth == 0)
+mu1 = round(mean(t1972), 2)
+sig1 = round(sd(t1972), 2)
+mu2 = round(mean(t1972.South), 2)
+sig2 = round(sd(t1972.South), 2)
+@
+
+\begin{frame}
+\titlepage
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Agenda}
+\begin{itemize}
+  \item Population and samples
+  \item Random variables
+  \item Independence (intro)
+  \item t distribution
+  \item Test of difference in means
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%%
+
+\section{RVs, Population \& Samples}
+
+\subsection{Populations and Samples}
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+What is it we're actually doing when we `do statistics?'\vspace{0.1in}
+\begin{itemize}
+  \item Summarizing data that we DO have
+  \item Extrapolating analysis to data that we DON'T have
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Motivation}
+Can we ever have complete data?\vspace{0.1in}
+\begin{description}
+  \item[Just right] Phenomenon of interest has just the right number of
+  observations and we have not too much, not too little  data
+  \item[Too little] 
+  \item[Too much]
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+
+\begin{frame}[fragile]
+\frametitle{Population and Sample}
+Random variables are closely related to 2 important concepts\vspace{0.2in}
+
+\begin{description}
+  \item[Population:] All possible values that a phenomenon (i.e. something we'd
+  represent with an RV) can take
+  \item[Sample:] A subset of a population. Data/observations are usually
+  samples.
+  \end{description}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Population}
+Seems simple enough\ldots but there are a couple of ways to think about
+populations.\vspace{0.1in}
+
+\begin{description}
+  \item[naive:] population is all units we can take measurements for 
+  \begin{itemize}
+    \item e.g. since we have turnout values for all 50 states, we have
+    measured the entire population 
+    \item we don't have problems associated with samples
+    \end{itemize}
+    \vspace{0.1in}
+  \item[realistic:] population is all possible measurements that could have been made
+  \begin{itemize}
+    \item each measurement could have been made at an infinite number of other moments, by
+  other measurers, subject to small variation in the underlying phenomenon, etc.
+    \item sampling error always exists
+    \end{itemize}
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Samples}
+Ideally, we want a \textbf{representative} sample -- a sample that
+mirrors most important characteristics of the parent population\vspace{0.2in}
+  
+\begin{itemize}
+  \item \textbf{random measurement} is a widely used way of achieving a
+  representative sample.
+  \item there are situations where random measurement is not practical or
+  desirable (e.g. to sample small subpopulations) --  but this is a topic for a
+  more advanced class.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Samples}
+Even with perfectly executed randomized sampling, there can/will be differences
+between statistics of the sample, and true population values\vspace{0.2in}
+
+Luck of the draw\ldots
+\begin{itemize}
+  \item causes sample variance to be greater than pop. variance
+  \item leads to \textbf{sampling error} -- differences between population
+  values and sample values
+  \end{itemize}
+ \vspace{0.2in}
+
+Further, bad sampling can lead to biased (i.e. unrepresentative) samples.
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Std. error versus std. deviation}
+Finally, this primer on population versus sample gives us a chance
+to tighten up vocab we use re: spread\vspace{0.1in}
+
+\begin{description}
+  \item[std. deviation:] spread in data
+  \item[std. error:] spread in statistics calculated from that data -- e.g.
+  means, medians, std. deviation, etc. Consequence of sampling.
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+
+\subsection{Random variable}
+\begin{frame}[fragile]
+\frametitle{Random Variables}
+A random variable (RV) is a variable that \textbf{\textit{can} take on all
+possible values} for some underlying data-generating process
+\vspace{0.1in}
+
+\begin{itemize}
+  \item e.g.: We believe there is a data-generating process that makes
+turnout in 1972 distribute normally around \Sexpr{mu1} with SD \Sexpr{sig1}
+  \item We would use a RV to represent ALL of the values that state turnout
+\texbf{could} have taken. 
+  \item We might say something like:
+$$X \sim N( \Sexpr{mu1}, \Sexpr{sig1} ) $$
+where $X$ is the RV representing turnout.
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Random Variables}
+
+The data that we have are \textbf{random} manifestations of a theoretical
+distribution of values that \textbf{could} have been obtained
+
+\begin{itemize}
+  \item e.g. the first value of `turnout' is \Sexpr{t1972[1]} but it could just as
+easily have been \Sexpr{t1972[1]+0.1}.
+  \item We use random variables to signify this element of chance.
+  \end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Random Variables}
+
+\begin{itemize}
+\item An RV describes where some data come from (i.e. the underlying
+  distribution), but \textit{are not} the data themselves
+  \begin{itemize}
+    \item If it helps, think of data as a sample taken from a theoretical
+    population that is described by a RV.
+    \end{itemize}
+    \vspace{0.1in}
+  
+  \item RVs are written with capital letters, data with lower case
+  \item Can be \textbf{continuous} or \textbf{discrete}
+  \end{itemize}
+\end{frame}
+%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{Continuous vs. discrete RVs}
+
+\textbf{Continuous}
+\begin{itemize}
+  \item can take on any value within its range (i.e. infinite precision)
+  \item	represented by a probability density function (PDF)
+  \item e.g. percent turnout
+  \end{itemize}
+\vspace{0.1in}
+
+\textbf{Discrete}
+\begin{itemize}
+  \item can only take a finite number of values (e.g. integers)
+  \item represented by a probability mass function (PMF)
+  \item e.g number of bills proposed in House
+  \end{itemize}
+\vspace{0.2in}
+
+We're not going to worry too much about the distinction for now.
+\end{frame}
+%%%%%%%%%%%%%
+
+
+\end{document}

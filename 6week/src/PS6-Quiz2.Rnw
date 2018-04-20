@@ -1,0 +1,187 @@
+\documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\linespread{1.3}
+\usepackage{amssymb, amsmath, dcolumn, parskip, Sweave, float, booktabs,
+graphicx, subfig, fancyhdr, lastpage, enumitem, multicol}
+\floatstyle{boxed} 
+\pagestyle{fancy}
+\restylefloat{figure}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\begin{document}
+\cfoot{\thepage\ of \pageref{LastPage}}
+
+<<echo=F>>=
+options(width=60)
+schdat = read.csv('../../data/schdat.csv', stringsAsFactors = FALSE)
+schdat = na.omit(schdat[,c('type','satc','admRate')])
+schdat = schdat[order(schdat$satc),]
+
+m1 <- lm(admRate ~ satc, data=schdat)
+m2 <- lm(admRate ~ satc, data=schdat, subset=type=='Public')
+m3 <- lm(admRate ~ satc, data=schdat, subset=type=='Private')
+require(plotrix)
+require(texreg)
+@
+
+\lhead{Name:}
+\rhead{PS6, Summer 2013, Quiz 2}
+
+\setkeys{Gin}{width=0.85\textwidth}
+\begin{figure}[H]
+\begin{center}
+\caption{Admit rate versus mean SAT I score in US colleges\label{one} } 
+<<fig=T,echo=F>>= 
+plot(schdat$satc, schdat$admRate, xlab='mean SAT score', ylab='admit rate (%)', type='n')
+p1 = predict(m1, se.fit=T)
+polygon(c(schdat$satc, rev(schdat$satc)), with(p1, c(fit+1.96*se.fit, rev(fit-1.96*se.fit))), col='lightblue', lty=2)
+points(schdat$satc, schdat$admRate, pch='x', col='blue')
+abline(a=coef(m1)[1], b=coef(m1)[2], lwd=3)
+legend('topright', c('OLS fit'), col=c('black'), lwd=c(3))
+@
+\normalsize
+\end{center}
+\end{figure}
+\vspace{0.5in}
+
+
+\begin{multicols}{3}
+\begin{description}
+    \item[variance of SAT scores:] \Sexpr{round(var(schdat$satc, na.rm=T),2)}
+    \item[sum of SAT scores:] \Sexpr{sum(schdat$satc, na.rm=T)}
+    \item[variance of admit rate:] \Sexpr{round(var(schdat$admRate, na.rm=T),2)}
+    \item[covariance of admit rate and SAT score:] \Sexpr{round(cov(schdat$satc, schdat$admRate, use='p'), 2)}
+    \item[mean of SAT scores:] \Sexpr{round(mean(schdat$satc, na.rm=T),2)}
+\end{description}
+\end{multicols}
+\newpage
+
+%\begin{table}[H]
+%\begin{center}
+%<<results=tex, echo=F>>=
+
+%texreg(l = m1, booktabs=F, dcolumn=F, caption='admit \\% as func. of mean SAT
+% score')
+%@
+%\end{center}
+%\end{table}
+
+<<>>=
+summary(m1)
+@
+\vspace{0.25in}
+\hline
+\vspace{0.25in}
+
+\textit{Answer questions 1-6 using the above figure, regression table and
+information. Show all work for questions requiring calculation.}\vspace{0.1in}
+
+\textbf{(1) How many observations are in this data?}\vspace{0.75in}
+
+\textbf{(2) What is the correlation between SAT score and admit
+rate?}
+\newpage
+
+\textbf{(3) What is the slope of the OLS fit in figure
+\ref{one}?}\vspace{0.75in}
+
+\textbf{(4) In a few sentences, give a substantive interpretation of the
+relationship between SAT score and admit rate. Be sure to give specific
+numbers.}\vspace{1.5in}
+
+\textbf{(5) What is the shaded region in figure \ref{one} called? In a few sentences,
+explain why this shaded region occurs.}\vspace{1.5in}
+
+\textbf{(6) In a few sentences, explain why correlation/covariance and linear
+regression do NOT provide a good fit to these data. If you wish, you may use
+diagrams to support your argument.}
+\newpage
+
+\setkeys{Gin}{width=0.8\textwidth}
+\begin{figure}[H]
+\begin{center}
+\caption{Admit rate versus mean SAT I score by institution type\label{dich} }
+<<fig=T, echo=F>>=
+plot(schdat$satc, schdat$admRate, type='n', xlab='mean SAT score', ylab='admit rate (\\%)')
+points(schdat$satc[schdat$type=='Public'], schdat$admRate[schdat$type=='Public'], pch='o', col='red')
+points(schdat$satc[schdat$type=='Private'], schdat$admRate[schdat$type=='Private'], pch='x', col='blue')
+abline(a=coef(m2)[1], b=coef(m2)[2], col='red', lty=2, lwd=2)
+abline(a=coef(m3)[1], b=coef(m3)[2], col='blue', lwd=2)
+legend('topright', c('public', 'private'), col=c('red', 'blue'), lwd=c(2, 2), pch=c('o', 'x'), lty=c(2,1))
+@
+\normalsize
+\end{center}
+\end{figure}
+
+\textit{Answer question 7 using figure \ref{dich}.}
+
+\textbf{(7) Which institution type shows a bigger effect size
+for the relationship between mean SAT score and admit rate? In a few sentences,
+explain how you can tell.}
+
+\setkeys{Gin}{width=0.8\textwidth}
+\begin{figure}[H]
+\begin{center}
+\caption{Admit rate versus mean SAT I score among elite institutions\label{three} } 
+<<fig=T, echo=F>>=
+sd1 = schdat[schdat$satc > 1900, ]
+m4 <- lm(admRate ~ satc, data=sd1, subset=type=='Public')
+m5 <- lm(admRate ~ satc, data=sd1, subset=type=='Private')
+plot(sd1$satc, sd1$admRate, type='n', xlab='mean SAT score', ylab='admit rate (\\%)')
+points(sd1$satc[sd1$type=='Public'], sd1$admRate[sd1$type=='Public'], pch='o', col='red')
+points(sd1$satc[sd1$type=='Private'], sd1$admRate[sd1$type=='Private'], pch='x', col='blue')
+abline(a=coef(m4)[1], b=coef(m4)[2], col='red', lty=2, lwd=2)
+abline(a=coef(m5)[1], b=coef(m5)[2], col='blue', lwd=2)
+legend('topright', c('public', 'private'), col=c('red', 'blue'), lwd=c(2, 2), pch=c('o', 'x'), lty=c(2,1))
+@
+\normalsize
+\end{center}
+\end{figure}
+
+\textit{Answer question 8 using all the preceding figures, including figure
+\ref{three}.}
+
+\textbf{(8) Using no more than 250 words, summarize the main takeaways of
+figures \ref{one}, \ref{dich}, and \ref{three}. Do NOT speculate on causes --
+simply explain what changed from figure to figure and what conclusions can be
+drawn from each.}
+
+\newpage
+.\vspace{1.5in}
+
+\setkeys{Gin}{width=0.6\textwidth}
+\begin{figure}[H]
+\begin{center}
+\caption{One possible explanation for observed association\label{four}} 
+<<fig=T, echo=F>>=
+par(mar=rep(0,4))
+plot(c(0,1), c(0,1), type='n', axes=F, xlab='', ylab='')
+draw.arc(0.2, 0.5, 0.15, deg1=0, deg2=360, lwd=3)
+draw.arc(0.75, 0.8, 0.15, deg1=0, deg2=360, lwd=3)
+draw.arc(0.75, 0.2, 0.15, deg1=0, deg2=360, lwd=3)
+arrows(0.35, 0.6, 0.57, 0.78, lwd=3)
+arrows(0.35, 0.4, 0.57, 0.22, lwd=3)
+arrows(0.75, 0.62, 0.75, 0.38, lwd=3, code=3, lty=2)
+
+text(0.72, 0.5, 'observed association', cex=1.5, srt=90)
+text(0.45, 0.72, 'actual effect', cex=1.5, srt=41)
+text(0.45, 0.3, 'actual effect', cex=1.5, srt=-41)
+text(0.2, 0.5, 'school\n desirability', cex=1.5)
+text(0.75, 0.8, 'mean SAT\n score', cex=1.5)
+text(0.75, 0.2, 'admit %', cex=1.5)
+@
+\normalsize
+\end{center}
+\end{figure}
+
+\textbf{(9) What is the general name for the situation in
+figure \ref{four}? In a few sentences, explain what happens in such a scenario.}
+
+
+\end{document}
