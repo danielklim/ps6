@@ -1,0 +1,78 @@
+all:pdf  # default rule DO NOT EDIT
+################################################################################
+# MAINFILE  := PS6-lec10.Rnw
+# TARGET  := PS6-lec10
+# RNWFILES  := PS6-lec10.Rnw
+
+# TARGET  := $(wildcard PS6-lec*) $(wildcard PS6-HW*) $(PS6-Quiz*)
+# TARGET := $(wildcard PS6-lec*)
+# RNWFILES  := $(TARGET).Rnw
+# RNWFILES  := $(wildcard PS6-lec*)
+RNWFILES  := $(foreach ext, lec HW Quiz, $(wildcard PS6-$(ext)*.Rnw))
+BASENAMES = $(RNWFILES:.Rnw=)
+
+# MAINFILE  := $(wildcard *.Rnw)
+# RNWFILES  := $(wildcard *.Rnw)
+# RFILES    := 
+# TEXFILES  := 
+# CACHEDIR  := cache
+# FIGUREDIR := figures
+TRASH_EXT = aux log toc snm nav vrb pdf tex out
+TRASH = $(foreach ext, $(TRASH_EXT), $(RNWFILES:.Rnw=.$(ext)))
+# LATEXMK_FLAGS := 
+##### Explicit Dependencies #####
+################################################################################
+RNWTEX = $(RNWFILES:.Rnw=.tex)
+# ROUTFILES = $(RFILES:.R=.Rout)
+# RDATAFILES= $(RFILES:.R=.Rdata)
+# MAINFILE = $(TARGET:=.tex)
+MAINTEX = $(RNWFILES:.Rnw=.tex)
+MAINPDF = $(RNWFILES:.Rnw=.pdf)
+# ALLTEX = $(MAINTEX) $(RNWTEX) $(TEXFILES)
+ALLTEX = $(MAINTEX) $(RNWTEX)
+
+# Dependencies
+# $(RNWTEX): $(RDATAFILES)
+# $(MAINTEX): $(RNWTEX) $(TEXFILES)
+$(MAINTEX): $(RNWTEX)
+# $(MAINPDF): $(MAINTEX) $(ALLTEX) 
+$(MAINPDF): $(MAINTEX) 
+
+.PHONY:pdf tex clean clearcache cleanall
+pdf: $(MAINPDF)
+tex: $(ALLTEX) 
+# tex: $(RDATAFILES) $(ALLTEX) 
+
+# $(CACHEDIR):
+# 	mkdir $(CACHEDIR)
+	
+# $(FIGUREDIR):
+# 	mkdir $(FIGUREDIR)
+
+%.tex:%.Rnw
+	Rscript \
+	  -e "Sweave('$<')"
+	  # -e "library(knitr)" \
+	  # -e "knitr::opts_chunk[['set']](fig.path='$(FIGUREDIR)/$*-')" \
+	  # -e "knitr::opts_chunk[['set']](cache.path='$(CACHEDIR)/$*-')" \
+	  # -e "knitr::Sweave2knitr('$<', '$<.knit')" \
+	  # -e "knitr::knit('$<.knit', '$@', quiet=TRUE)"
+
+# %.R:%.Rnw
+# 	Rscript -e "Sweave('$^', driver=Rtangle())"
+
+# %.Rout:%.R
+# 	R CMD BATCH "$^" "$@"
+
+%.pdf: %.tex 
+	pdflatex $<
+	# latexmk -pdf $<
+	
+clean:
+	rm -rf $(TRASH)
+	rm -rf *.pdf
+
+clearcache:
+	rm -rf cache
+  
+cleanall: clean clearcache

@@ -275,7 +275,7 @@ see why/how in a few slides.
 %%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[fragile]
-A note on notation: we use capital letters to refer to \textif{all}
+A note on notation: we use capital letters to refer to \textit{all}
 observations.
 
 $$Y = \beta_0 + \beta_1 X + \ldots $$ 

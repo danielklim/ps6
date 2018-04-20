@@ -139,7 +139,7 @@ pvals = pt(abs(tvals), nobs-2, lower.tail=F)*2
   \Sexpr{round(coef(m1)[2], 3)}\vspace{0.1in}
   \item $\beta_0$, i.e. the y-intercept, is estimated to be
   \Sexpr{round(coef(m1)[1], 3)}\vspace{0.1in}
-  \item p-value on $\beta_0$ is \Sexpr{round(pvals[1], 4)} -- \texit{not}
+  \item p-value on $\beta_0$ is \Sexpr{round(pvals[1], 4)} -- \textit{not}
   statistically significant (
   indicated by lack of stars in that row)\vspace{0.1in}
   \item p-value on $\beta_1$ is pretty good: \Sexpr{round(pvals[2], 4)}
@@ -169,10 +169,10 @@ On the other hand\ldots\vspace{0.1in}
 
 \begin{itemize}
   \item We are \Sexpr{round(pvals[2], 3)*100}\% sure that the
-  effect of height on weight is \texit{not zero} (i.e.
+  effect of height on weight is \textit{not zero} (i.e.
   \Sexpr{100-round(pvals[2], 3)*100}\% sure the null hypothesis can be
   rejected)\vspace{0.1in}
-  \item Since we created this fake data, we \texit{know} that the true effect of
+  \item Since we created this fake data, we \textit{know} that the true effect of
   height on weight is 1.9\vspace{0.1in}
   \item However, because we haven't accounted for sex, the statistically significant 
   estimated effect is \Sexpr{round(coef(m1)[2], 3)}\vspace{0.1in}

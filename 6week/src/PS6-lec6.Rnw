@@ -1006,7 +1006,7 @@ What do we see? \vspace{0.1in}
 \begin{frame}[fragile]
 Let's contextualize this exercise \vspace{0.1in}
 \begin{itemize}
-  \item whether '81-'86 is special is a \texit{qualitative} judgement. All this
+  \item whether '81-'86 is special is a \textit{qualitative} judgement. All this
   analysis reveals is that there is a considerable quantitative difference --
   up to \textit{you} as the analyst to decide whether important \& explain
   why\vspace{0.1in}

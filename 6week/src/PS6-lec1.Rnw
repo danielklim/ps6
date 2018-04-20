@@ -270,7 +270,7 @@ library(xlsx)
 \vspace{0.2in}
 
 Then, go to our Classes website and download the file named
-`Turnouts1960_2008.xlsx'
+`Turnouts1960\_2008.xlsx'
 \end{frame}
 %%%%%%%%%%%%%%
 

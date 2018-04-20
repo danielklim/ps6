@@ -53,7 +53,7 @@ text(2200, 210, 'E')
 \begin{description}
     \item[sum:] \Sexpr{sum(satc)}
     \item[variance:] \Sexpr{round(var(satc), 2)}
-    \item[# observations:] \Sexpr{length(satc)}
+    \item[\# observations:] \Sexpr{length(satc)}
 \end{description}
 \end{multicols}
 \vspace{0.25in}

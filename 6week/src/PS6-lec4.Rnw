@@ -145,7 +145,7 @@ possible values} for some underlying data-generating process
   \item e.g.: We believe there is a data-generating process that makes
 turnout in 1972 distribute normally around \Sexpr{mu1} with SD \Sexpr{sig1}
   \item We would use a RV to represent ALL of the values that state turnout
-\texbf{could} have taken. 
+\textbf{could} have taken. 
   \item We might say something like:
 $$X \sim N( \Sexpr{mu1}, \Sexpr{sig1} ) $$
 where $X$ is the RV representing turnout.
